@@ -19,4 +19,7 @@ public class Licenca extends AccoesDoSistema{
     private String numeroLicenca;
     @Column
     private Date dataValidade;
+
+    @ManyToOne
+    private TipopLicenca idLicenca;
 }

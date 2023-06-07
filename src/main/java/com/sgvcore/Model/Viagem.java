@@ -23,4 +23,10 @@ public class Viagem {
     private Date prev_chegada;
     @Column(nullable=false)
     private String chaveviagem;
+
+    @ManyToOne
+    private  Rota idRota;
+    @ManyToOne
+    private Associacao idAssociacao;
+
 }

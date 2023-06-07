@@ -1,9 +1,6 @@
 package com.sgvcore.Model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 public class Motorista extends AccoesDoSistema {
     @Id
@@ -16,15 +13,14 @@ public class Motorista extends AccoesDoSistema {
     @Column(nullable=false)
     private Long anonascimento;
     @Column(nullable=false)
-    private String bairro;
-    @Column(nullable=false)
     private String email;
-    @Column(nullable=false)
-    private String cidade;
-    @Column(nullable=false)
-    private String provincia ;
-    @Column(nullable=false)
-    private String BI;
-    private String nrcarta;
-    private String nivelcarta;
+
+    @ManyToOne
+    private Provincia idProvincia;
+    @ManyToOne
+    private DocumentoIdentifiacacao idIdentificacao;
+    @ManyToOne
+    private Genero idGenero;
+
+
 }

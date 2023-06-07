@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Viactura extends AccoesDoSistema {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long codtransporte;
+    private Long id;
     @Column(nullable=false)
     private String matricula;
     @Column(nullable=false)
@@ -38,4 +38,7 @@ public class Viactura extends AccoesDoSistema {
     private String nrmotor;
     @Column(nullable=false)
     private Long nrportas;
+
+    @ManyToOne
+    private Rota idRota;
 }

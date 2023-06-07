@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ProprietarioEmpresa {
+public class Proprietario {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -18,18 +18,16 @@ public class ProprietarioEmpresa {
     @Column(nullable=false)
     private String nome;
     @Column(nullable=false)
-    private String bairro;
-    @Column(nullable=false)
-    private String cidade;
-    @Column(nullable=false)
-    private String tipolicenca;
-    @Column(nullable=false)
-    private String provincia;
-    @Column(nullable=false)
-    private Double nuit;
-    @Column(nullable=false)
-    private String alvara;
-    @Column(nullable=false)
     private Long anocriacao;
 
+    @ManyToOne
+    private Provincia idProvincia;
+    @ManyToOne
+    private DocumentoIdentifiacacao idIdentificacao;
+    @ManyToOne
+    private Contacto idContacto;
+    @ManyToOne
+    private TipoProprietario idTipoProprietario;
+    @ManyToOne
+    private Genero idGenero;
 }

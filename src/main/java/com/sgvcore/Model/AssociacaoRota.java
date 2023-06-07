@@ -3,26 +3,22 @@ package com.sgvcore.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.*;
 
-@Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Associacao {
+@Data
+public class AssociacaoRota extends AccoesDoSistema {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    @Column(nullable=false)
-    private String nomeassociacao;
-    @Column(nullable = false)
-    private String emailassociacao;
 
     @ManyToOne
-    private Contacto idContacto;
+    private Rota idRota;
     @ManyToOne
-    private Licenca idLicenca;
-
+    private Associacao idAssociacao;
 
 }

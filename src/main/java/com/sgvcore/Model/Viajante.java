@@ -21,7 +21,15 @@ public class Viajante {
     @Column(nullable = false)
     private int anonascimento;
     @Column(nullable = false)
-    private String bairro;
-    @Column(nullable = false)
     private String email;
+
+    @ManyToOne
+    private Provincia idProvincia;
+    @ManyToOne
+    private DocumentoIdentifiacacao idIdentificacao;
+    @ManyToOne
+    private Carga idCarga;
+    @ManyToOne
+    private Genero idGenero;
+
 }

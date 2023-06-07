@@ -21,5 +21,8 @@ public class DocumentoIdentifiacacao extends AccoesDoSistema {
     @Column
     private Date dataValidade;
 
+    @ManyToOne
+    private TipoDocumentoIdentificacao idIdentificacao;
+
 
 }

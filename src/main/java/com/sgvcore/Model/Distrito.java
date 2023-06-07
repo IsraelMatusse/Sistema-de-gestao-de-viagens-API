@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
@@ -21,5 +18,8 @@ public class Distrito extends AccoesDoSistema {
     @Column(nullable = false, unique = true)
     private String designacao;
     @Column()
-    private String codigo;;
+    private String codigo;
+
+    @ManyToOne
+    private Provincia idProvincia;
 }
