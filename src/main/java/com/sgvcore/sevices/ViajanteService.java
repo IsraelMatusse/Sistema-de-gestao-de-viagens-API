@@ -21,7 +21,6 @@ public class ViajanteService {
     public  List<ViajanteRespostaDTO> listarViajantes(){
         return viajanteRepo.findAll().stream().map(viajante -> new ViajanteRespostaDTO(viajante)).collect(Collectors.toList());
     }
-
     public ViajanteRespostaDTO buscarViajantPorId(Long id){
         Viajante viajante= viajanteRepo.findById(id).orElse(null);
         if(viajante!=null){

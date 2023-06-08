@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -15,14 +16,12 @@ public class ViajanteRespostaDTO {
     private Long id;
     private String nome;
     private String apelido;
-    private int anonascimento;
-    private String bairro;
+    private Date dataNasicmento;
     private String email;
 
     public ViajanteRespostaDTO(Viajante viajante){
-        this.anonascimento=viajante.getAnonascimento();
+        this.dataNasicmento=viajante.getDataNascimento();
         this.apelido= viajante.getApelido();
-        this.bairro=viajante.getBairro();
         this.email= viajante.getEmail();
         this.nome=viajante.getNome();
         this.id=viajante.getId();

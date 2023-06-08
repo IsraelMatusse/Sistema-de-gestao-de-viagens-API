@@ -1,10 +1,12 @@
 package com.sgvcore.Model;
 
+import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -19,7 +21,7 @@ public class Viajante {
     @Column(nullable = false)
     private String apelido;
     @Column(nullable = false)
-    private int anonascimento;
+    private Date dataNascimento;
     @Column(nullable = false)
     private String email;
 
@@ -31,5 +33,16 @@ public class Viajante {
     private Carga idCarga;
     @ManyToOne
     private Genero idGenero;
+
+    public Viajante(ViajanteCriarDTO dto, Genero genero, Carga carga, DocumentoIdentifiacacao documentoIdentifiacacao, Provincia provincia){
+        this.apelido=dto.getApelido();
+        this.dataNascimento=dto.getDataNascimento();
+        this.nome=dto.getNome();
+        this.email=dto.getEmail();
+        this.idCarga=carga;
+        this.idGenero=genero;
+        this.idProvincia=provincia;
+        this.idIdentificacao=documentoIdentifiacacao;
+    }
 
 }
