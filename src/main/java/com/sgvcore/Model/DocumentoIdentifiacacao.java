@@ -20,7 +20,6 @@ public class DocumentoIdentifiacacao extends AccoesDoSistema {
     private String numeroDocumento;
     @Column
     private Date dataValidade;
-
     @ManyToOne
     private TipoDocumentoIdentificacao idIdentificacao;
 

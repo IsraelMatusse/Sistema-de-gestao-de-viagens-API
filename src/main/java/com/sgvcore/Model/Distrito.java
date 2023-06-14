@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Distrito extends AccoesDoSistema {
 
     @Id
@@ -19,7 +20,6 @@ public class Distrito extends AccoesDoSistema {
     private String designacao;
     @Column()
     private String codigo;
-
     @ManyToOne
     private Provincia idProvincia;
 }

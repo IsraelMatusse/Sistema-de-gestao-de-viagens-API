@@ -10,12 +10,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ViagenViajante {
+public class ViagemViajante {
 
     @Id
-    @@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     private Viagem idViagem;
     @ManyToOne

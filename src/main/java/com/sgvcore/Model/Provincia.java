@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Provincia extends AccoesDoSistema {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

@@ -22,7 +22,6 @@ public class Genero extends AccoesDoSistema {
     private String designacao;
     @Column
     private char gen;
-
     public Genero(GeneroCriarDTO dto){
         this.gen=dto.getGen();
         this.designacao=dto.getDesignacao();
