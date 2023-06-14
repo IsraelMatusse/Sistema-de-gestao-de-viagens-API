@@ -33,8 +33,12 @@ public class Viajante {
     private Carga idCarga;
     @ManyToOne
     private Genero idGenero;
+    @ManyToOne
+    private Distrito idDistrito;
+    @ManyToOne
+    private Contacto idContacto;
 
-    public Viajante(ViajanteCriarDTO dto, Genero genero, Carga carga, DocumentoIdentifiacacao documentoIdentifiacacao, Provincia provincia){
+    public Viajante(ViajanteCriarDTO dto, Genero genero, Carga carga, DocumentoIdentifiacacao documentoIdentifiacacao, Provincia provincia, Distrito distrito, Contacto contacto){
         this.apelido=dto.getApelido();
         this.dataNascimento=dto.getDataNascimento();
         this.nome=dto.getNome();
@@ -43,6 +47,8 @@ public class Viajante {
         this.idGenero=genero;
         this.idProvincia=provincia;
         this.idIdentificacao=documentoIdentifiacacao;
+        this.idDistrito= distrito;
+        this.idContacto=contacto;
     }
 
 }

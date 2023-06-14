@@ -29,13 +29,16 @@ public class ViajanteCriarDTO {
     @NotNull
     private String email;
     @NotNull
-    private Long idProvincia;
+    private String codigoProvincia;
+    @NotNull
+    private String codigoDistrito;
     @NotNull
     private Long idIdentificacao;
     @NotNull
     private Long idCarga;
     @NotNull
     private Long idGenero;
-
+    @NotNull
+    private Long idContacto;
 
 }
