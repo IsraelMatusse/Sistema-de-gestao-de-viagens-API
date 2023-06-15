@@ -29,7 +29,7 @@ public class DocumentoIdentificacaoService {
         return documentoIdentificacaoRepo.existsById(id);
     }
 
-    public DocumentoIdentificacao buscarPorNumeroDocumento(String numeroDocumento){
-        return documentoIdentificacaoRepo.findBynumeroDocumento(numeroDocumento);
+    public DocumentoIdentifiacacao buscarPorNumeroDocumento(String numeroDocumento){
+        return documentoIdentificacaoRepo.findByNumeroDocumento(numeroDocumento);
     }
 }

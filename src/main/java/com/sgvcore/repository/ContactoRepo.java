@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ContactoRepo extends JpaRepository<Contacto, Long> {
+
+    Contacto findByMisdn(String msisdn);
 }

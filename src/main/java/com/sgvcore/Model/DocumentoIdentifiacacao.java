@@ -1,6 +1,7 @@
 package com.sgvcore.Model;
 
 import com.sgvcore.DTOs.documentoIdentificacaoDTOs.DocumentoIdentificacaoCriarDTO;
+import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,10 +25,11 @@ public class DocumentoIdentifiacacao extends AccoesDoSistema {
     @ManyToOne
     private TipoDocumentoIdentificacao idIdentificacao;
 
-    public DocumentoIdentifiacacao(DocumentoIdentificacaoCriarDTO dto, TipoDocumentoIdentificacao tipoDocumentoIdentificacao){
-        this.dataValidade=dto.getDataValidade();
+    public  DocumentoIdentifiacacao (ViajanteCriarDTO viajanteCriarDTO, TipoDocumentoIdentificacao tipoDocumentoIdentificacao) {
+        this.numeroDocumento=viajanteCriarDTO.getCodigoIdentificacao();
+        this.dataValidade=viajanteCriarDTO.getDataValidade();
         this.idIdentificacao=tipoDocumentoIdentificacao;
-        this.numeroDocumento=dto.getNumeroDocumento();
+    }
     }
 
-}
+

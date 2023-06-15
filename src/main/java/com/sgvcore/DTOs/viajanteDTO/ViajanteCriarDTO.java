@@ -1,17 +1,10 @@
 package com.sgvcore.DTOs.viajanteDTO;
 
-import com.sgvcore.Model.Carga;
-import com.sgvcore.Model.DocumentoIdentifiacacao;
-import com.sgvcore.Model.Genero;
-import com.sgvcore.Model.Provincia;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @Data
@@ -33,12 +26,16 @@ public class ViajanteCriarDTO {
     @NotNull
     private String codigoDistrito;
     @NotNull
-    private Long idIdentificacao;
+    private String codigoIdentificacao;
     @NotNull
-    private Long idCarga;
+    private String codigoCarga;
     @NotNull
     private Long idGenero;
     @NotNull
-    private Long idContacto;
+    private String msisdn;
+    @NotNull
+    private Long idTipoDocumento;
+    @NotNull
+    private Date dataValidade;
 
 }

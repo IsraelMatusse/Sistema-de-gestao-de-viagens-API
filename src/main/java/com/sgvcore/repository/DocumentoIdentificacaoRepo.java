@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DocumentoIdentificacaoRepo extends JpaRepository<DocumentoIdentifiacacao, Long> {
+
+    DocumentoIdentifiacacao findByNumeroDocumento(String numeroDocumento);
+
 }
