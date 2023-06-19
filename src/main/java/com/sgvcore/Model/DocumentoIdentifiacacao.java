@@ -26,7 +26,7 @@ public class DocumentoIdentifiacacao extends AccoesDoSistema {
     private TipoDocumentoIdentificacao idIdentificacao;
 
     public  DocumentoIdentifiacacao (ViajanteCriarDTO viajanteCriarDTO, TipoDocumentoIdentificacao tipoDocumentoIdentificacao) {
-        this.numeroDocumento=viajanteCriarDTO.getCodigoIdentificacao();
+        this.numeroDocumento=viajanteCriarDTO.getNumeroDocumento();
         this.dataValidade=viajanteCriarDTO.getDataValidade();
         this.idIdentificacao=tipoDocumentoIdentificacao;
     }
