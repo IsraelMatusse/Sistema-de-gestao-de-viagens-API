@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -40,6 +41,8 @@ public class ViajanteCriarDTO {
     @NotNull
     private String numeroDocumento;
     @NotNull
-
+    private String designacao;
+    @NotNull
+    private Long peso;
 
 }

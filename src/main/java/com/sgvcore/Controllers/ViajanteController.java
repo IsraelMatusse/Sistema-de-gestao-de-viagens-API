@@ -50,7 +50,7 @@ public class ViajanteController {
         if (tipoDocumentoIdentificacao == null) {
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Tipo de documento nao encontrado!", null));
         }
-        DocumentoIdentifiacacao documentoIdentifiacacao = documentoIdentificacaoService.buscarPorNumeroDocumento(dto.getCodigoIdentificacao());
+        DocumentoIdentifiacacao documentoIdentifiacacao = documentoIdentificacaoService.buscarPorNumeroDocumento(dto.getNumeroDocumento());
         DocumentoIdentifiacacao novoDocmento = null;
         if (documentoIdentifiacacao == null) {
             try {
@@ -74,7 +74,7 @@ public class ViajanteController {
             return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, contacto ja existe!", null));
 
         }
-        /*Carga carga = cargaService.buscarCargaPorCodigo(dto.getCodigoCarga());
+        Carga carga = cargaService.buscarCargaPorDesignacao(dto.getDesignacao());
         if (carga == null) {
             try {
                 cargaService.criar(new Carga(dto));
@@ -86,9 +86,8 @@ public class ViajanteController {
             return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Carga ja existe!", null));
         }
 
-         */
         try {
-            viajanteService.criar(new Viajante(dto, genero, documentoIdentifiacacao, provincia, distrito, contacto));
+            viajanteService.criar(new Viajante(dto, genero,carga, documentoIdentifiacacao, provincia, distrito, contacto));
 
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));

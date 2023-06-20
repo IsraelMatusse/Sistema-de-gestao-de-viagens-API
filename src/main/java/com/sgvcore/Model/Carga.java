@@ -31,9 +31,9 @@ public class Carga {
         this.peso=dto.getPeso();
         this.codigoCarga= GeneratePin.generateStringPin();
     }
-  /*  public Carga(ViajanteCriarDTO dto){
-        this.codigoCarga= dto.getCodigoCarga();
+    public Carga(ViajanteCriarDTO dto){
+        this.designacao=dto.getDesignacao();
+        this.peso=dto.getPeso();
     }
 
-   */
 }

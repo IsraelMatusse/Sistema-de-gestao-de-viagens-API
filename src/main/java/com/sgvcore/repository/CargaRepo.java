@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface CargaRepo extends JpaRepository<Carga, Long> {
 
     Carga findByCodigoCarga(String codigoCarga);
+    Carga findByDesignacao(String designacao);
 }

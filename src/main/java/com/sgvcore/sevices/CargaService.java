@@ -25,4 +25,7 @@ public class CargaService {
     public Carga buscarCargaPorCodigo(String codigoCarga){
         return  cargaRepo.findByCodigoCarga(codigoCarga);
     }
+    public Carga buscarCargaPorDesignacao(String designacaoCarga){
+        return  cargaRepo.findByDesignacao(designacaoCarga);
+    }
 }
