@@ -19,6 +19,17 @@ public class SgvCoreApplication {
 		generoService.criarGenero(new Genero(null, "Masculino", 'M'));
 		generoService.criarGenero(new Genero(null, "Feminino", 'F'));
 	}
+	public void inicializarRotas(RotaService rotaService){
+		rotaService.criar(new Rota((Long) null, "Maputo-Gaza", 150L, 500L));
+		rotaService.criar(new Rota((Long) null, "Maputo-Inhambane", 400L, 800L));
+		rotaService.criar(new Rota(null, "Maputo-Beira", 800L, 1500L));
+		rotaService.criar(new Rota(null, "Maputo-Zambezia", 810L, 2000L));
+		rotaService.criar(new Rota(null, "Maputo-Tete", 849L, 2050L));
+		rotaService.criar(new Rota(null, "Maputo-Manica", 900L, 2500L));
+		rotaService.criar(new Rota(null, "Maputo-Nampula", 870L, 3000L));
+		rotaService.criar(new Rota(null, "Maputo-Cabo-Delegado", 890L, 2900L));
+		rotaService.criar(new Rota(null, "Maputo-Niassa", 900L, 5000L));
+	}
 
 	public void inicializarProvinciasEDistritos(ProvinciaService provinciaService,
 												DistritoService distritoService, ProvinciaDistritoService provinciaDistritoService,

@@ -1,5 +1,6 @@
 package com.sgvcore.Model;
 
+import com.sgvcore.DTOs.rotaDTO.RotaCriarDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,11 @@ public class Rota extends  AccoesDoSistema{
     @Column(nullable=false)
     private Long distancia;
     @Column(nullable=false)
-    private long preco;
+    private Long preco;
 
+    public Rota(RotaCriarDTO rotaCriarDTO){
+        this.distancia=rotaCriarDTO.getDistancia();
+        this.nomerota=rotaCriarDTO.getNomerota();
+        this.preco=rotaCriarDTO.getPreco();
+    }
 }
