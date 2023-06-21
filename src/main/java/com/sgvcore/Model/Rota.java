@@ -22,10 +22,12 @@ public class Rota extends  AccoesDoSistema{
     private Long distancia;
     @Column(nullable=false)
     private Long preco;
-
+    @Column
+    private String codigo;
     public Rota(RotaCriarDTO rotaCriarDTO){
         this.distancia=rotaCriarDTO.getDistancia();
         this.nomerota=rotaCriarDTO.getNomeRota();
         this.preco=rotaCriarDTO.getPreco();
+        this.codigo=rotaCriarDTO.getCodigo();
     }
 }

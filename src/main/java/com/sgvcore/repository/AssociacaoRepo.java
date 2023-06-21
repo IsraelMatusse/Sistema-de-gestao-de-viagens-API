@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AssociacaoRepo extends JpaRepository<Associacao, Long> {
+    Associacao findByCodigo(String codigo);
 }

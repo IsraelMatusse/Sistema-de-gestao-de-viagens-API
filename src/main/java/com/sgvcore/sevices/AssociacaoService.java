@@ -20,9 +20,10 @@ public class AssociacaoService {
     public List<Associacao> listarAssociacao(){
         return associacaoRepo.findAll();
     }
-    public Associacao buscarPorId(Long id){
-        return associacaoRepo.findById(id).orElse(null);
+    public Associacao buscarPorCodigo(String codigo){
+        return associacaoRepo.findByCodigo(codigo);
     }
+
 
 
 

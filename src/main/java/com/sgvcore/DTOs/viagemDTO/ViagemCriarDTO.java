@@ -1,8 +1,6 @@
 package com.sgvcore.DTOs.viagemDTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sgvcore.Model.Associacao;
-import com.sgvcore.Model.Rota;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +23,5 @@ public class ViagemCriarDTO {
     //@NotNull
     private Long idRota;
   //  @NotNull
-    private Long idAssociacao;
+    private String codigoAssociacao;
 }

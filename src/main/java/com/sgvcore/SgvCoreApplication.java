@@ -36,24 +36,24 @@ public class SgvCoreApplication {
 
 		Date data1= new Date();
 
-		Licenca trsnporteRodoviario=licencaService.criar(new Licenca(null, "12678029p", data1, transporte));
+		Licenca transnporteRodoviario=licencaService.criar(new Licenca(null, "12678029p", data1, transporte));
 		Licenca coomercioGeral=licencaService.criar(new Licenca(null, "8340987ol", data1, comercial));
 
-		associacaoService.criar(new Associacao(null, "ETRAGO", "etrago@gmail.com",etrago, trsnporteRodoviario ));
-		associacaoService.criar(new Associacao(null, "NAGI", "nagi@gmail.com",nagi, trsnporteRodoviario ));
-		associacaoService.criar(new Associacao(null, "TCO", "tco@gmail.com",tco, trsnporteRodoviario ));
+		associacaoService.criar(new Associacao(null, "ETRAGO", "etrago@gmail.com",etrago, transnporteRodoviario, "1234" ));
+		associacaoService.criar(new Associacao(null, "NAGI", "nagi@gmail.com",nagi, transnporteRodoviario,"1578" ));
+		associacaoService.criar(new Associacao(null, "TCO", "tco@gmail.com",tco, transnporteRodoviario, "7380" ));
 
 	}
 	public void inicializarRotas(RotaService rotaService){
-		rotaService.criar(new Rota((Long) null, "Maputo-Gaza", 150L, 500L));
-		rotaService.criar(new Rota((Long) null, "Maputo-Inhambane", 400L, 800L));
-		rotaService.criar(new Rota(null, "Maputo-Beira", 800L, 1500L));
-		rotaService.criar(new Rota(null, "Maputo-Zambezia", 810L, 2000L));
-		rotaService.criar(new Rota(null, "Maputo-Tete", 849L, 2050L));
-		rotaService.criar(new Rota(null, "Maputo-Manica", 900L, 2500L));
-		rotaService.criar(new Rota(null, "Maputo-Nampula", 870L, 3000L));
-		rotaService.criar(new Rota(null, "Maputo-Cabo-Delegado", 890L, 2900L));
-		rotaService.criar(new Rota(null, "Maputo-Niassa", 900L, 5000L));
+		rotaService.criar(new Rota((Long) null, "Maputo-Gaza", 150L, 500L, "001"));
+		rotaService.criar(new Rota((Long) null, "Maputo-Inhambane", 400L, 800L, "002"));
+		rotaService.criar(new Rota(null, "Maputo-Beira", 800L, 1500L, "003"));
+		rotaService.criar(new Rota(null, "Maputo-Zambezia", 810L, 2000L, "003"));
+		rotaService.criar(new Rota(null, "Maputo-Tete", 849L, 2050L, "004"));
+		rotaService.criar(new Rota(null, "Maputo-Manica", 900L, 2500L, "005"));
+		rotaService.criar(new Rota(null, "Maputo-Nampula", 870L, 3000L, "006"));
+		rotaService.criar(new Rota(null, "Maputo-Cabo-Delegado", 890L, 2900L, "007"));
+		rotaService.criar(new Rota(null, "Maputo-Niassa", 900L, 5000L, "008"));
 	}
 
 	public void inicializarProvinciasEDistritos(ProvinciaService provinciaService,

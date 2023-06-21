@@ -19,10 +19,11 @@ public class Associacao {
     @Column(nullable = false)
     private String emailassociacao;
 
+
     @ManyToOne
     private Contacto idContacto;
     @ManyToOne
     private Licenca idLicenca;
-
+    private String codigo;
 
 }

@@ -35,7 +35,7 @@ public class ViagemController {
         if(rota==null) {
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Rota nao encontrada!", null));
         }
-        Associacao associacao = associacaoService.buscarPorId(dto.getIdAssociacao());
+        Associacao associacao = associacaoService.buscarPorCodigo(dto.getCodigoAssociacao());
         if(associacao==null){
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Associacao nao enocntrada!", null));
         }
