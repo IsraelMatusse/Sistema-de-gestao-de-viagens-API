@@ -7,17 +7,42 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
+
 @SpringBootApplication
 public class SgvCoreApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SgvCoreApplication.class, args);
 	}
-
+	DateFormat f = DateFormat.getDateInstance();
 
 	public void inicializarGeneros(GeneroService generoService) {
 		generoService.criarGenero(new Genero(null, "Masculino", 'M'));
 		generoService.criarGenero(new Genero(null, "Feminino", 'F'));
+	}
+	public void inicializarAssociacoesLicencaseTipoDeLicenca(AssociacaoService associacaoService, ContactoService contactoService,
+									   TipoLicencaService tipoLicencaService,
+									   LicencaService licencaService) throws ParseException {
+
+		Contacto etrago= contactoService.criar(new Contacto(null, "829283901"));
+		Contacto nagi=contactoService.criar(new Contacto(null, "847283892"));
+		Contacto tco=contactoService.criar(new Contacto(null, "873902097"));
+
+		TipopLicenca transporte=tipoLicencaService.criar(new TipopLicenca(null,"transporte", "tr"));
+		TipopLicenca comercial=tipoLicencaService.criar(new TipopLicenca(null,"comercial", "cl"));
+
+		Date data1= new Date();
+
+		Licenca trsnporteRodoviario=licencaService.criar(new Licenca(null, "12678029p", data1, transporte));
+		Licenca coomercioGeral=licencaService.criar(new Licenca(null, "8340987ol", data1, comercial));
+
+		associacaoService.criar(new Associacao(null, "ETRAGO", "etrago@gmail.com",etrago, trsnporteRodoviario ));
+		associacaoService.criar(new Associacao(null, "NAGI", "nagi@gmail.com",nagi, trsnporteRodoviario ));
+		associacaoService.criar(new Associacao(null, "TCO", "tco@gmail.com",tco, trsnporteRodoviario ));
+
 	}
 	public void inicializarRotas(RotaService rotaService){
 		rotaService.criar(new Rota((Long) null, "Maputo-Gaza", 150L, 500L));
@@ -107,15 +132,17 @@ public class SgvCoreApplication {
 	CommandLineRunner run(GeneroService generoService, ZonaRegionalService zonaRegionalService,
 						  ProvinciaService provinciaService, DistritoService distritoService,
 						  ProvinciaDistritoService provinciaDistritoService,
-						  TipoDocumentoService tipoDocumentoService) {
+						  TipoDocumentoService tipoDocumentoService, TipoLicencaService tipoLicencaService, LicencaService licencaService,
+						  AssociacaoService associacaoService, ContactoService contactoService, RotaService rotaService) {
 		return args -> {
 //			Auto Runnable code (on start)
 			inicializarGeneros(generoService);
 			inicializarProvinciasEDistritos( provinciaService,
 					 distritoService,  provinciaDistritoService,
 					 zonaRegionalService);
+			inicializarRotas(rotaService);
 			inicializarTipoDocumento( tipoDocumentoService);
-
+			inicializarAssociacoesLicencaseTipoDeLicenca(associacaoService, contactoService, tipoLicencaService, licencaService);
 		};
 	}
 }

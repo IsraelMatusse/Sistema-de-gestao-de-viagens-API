@@ -1,5 +1,6 @@
 package com.sgvcore.DTOs.viagemDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sgvcore.Model.Associacao;
 import com.sgvcore.Model.Rota;
 import lombok.AllArgsConstructor;
@@ -14,13 +15,15 @@ import java.util.Date;
 public class ViagemCriarDTO {
 
     @NotNull
-    private String destino_viagem;
-    @NotNull
+    private String destinoViagem;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    //@NotNull
     private Date saida;
-    @NotNull
-    private Date prev_chegada;
-    @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    //@NotNull
+    private Date prevChegada;
+    //@NotNull
     private Long idRota;
-    @NotNull
+  //  @NotNull
     private Long idAssociacao;
 }

@@ -25,7 +25,7 @@ public class Rota extends  AccoesDoSistema{
 
     public Rota(RotaCriarDTO rotaCriarDTO){
         this.distancia=rotaCriarDTO.getDistancia();
-        this.nomerota=rotaCriarDTO.getNomerota();
+        this.nomerota=rotaCriarDTO.getNomeRota();
         this.preco=rotaCriarDTO.getPreco();
     }
 }

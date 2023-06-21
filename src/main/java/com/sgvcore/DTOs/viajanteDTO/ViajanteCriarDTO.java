@@ -1,5 +1,6 @@
 package com.sgvcore.DTOs.viajanteDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class ViajanteCriarDTO {
     private String nome;
     @NotNull
     private String apelido;
+    @JsonFormat(pattern = "dd/mm/yyyy")
     @NotNull
     private Date dataNascimento;
     @NotNull
@@ -28,7 +30,7 @@ public class ViajanteCriarDTO {
     @NotNull
     private String codigoDistrito;
     @NotNull
-    private String NumeroDocumento;
+    private String numeroDocumento;
     @NotNull
     private Long idGenero;
     @NotNull
@@ -37,8 +39,6 @@ public class ViajanteCriarDTO {
     private Long idTipoDocumento;
     @NotNull
     private Date dataValidade;
-    @NotNull
-    private String numeroDocumento;
     @NotNull
     private String designacao;
     @NotNull

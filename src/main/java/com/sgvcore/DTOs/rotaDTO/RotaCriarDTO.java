@@ -19,5 +19,5 @@ public class RotaCriarDTO {
     @NotNull
     private long preco;
     @NotNull
-    private String nomerota;
+    private String nomeRota;
 }

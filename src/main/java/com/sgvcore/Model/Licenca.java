@@ -1,5 +1,6 @@
 package com.sgvcore.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ public class Licenca extends AccoesDoSistema{
     private Long id;
     @Column(nullable = false)
     private String numeroLicenca;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column
     private Date dataValidade;
 

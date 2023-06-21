@@ -1,5 +1,6 @@
 package com.sgvcore.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sgvcore.DTOs.documentoIdentificacaoDTOs.DocumentoIdentificacaoCriarDTO;
 import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class DocumentoIdentifiacacao extends AccoesDoSistema {
     private Long id;
     @Column(nullable = false)
     private String numeroDocumento;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column
     private Date dataValidade;
     @ManyToOne
