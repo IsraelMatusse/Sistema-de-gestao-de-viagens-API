@@ -31,9 +31,10 @@ public class Carga {
         this.peso=dto.getPeso();
         this.codigoCarga= GeneratePin.generateStringPin();
     }
-    public Carga(ViajanteCriarDTO dto){
+    public Carga(ViajanteCriarDTO dto) throws NoSuchAlgorithmException {
         this.designacao=dto.getDesignacao();
         this.peso=dto.getPeso();
+        this.codigoCarga= GeneratePin.generateStringPin();
     }
 
 }

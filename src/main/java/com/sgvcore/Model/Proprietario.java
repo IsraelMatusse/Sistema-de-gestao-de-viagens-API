@@ -19,7 +19,6 @@ public class Proprietario {
     private String nome;
     @Column(nullable=false)
     private Long anocriacao;
-
     @ManyToOne
     private Provincia idProvincia;
     @ManyToOne

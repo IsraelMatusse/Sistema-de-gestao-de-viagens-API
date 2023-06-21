@@ -29,7 +29,6 @@ public class ViajanteCriarDTO {
     private String codigoDistrito;
     @NotNull
     private String NumeroDocumento;
-
     @NotNull
     private Long idGenero;
     @NotNull

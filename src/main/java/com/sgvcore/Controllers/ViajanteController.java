@@ -5,6 +5,7 @@ import com.sgvcore.Model.*;
 import com.sgvcore.sevices.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,9 @@ public class ViajanteController {
     private ContactoService contactoService;
     @Autowired
     private CargaService cargaService;
-    public ResponseEntity<ResponseAPI> criarViajante(@RequestBody  ViajanteCriarDTO dto) {
+
+    @PostMapping("/adicionar")
+    public ResponseEntity<ResponseAPI> criarViajante(@RequestBody ViajanteCriarDTO dto) {
         Genero genero = generoService.buscarPorId(dto.getIdGenero());
         if (genero == null) {
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Genero nao encontrado!", null));
@@ -54,7 +57,7 @@ public class ViajanteController {
         DocumentoIdentifiacacao novoDocmento = null;
         if (documentoIdentifiacacao == null) {
             try {
-                documentoIdentificacaoService.criar(new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao));
+                novoDocmento= documentoIdentificacaoService.criar(new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao));
             } catch (Exception e) {
                 return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
             }
@@ -66,7 +69,7 @@ public class ViajanteController {
         if (contacto == null) {
 
             try {
-                contactoService.criar(new Contacto(dto));
+                novoContacto=  contactoService.criar(new Contacto(dto));
             } catch (Exception e) {
                 return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
             }
@@ -75,9 +78,10 @@ public class ViajanteController {
 
         }
         Carga carga = cargaService.buscarCargaPorDesignacao(dto.getDesignacao());
+        Carga novaCarga=null;
         if (carga == null) {
             try {
-                cargaService.criar(new Carga(dto));
+                novaCarga=  cargaService.criar(new Carga(dto));
 
             } catch (Exception e) {
                 return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
@@ -87,7 +91,7 @@ public class ViajanteController {
         }
 
         try {
-            viajanteService.criar(new Viajante(dto, genero,carga, documentoIdentifiacacao, provincia, distrito, contacto));
+            viajanteService.criar(new Viajante(dto, genero, carga, documentoIdentifiacacao, provincia, distrito, contacto));
 
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
@@ -96,11 +100,4 @@ public class ViajanteController {
     }
 
 
-
-
-
-
-
-
-
-    }
+}
