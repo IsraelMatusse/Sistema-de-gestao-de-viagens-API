@@ -23,6 +23,11 @@ public class SgvCoreApplication {
 		generoService.criarGenero(new Genero(null, "Masculino", 'M'));
 		generoService.criarGenero(new Genero(null, "Feminino", 'F'));
 	}
+
+	public void inicializarTipoProprietarios(TipoProprietarioService tipoProprietarioService){
+		TipoProprietario individual= tipoProprietarioService.criar(new TipoProprietario(null, "Proprietario", "0112"));
+		TipoProprietario empresa= tipoProprietarioService.criar(new TipoProprietario(null, "Empresa", "0113"));
+	}
 	public void inicializarAssociacoesLicencaseTipoDeLicenca(AssociacaoService associacaoService, ContactoService contactoService,
 									   TipoLicencaService tipoLicencaService,
 									   LicencaService licencaService) throws ParseException {
@@ -129,21 +134,24 @@ public class SgvCoreApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(GeneroService generoService, ZonaRegionalService zonaRegionalService,
+	CommandLineRunner run
+			(GeneroService generoService, ZonaRegionalService zonaRegionalService,
 						  ProvinciaService provinciaService, DistritoService distritoService,
 						  ProvinciaDistritoService provinciaDistritoService,
 						  TipoDocumentoService tipoDocumentoService, TipoLicencaService tipoLicencaService, LicencaService licencaService,
-						  AssociacaoService associacaoService, ContactoService contactoService, RotaService rotaService) {
+						  AssociacaoService associacaoService, ContactoService contactoService, RotaService rotaService, TipoProprietarioService tipoProprietarioService) {
 		return args -> {
 //			Auto Runnable code (on start)
-			inicializarGeneros(generoService);
-			inicializarProvinciasEDistritos( provinciaService,
-					 distritoService,  provinciaDistritoService,
-					 zonaRegionalService);
-			inicializarRotas(rotaService);
-			inicializarTipoDocumento( tipoDocumentoService);
-			inicializarAssociacoesLicencaseTipoDeLicenca(associacaoService, contactoService, tipoLicencaService, licencaService);
-		};
+			if(generoService.listarGeneros().isEmpty()) {
+				inicializarGeneros(generoService);
+				inicializarProvinciasEDistritos(provinciaService,
+						distritoService, provinciaDistritoService,
+						zonaRegionalService);
+				inicializarRotas(rotaService);
+				inicializarTipoDocumento(tipoDocumentoService);
+				inicializarAssociacoesLicencaseTipoDeLicenca(associacaoService, contactoService, tipoLicencaService, licencaService);
+				inicializarTipoProprietarios(tipoProprietarioService);
+			}};
 	}
 }
 

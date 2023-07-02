@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ViacturaRepo extends JpaRepository<Viactura, Long> {
+    Viactura findByCodigo(String codigoViactura);
 }

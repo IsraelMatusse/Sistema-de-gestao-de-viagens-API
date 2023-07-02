@@ -15,11 +15,9 @@ public class Associacao {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     @Column(nullable=false)
-    private String nomeassociacao;
+    private String designacao;
     @Column(nullable = false)
     private String emailassociacao;
-
-
     @ManyToOne
     private Contacto idContacto;
     @ManyToOne

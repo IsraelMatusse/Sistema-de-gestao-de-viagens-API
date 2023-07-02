@@ -1,10 +1,13 @@
 package com.sgvcore.Model;
 
+import com.sgvcore.DTOs.viaturaDTOs.ViaturaCriarDTO;
+import com.sgvcore.utils.GeneratePin;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.security.NoSuchAlgorithmException;
 
 @Entity
 @Data
@@ -38,7 +41,31 @@ public class Viactura extends AccoesDoSistema {
     private String nrmotor;
     @Column(nullable=false)
     private Long nrportas;
+    private String codigo;
 
     @ManyToOne
     private Rota idRota;
+    @ManyToOne
+    private Associacao idAssociacao;
+    @ManyToOne
+    private Proprietario idProprietario;
+
+    public Viactura(ViaturaCriarDTO viaturaCriarDTO, Rota rota, Proprietario proprietario, Associacao associacao) throws NoSuchAlgorithmException {
+        this.anofabrico=viaturaCriarDTO.getAnofabrico();
+        this.cor=viaturaCriarDTO.getCor();
+        this.idProprietario=proprietario;
+        this.combustivel=viaturaCriarDTO.getCombustivel();
+        this.lotacao=viaturaCriarDTO.getLotacao();
+        this.marca=viaturaCriarDTO.getMarca();
+        this.matricula=viaturaCriarDTO.getMatricula();
+        this.modelo=viaturaCriarDTO.getModelo();
+        this.idRota=rota;
+        this.nrportas=viaturaCriarDTO.getNrportas();
+        this.pesobruto=viaturaCriarDTO.getPesobruto();
+        this.nrmotor=viaturaCriarDTO.getNrmotor();
+        this.quilometragem=viaturaCriarDTO.getQuilometragem();
+        this.tipo=viaturaCriarDTO.getTipo();
+        this.codigo= GeneratePin.generateStringPin();
+        this.idAssociacao=associacao;
+    }
 }

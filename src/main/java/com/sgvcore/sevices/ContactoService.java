@@ -25,7 +25,7 @@ public class ContactoService {
         return contactoRepo.findById(id).orElse(null);
     }
     public Contacto buscarContactoPorMsisdn(String msisdn){
-        return  contactoRepo.findByMsisdn(msisdn);
+        return  contactoRepo.findByMsidsn(msisdn);
     }
 
 

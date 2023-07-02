@@ -26,4 +26,8 @@ public class RotaService {
     public Optional<Rota> buscarRotaPorId(Long id){
         return rotaRepo.findById(id);
     }
+
+    public Rota buscarPorCodigo(String codigoRota){
+        return rotaRepo.findByCodigo(codigoRota);
+    }
 }

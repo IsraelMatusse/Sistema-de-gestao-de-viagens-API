@@ -2,6 +2,7 @@ package com.sgvcore.Model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sgvcore.DTOs.documentoIdentificacaoDTOs.DocumentoIdentificacaoCriarDTO;
+import com.sgvcore.DTOs.proprietarioDTOs.ProprietarioCriarDTO;
 import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,11 @@ public class DocumentoIdentifiacacao extends AccoesDoSistema {
         this.numeroDocumento=viajanteCriarDTO.getNumeroDocumento();
         this.dataValidade=viajanteCriarDTO.getDataValidade();
         this.idIdentificacao=tipoDocumentoIdentificacao;
+    }
+    public DocumentoIdentifiacacao(ProprietarioCriarDTO documentoidentificacaoCriarDTO, TipoDocumentoIdentificacao tipoDocumentoIdentificacao) {
+        this.dataValidade=documentoidentificacaoCriarDTO.getDataValidade();
+        this.numeroDocumento = documentoidentificacaoCriarDTO.getNumeroDocumento();
+        this.idIdentificacao = tipoDocumentoIdentificacao;
     }
     }
 

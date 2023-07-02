@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContactoRepo extends JpaRepository<Contacto, Long> {
 
-    Contacto findByMsisdn(String msisdn);
+    Contacto findByMsidsn(String msisdn);
 }

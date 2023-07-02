@@ -89,7 +89,6 @@ public class ViajanteController {
         } else {
             return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Carga ja existe!", null));
         }
-
         try {
             viajanteService.criar(new Viajante(dto, genero, carga, documentoIdentifiacacao, provincia, distrito, contacto));
 

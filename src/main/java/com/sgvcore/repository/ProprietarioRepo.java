@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProprietarioRepo extends JpaRepository<Proprietario, Long> {
+
+    Proprietario findByCodigo(String codigoProprietario);
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RotaRepo extends JpaRepository<Rota, Long> {
+    Rota findByCodigo (String codigoRota);
 }

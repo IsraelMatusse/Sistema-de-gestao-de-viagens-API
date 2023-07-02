@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 public class ContactoRespostaDTO {
 
     private Long id;
-    private String msisdn;
+    private String msidsn;
 
     public ContactoRespostaDTO(Contacto contacto){
         this.id=contacto.getId();
-        this.msisdn= contacto.getMsisdn();
+        this.msidsn= contacto.getMsidsn();
     }
 }
