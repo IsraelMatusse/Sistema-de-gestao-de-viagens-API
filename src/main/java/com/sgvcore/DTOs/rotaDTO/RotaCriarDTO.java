@@ -20,6 +20,5 @@ public class RotaCriarDTO {
     private long preco;
     @NotNull
     private String nomeRota;
-    @NotNull
-    private String codigo;
+
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LicencaRepo extends JpaRepository <Licenca, Long> {
+    Licenca findByNumeroLicenca(String numeroLicenca);
 }

@@ -22,5 +22,7 @@ public class LicencaService {
     public Licenca buscarLicencaPorId(Long id){
         return licencaRepo.findById(id).orElse(null);
     }
-
+    public Licenca buscarPorNumeroLicenca(String numeroLicenca){
+        return licencaRepo.findByNumeroLicenca(numeroLicenca);
+    }
 }

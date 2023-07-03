@@ -8,6 +8,7 @@ import com.sgvcore.sevices.RotaService;
 import com.sgvcore.sevices.ViaturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,12 +29,13 @@ public class ViaturaController {
     @Autowired
     private AssociacaoService associacaoService;
 
+    @PostMapping("/adicionar")
     public ResponseEntity<ResponseAPI> criarViacturas(@RequestBody @Valid ViaturaCriarDTO viaturaCriarDTO) throws NoSuchAlgorithmException {
         Rota rota= rotaService.buscarPorCodigo(viaturaCriarDTO.getCodigoRota());
         if(rota==null){
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Rota nao encontrada!", null));
         }
-        Proprietario proprietario=proprietarioService.buscarPorCodigo(viaturaCriarDTO.getCodigoAssociacao());
+        Proprietario proprietario=proprietarioService.buscarPorCodigo(viaturaCriarDTO.getCodigoProprietario());
         if(proprietario==null){
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Proprietario nao encontrado!", null));
         }

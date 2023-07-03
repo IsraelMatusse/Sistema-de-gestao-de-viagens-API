@@ -22,7 +22,6 @@ public class DocumentoIdentifiacacao extends AccoesDoSistema {
     private Long id;
     @Column(nullable = false)
     private String numeroDocumento;
-    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column
     private Date dataValidade;
     @ManyToOne

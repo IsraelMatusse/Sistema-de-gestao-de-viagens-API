@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -20,21 +21,21 @@ public class ViaturaCriarDTO {
     private String marca;
     @NotBlank
     private String modelo;
-    @NotBlank
+    @NotNull
     private Long lotacao;
-    @NotBlank
+    @NotNull
     private Long pesobruto;
     @NotBlank
     private String tipo;
-    @NotBlank
+    @NotNull
     private Long anofabrico;
-    @NotBlank
+    @NotNull
     private Long quilometragem;
     @NotBlank
     private String combustivel;
     @NotBlank
     private String nrmotor;
-    @NotBlank
+    @NotNull
     private Long nrportas;
     @NotBlank
     private String codigoRota;
@@ -42,4 +43,5 @@ public class ViaturaCriarDTO {
     private String codigoAssociacao;
     @NotBlank
     private String codigoProprietario;
+
 }

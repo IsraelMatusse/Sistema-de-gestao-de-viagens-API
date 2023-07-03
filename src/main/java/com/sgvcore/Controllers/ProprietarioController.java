@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Generated;
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
 
@@ -36,7 +35,7 @@ public class ProprietarioController {
     private DistritoService distritoService;
 
     @PostMapping("/adicionar")
-    public ResponseEntity<ResponseAPI> criarProprietario(@RequestBody @Valid ProprietarioCriarDTO proprietarioCriarDTO) throws NoSuchAlgorithmException {
+    public ResponseEntity<ResponseAPI> criarProprietario(@RequestBody  ProprietarioCriarDTO proprietarioCriarDTO) throws NoSuchAlgorithmException {
         Genero genero = generoService.buscarPorId(proprietarioCriarDTO.getIdGenero());
         if (genero == null) {
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Genero nao enocntrado!", null));
@@ -51,12 +50,14 @@ public class ProprietarioController {
         }
         Distrito distrito = distritoService.buscarDistritoPorCodigoEProvincia(proprietarioCriarDTO.getCodigoDistrito(), provincia);
         if (distrito == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Distrito nao enocntrado!", null));
+            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Documento nao enocntrada!", null));
         }
-        TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(proprietarioCriarDTO.getTipoDocumento());
-        if (tipoDocumentoIdentificacao == null) {
+        TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarPorCodigo(proprietarioCriarDTO.getCodigoTipoDocumento());
+        System.out.println(proprietarioCriarDTO.getCodigoTipoDocumento());
+        if (tipoDocumentoIdentificacao==null) {
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Tipo de Documento nao enocntrado!", null));
         }
+        System.out.println(proprietarioCriarDTO.getCodigoTipoDocumento());
         Contacto contacto = contactoService.buscarContactoPorMsisdn(proprietarioCriarDTO.getMsidsn());
         Contacto novoContacto = null;
         if (contacto == null) {
@@ -65,7 +66,7 @@ public class ProprietarioController {
             } catch (Exception e) {
                 return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno do servidor", null));
             }
-        }else{
+        } else {
             return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Contacto ja existe!", null));
         }
         DocumentoIdentifiacacao documentoIdentifiacacao = documentoIdentificacaoService.buscarPorNumeroDocumento(proprietarioCriarDTO.getNumeroDocumento());
@@ -76,11 +77,12 @@ public class ProprietarioController {
             } catch (Exception e) {
                 return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno do servidor", null));
             }
-            }else{
+        } else {
             return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Documento ja existe!", null));
         }
         try {
-            Proprietario novoProprietario = new Proprietario(proprietarioCriarDTO, genero, contacto, provincia, tipoProprietario, documentoIdentifiacacao, distrito);
+            Proprietario novoProprietario = new Proprietario(proprietarioCriarDTO, genero, novoContacto, provincia, tipoProprietario, novoDocumento, distrito);
+            proprietarioService.criar(novoProprietario);
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno do servidor", null));
         }

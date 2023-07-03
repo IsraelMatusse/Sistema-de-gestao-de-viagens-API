@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TipoDocumentoRepo extends JpaRepository<TipoDocumentoIdentificacao, Long> {
+
+    TipoDocumentoIdentificacao findByDesignacao(String designacao);
+    TipoDocumentoIdentificacao findByCodigo(String codigo);
 }

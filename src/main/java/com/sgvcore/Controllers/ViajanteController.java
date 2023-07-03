@@ -90,7 +90,7 @@ public class ViajanteController {
             return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Carga ja existe!", null));
         }
         try {
-            viajanteService.criar(new Viajante(dto, genero, carga, documentoIdentifiacacao, provincia, distrito, contacto));
+            viajanteService.criar(new Viajante(dto, genero, novaCarga, novoDocmento, provincia, distrito, novoContacto));
 
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));

@@ -20,4 +20,5 @@ public class TipoDocumentoIdentificacao {
     private Long id;
     private String designacao;
     private String abreviatura;
+    private String codigo;
 }

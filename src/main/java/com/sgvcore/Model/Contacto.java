@@ -1,5 +1,6 @@
 package com.sgvcore.Model;
 
+import com.sgvcore.DTOs.associacaoDTOs.AssociacaoCriarDTOs;
 import com.sgvcore.DTOs.contactoDTO.ContactoCriarDTO;
 import com.sgvcore.DTOs.proprietarioDTOs.ProprietarioCriarDTO;
 import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
@@ -28,4 +29,5 @@ public class Contacto {
         this.msidsn=contactoCriarDTO.getMsisdn();
     }
     public Contacto (ProprietarioCriarDTO contactoCriarDTO){this.msidsn=contactoCriarDTO.getMsidsn();}
+    public Contacto(AssociacaoCriarDTOs contactoCriarDTO){this.msidsn= contactoCriarDTO.getMsdisn();}
 }

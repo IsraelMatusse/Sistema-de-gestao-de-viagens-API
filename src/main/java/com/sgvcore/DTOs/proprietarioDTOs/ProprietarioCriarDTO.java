@@ -29,7 +29,7 @@ public class ProprietarioCriarDTO {
     @NotNull(message = "A data de validade o documento nao pode ser nula")
     private Date dataValidade;
     @NotNull(message = "O tipo de documento nao pode ser nulo")
-    private Long tipoDocumento;
+    private String codigoTipoDocumento;
     @NotBlank(message = "Contacto nao pode ser nulo")
     private String msidsn;
     @NotBlank(message = "Codigo de proprietario nao pode ser nulo")

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class TipoDocumentoService {
 
     @Autowired
-    TipoDocumentoRepo tipoDocumentoIdentificacaoRepo;
+    private TipoDocumentoRepo tipoDocumentoIdentificacaoRepo;
     public TipoDocumentoIdentificacao criar(TipoDocumentoIdentificacao tipoDocumentoIdentificacao){
         return tipoDocumentoIdentificacaoRepo.save(tipoDocumentoIdentificacao);
     }
@@ -22,5 +22,11 @@ public class TipoDocumentoService {
     }
     public TipoDocumentoIdentificacao buscarTipoDocumentoporId(Long id){
         return tipoDocumentoIdentificacaoRepo.findById(id).orElse(null);
+    }
+    public TipoDocumentoIdentificacao buscarPorDesignacao(String designacao){
+        return tipoDocumentoIdentificacaoRepo.findByDesignacao(designacao);
+    }
+    public TipoDocumentoIdentificacao buscarPorCodigo(String codigo){
+        return tipoDocumentoIdentificacaoRepo.findByCodigo(codigo);
     }
 }

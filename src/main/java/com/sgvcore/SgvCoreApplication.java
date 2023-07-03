@@ -122,14 +122,14 @@ public class SgvCoreApplication {
 	}
 
 	public void inicializarTipoDocumento(TipoDocumentoService tipoDocumentoService){
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Bilhete de identidade", "BI"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Carta de conducao", "CC"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Cartao de eleitor", "CE"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Cedula", "Ced"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Bolentim de nascimento", "BN"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Assento", "Ass"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Passaporte", "Pass"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Documento de identificacao e residencia para estrangeiro", "DIRE"));
+		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Bilhete de identidade", "BI", "002"));
+		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Carta de conducao", "CC", "003"));
+		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Cartao de eleitor", "CE", "004"));
+		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Cedula", "Ced", "005"));
+		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Bolentim de nascimento", "BN", "006"));
+		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Assento", "Ass", "007"));
+		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Passaporte", "Pass", "008"));
+		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Documento de identificacao e residencia para estrangeiro", "DIRE", "009"));
 
 	}
 

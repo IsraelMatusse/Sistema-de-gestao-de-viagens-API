@@ -18,7 +18,6 @@ public class ViajanteCriarDTO {
     private String nome;
     @NotNull
     private String apelido;
-    @JsonFormat(pattern = "dd/mm/yyyy")
     @NotNull
     private Date dataNascimento;
     @NotNull
