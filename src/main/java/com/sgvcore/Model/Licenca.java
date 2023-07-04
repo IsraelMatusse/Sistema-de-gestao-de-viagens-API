@@ -29,5 +29,6 @@ public class Licenca extends AccoesDoSistema{
         this.dataValidade=licenca.getDataValidade();
         this.numeroLicenca=licenca.getNumeroLicenca();
         this.idLicenca=tipopLicenca;
+
     }
 }

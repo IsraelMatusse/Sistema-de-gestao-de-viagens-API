@@ -61,24 +61,26 @@ public class ProprietarioController {
         Contacto contacto = contactoService.buscarContactoPorMsisdn(proprietarioCriarDTO.getMsidsn());
         Contacto novoContacto = null;
         if (contacto == null) {
-            try {
-                novoContacto = contactoService.criar(new Contacto(proprietarioCriarDTO));
-            } catch (Exception e) {
-                return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno do servidor", null));
-            }
+                novoContacto =new Contacto(proprietarioCriarDTO);
         } else {
             return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Contacto ja existe!", null));
         }
         DocumentoIdentifiacacao documentoIdentifiacacao = documentoIdentificacaoService.buscarPorNumeroDocumento(proprietarioCriarDTO.getNumeroDocumento());
         DocumentoIdentifiacacao novoDocumento = null;
         if (documentoIdentifiacacao == null) {
-            try {
-                novoDocumento = documentoIdentificacaoService.criar(new DocumentoIdentifiacacao(proprietarioCriarDTO, tipoDocumentoIdentificacao));
-            } catch (Exception e) {
-                return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno do servidor", null));
-            }
+                novoDocumento = new DocumentoIdentifiacacao(proprietarioCriarDTO, tipoDocumentoIdentificacao);
         } else {
             return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Documento ja existe!", null));
+        }
+        try{
+            documentoIdentificacaoService.criar(novoDocumento);
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno do servidor", null));
+        }
+        try{
+            contactoService.criar(novoContacto);
+        }catch (Exception e){
+            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno do servidor", null));
         }
         try {
             Proprietario novoProprietario = new Proprietario(proprietarioCriarDTO, genero, novoContacto, provincia, tipoProprietario, novoDocumento, distrito);

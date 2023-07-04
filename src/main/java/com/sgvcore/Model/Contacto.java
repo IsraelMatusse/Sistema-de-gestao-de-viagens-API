@@ -3,6 +3,7 @@ package com.sgvcore.Model;
 import com.sgvcore.DTOs.associacaoDTOs.AssociacaoCriarDTOs;
 import com.sgvcore.DTOs.contactoDTO.ContactoCriarDTO;
 import com.sgvcore.DTOs.proprietarioDTOs.ProprietarioCriarDTO;
+import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
 import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,4 +31,8 @@ public class Contacto {
     }
     public Contacto (ProprietarioCriarDTO contactoCriarDTO){this.msidsn=contactoCriarDTO.getMsidsn();}
     public Contacto(AssociacaoCriarDTOs contactoCriarDTO){this.msidsn= contactoCriarDTO.getMsdisn();}
+
+    public Contacto(ViagemAssociarViajanteDTO dto) {
+        this.msidsn=dto.getMsisdn();
+    }
 }

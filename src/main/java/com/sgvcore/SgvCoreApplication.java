@@ -36,8 +36,8 @@ public class SgvCoreApplication {
 		Contacto nagi=contactoService.criar(new Contacto(null, "847283892"));
 		Contacto tco=contactoService.criar(new Contacto(null, "873902097"));
 
-		TipopLicenca transporte=tipoLicencaService.criar(new TipopLicenca(null,"transporte", "tr"));
-		TipopLicenca comercial=tipoLicencaService.criar(new TipopLicenca(null,"comercial", "cl"));
+		TipopLicenca transporte=tipoLicencaService.criar(new TipopLicenca(null,"transporte", "tr","001"));
+		TipopLicenca comercial=tipoLicencaService.criar(new TipopLicenca(null,"comercial", "cl", "002"));
 
 		Date data1= new Date();
 

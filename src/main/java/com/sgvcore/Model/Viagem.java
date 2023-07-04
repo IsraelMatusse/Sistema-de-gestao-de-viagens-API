@@ -28,7 +28,7 @@ public class Viagem {
     @Column(nullable=false)
     private Date prevChegada;
     @Column(nullable=false)
-    private String chaveviagem;
+    private String codigo;
 
     @ManyToOne
     private  Rota idRota;
@@ -36,7 +36,7 @@ public class Viagem {
     private Associacao idAssociacao;
 
     public Viagem(ViagemCriarDTO dto, Rota rota, Associacao associacao) throws NoSuchAlgorithmException {
-        this.chaveviagem= GeneratePin.generateStringPin();
+        this.codigo= GeneratePin.generateStringPin();
         this.destino_viagem=dto.getDestinoViagem();
         this.idRota=rota;
         this.idAssociacao=associacao;

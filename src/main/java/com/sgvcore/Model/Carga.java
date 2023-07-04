@@ -1,6 +1,7 @@
 package com.sgvcore.Model;
 
 import com.sgvcore.DTOs.cargaCriarDTO.CargaCriarDTO;
+import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
 import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
 import com.sgvcore.utils.GeneratePin;
 import lombok.AllArgsConstructor;
@@ -37,4 +38,7 @@ public class Carga {
         this.codigoCarga= GeneratePin.generateStringPin();
     }
 
+    public Carga(ViagemAssociarViajanteDTO dto) {
+        this.designacao=dto.getDesignacao();
+    }
 }

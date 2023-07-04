@@ -95,7 +95,7 @@ public class ViajanteController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
         }
-        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Viajante criado com sucesso!", null));
+        return ResponseEntity.status(201).body(new ResponseAPI(true, "201", "Viajante criado com sucesso!", null));
     }
 
 
