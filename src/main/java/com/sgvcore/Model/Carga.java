@@ -40,5 +40,6 @@ public class Carga {
 
     public Carga(ViagemAssociarViajanteDTO dto) {
         this.designacao=dto.getDesignacao();
+        this.peso=dto.getPeso();
     }
 }

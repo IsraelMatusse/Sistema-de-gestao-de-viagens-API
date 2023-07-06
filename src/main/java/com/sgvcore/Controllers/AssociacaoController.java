@@ -2,15 +2,13 @@ package com.sgvcore.Controllers;
 
 import com.sgvcore.DTOs.associacaoDTOs.AssociacaoCriarDTOs;
 import com.sgvcore.Model.*;
-import com.sgvcore.sevices.AssociacaoService;
-import com.sgvcore.sevices.ContactoService;
-import com.sgvcore.sevices.LicencaService;
-import com.sgvcore.sevices.TipoLicencaService;
+import com.sgvcore.sevices.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("api/associacoes")
@@ -23,6 +21,10 @@ public class AssociacaoController {
     private LicencaService licencaService;
     @Autowired
     private TipoLicencaService tipoLicencaService;
+    @Autowired
+    private RotaService rotaService;
+    @Autowired
+    private AsociacaoRotaService associacaoRotaService;
 
     @PostMapping("/adicionar")
     public ResponseEntity<ResponseAPI> crarAssociacoes(@RequestBody AssociacaoCriarDTOs dto) {
@@ -59,8 +61,22 @@ public class AssociacaoController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
         }
-        try {
-            Associacao associacao = associacaoService.criar(new Associacao(dto, novoContacto, novaLicenca));
+        try{
+            if(!dto.getRotas().isEmpty()){
+                for(int i=0; i<dto.getRotas().size(); i++){
+                    Boolean existe=rotaService.verificarAexistenciaDaRotaPorDesignacao(dto.getRotas().get(i));
+                    if(!existe){
+                        return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Rota nao encontrada!", null));
+                    }
+                }
+                Associacao associacao = associacaoService.criar(new Associacao(dto, novoContacto, novaLicenca));
+                for(int i=0; i<dto.getRotas().size(); i++){
+                    Rota rota=rotaService.buscarRotaPorDesignacao(dto.getRotas().get(i));
+                    AssociacaoRota novaAssociacaoRota= new AssociacaoRota(rota, associacao);
+                    associacaoRotaService.criar(novaAssociacaoRota);
+                }
+
+            }
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
         }

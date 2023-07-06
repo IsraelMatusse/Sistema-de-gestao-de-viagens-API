@@ -21,4 +21,9 @@ public class AssociacaoRota extends AccoesDoSistema {
     @ManyToOne
     private Associacao idAssociacao;
 
+    public AssociacaoRota(Rota rota, Associacao associacao){
+        this.idAssociacao=associacao;
+        this.idRota=rota;
+    }
+
 }

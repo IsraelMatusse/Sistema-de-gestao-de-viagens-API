@@ -2,10 +2,7 @@ package com.sgvcore.Controllers;
 
 import com.sgvcore.DTOs.viaturaDTOs.ViaturaCriarDTO;
 import com.sgvcore.Model.*;
-import com.sgvcore.sevices.AssociacaoService;
-import com.sgvcore.sevices.ProprietarioService;
-import com.sgvcore.sevices.RotaService;
-import com.sgvcore.sevices.ViaturaService;
+import com.sgvcore.sevices.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,13 +25,11 @@ public class ViaturaController {
     private ProprietarioService proprietarioService;
     @Autowired
     private AssociacaoService associacaoService;
+    @Autowired
+    private AsociacaoRotaService asociacaoRotaService;
 
     @PostMapping("/adicionar")
     public ResponseEntity<ResponseAPI> criarViacturas(@RequestBody @Valid ViaturaCriarDTO viaturaCriarDTO) throws NoSuchAlgorithmException {
-        Rota rota= rotaService.buscarPorCodigo(viaturaCriarDTO.getCodigoRota());
-        if(rota==null){
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Rota nao encontrada!", null));
-        }
         Proprietario proprietario=proprietarioService.buscarPorCodigo(viaturaCriarDTO.getCodigoProprietario());
         if(proprietario==null){
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Proprietario nao encontrado!", null));
@@ -42,6 +37,10 @@ public class ViaturaController {
         Associacao associacao=associacaoService.buscarPorCodigo(viaturaCriarDTO.getCodigoAssociacao());
         if(associacao==null){
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Associacao nao encontrada!", null));
+        }
+        Rota rota= asociacaoRotaService.buscarRotasPeloCodigoDaAssociacaoEAssociacao(associacao, viaturaCriarDTO.getCodigoRota());
+        if(rota==null){
+            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Rota nao encontrada!", null));
         }
         try {
             Viactura viatura = new Viactura(viaturaCriarDTO, rota, proprietario, associacao);

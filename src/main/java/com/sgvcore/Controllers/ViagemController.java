@@ -7,10 +7,7 @@ import com.sgvcore.Model.*;
 import com.sgvcore.sevices.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
@@ -61,78 +58,76 @@ public class ViagemController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
         }
-        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Viajante criado com sucesso!", null));
+        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Viagem criada com sucesso!", null));
     }
 
     @PostMapping("/associar-viajante")
     public ResponseEntity<ResponseAPI> associarViajante(@RequestBody ViagemAssociarViajanteDTO dto) {
+        // Realize as validações de existência
         Viagem viagem = viagemService.buscarPorCodigo(dto.getCodigoViagem());
         if (viagem == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Viagem nao enocntrada!", null));
+            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Viagem não encontrada!", null));
         }
         Genero genero = generoService.buscarPorId(dto.getIdGenero());
         if (genero == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Genero nao encontrado!", null));
+            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Gênero não encontrado!", null));
         }
         Provincia provincia = provinciaService.buscarProvinciaporCodigo(dto.getCodigoProvincia());
         if (provincia == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Provincia nao encontrada!", null));
+            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Província não encontrada!", null));
         }
         Distrito distrito = distritoService.buscarDistritoPorCodigoEProvincia(dto.getCodigoDistrito(), provincia);
         if (distrito == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Distrito nao encontrado!", null));
+            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Distrito não encontrado!", null));
         }
         TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getIdTipoDocumento());
         if (tipoDocumentoIdentificacao == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Tipo de documento nao encontrado!", null));
+            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Tipo de documento não encontrado!", null));
         }
+
+        // Verifique a não existência dos objetos antes de criá-los
         DocumentoIdentifiacacao documentoIdentifiacacao = documentoIdentificacaoService.buscarPorNumeroDocumento(dto.getNumeroDocumento());
-        DocumentoIdentifiacacao novoDocumento = null;
-        if (documentoIdentifiacacao == null) {
-            novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
-        } else {
-            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Documento ja existe!", null));
+        if (documentoIdentifiacacao != null) {
+            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Documento já existe!", null));
         }
         Contacto contacto = contactoService.buscarContactoPorMsisdn(dto.getMsisdn());
-        Contacto novoContacto = null;
-        if (contacto == null) {
-            novoContacto = new Contacto(dto);
-        } else {
-            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Contacto ja existe!", null));
+        if (contacto != null) {
+            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Contato já existe!", null));
         }
         Carga carga = cargaService.buscarCargaPorDesignacao(dto.getDesignacao());
-        Carga novaCarga = null;
-        if (carga == null) {
-            novaCarga = new Carga(dto);
-        } else {
-            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Contacto ja existe!", null));
+        if (carga != null) {
+            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Carga já existe!", null));
         }
+
+        // Crie e salve os objetos
         try {
+            DocumentoIdentifiacacao novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
             documentoIdentificacaoService.criar(novoDocumento);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
-        }
-        try {
+
+            Contacto novoContacto = new Contacto(dto);
             contactoService.criar(novoContacto);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
-        }
-        try {
+
+            Carga novaCarga = new Carga(dto);
             cargaService.criar(novaCarga);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
-        }
-        try {
+
             Viajante viajante = new Viajante(dto, genero, novaCarga, novoDocumento, provincia, distrito, novoContacto);
             viajanteService.criar(viajante);
+
             ViagemViajante viagemViajante = new ViagemViajante(viagem, viajante);
             viagemViajanteService.crir(viagemViajante);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
+            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno do servidor", null));
         }
-        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Viajante criado com sucesso!", null));
-
-
+        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Viajante associado com sucesso!", null));
     }
 
+    @GetMapping("/{codigo_viagem}/viajantes")
+    public ResponseEntity<ResponseAPI> listarViajantesPorCodigoViagem(@PathVariable(value = "codigo_viagem") String codigoViagem){
+        Viagem viagem=viagemService.buscarPorCodigo(codigoViagem);
+        if(viagem==null){
+            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Viagem não encontrada!", null));
+        }
+        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Lista de viajantes!", viagemViajanteService.listarViajantesDeUmaViagem(viagem)));
+    }
 }
+

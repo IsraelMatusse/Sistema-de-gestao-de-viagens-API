@@ -30,4 +30,11 @@ public class RotaService {
     public Rota buscarPorCodigo(String codigoRota){
         return rotaRepo.findByCodigo(codigoRota);
     }
+
+    public Boolean verificarAexistenciaDaRotaPorDesignacao(String rota){
+        return rotaRepo.existsByNomerota(rota);
+    }
+    public Rota buscarRotaPorDesignacao(String designacao){
+        return rotaRepo.findByNomerota(designacao);
+    }
 }
