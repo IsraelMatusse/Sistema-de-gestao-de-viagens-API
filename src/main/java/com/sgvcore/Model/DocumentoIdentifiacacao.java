@@ -5,6 +5,7 @@ import com.sgvcore.DTOs.documentoIdentificacaoDTOs.DocumentoIdentificacaoCriarDT
 import com.sgvcore.DTOs.proprietarioDTOs.ProprietarioCriarDTO;
 import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
 import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
+import com.sgvcore.DTOs.viaturaDTOs.ViacturaAssociarMotoristaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,12 @@ public class DocumentoIdentifiacacao extends AccoesDoSistema {
         this.numeroDocumento=documento.getNumeroDocumento();
         this.idIdentificacao=tipoDocumentoIdentificacao;
     }
+
+    public DocumentoIdentifiacacao(ViacturaAssociarMotoristaDTO dto, TipoDocumentoIdentificacao tipoDocumentoIdentificacao) {
+        this.numeroDocumento=dto.getNumeroDocumento();
+        this.idIdentificacao=tipoDocumentoIdentificacao;
+
     }
+}
 
 

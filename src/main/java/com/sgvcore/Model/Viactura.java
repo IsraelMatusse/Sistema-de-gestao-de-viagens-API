@@ -1,5 +1,6 @@
 package com.sgvcore.Model;
 
+import com.sgvcore.DTOs.viaturaDTOs.ViacturaAssociarMotoristaDTO;
 import com.sgvcore.DTOs.viaturaDTOs.ViaturaCriarDTO;
 import com.sgvcore.utils.GeneratePin;
 import lombok.AllArgsConstructor;
@@ -67,5 +68,23 @@ public class Viactura extends AccoesDoSistema {
         this.tipo=viaturaCriarDTO.getTipo();
         this.codigo= GeneratePin.generateStringPin();
         this.idAssociacao=associacao;
+    }
+    public Viactura(ViacturaAssociarMotoristaDTO dto, Rota rota, Proprietario proprietario, Associacao associacao) throws NoSuchAlgorithmException {
+        this.codigo=GeneratePin.generateStringPin();
+        this.tipo= dto.getTipo();
+        this.nrmotor= dto.getNrmotor();
+        this.pesobruto=dto.getPesobruto();
+        this.idAssociacao=associacao;
+        this.quilometragem=dto.getQuilometragem();
+        this.idRota=rota;
+        this.modelo=dto.getModelo();
+        this.matricula=dto.getMatricula();
+        this.combustivel=dto.getCombustivel();
+        this.anofabrico=dto.getAnofabrico();
+        this.idProprietario=proprietario;
+        this.cor=dto.getCor();
+        this.marca=dto.getMarca();
+        this.lotacao=dto.getLotacao();
+        this.nrportas=dto.getNrPortas();
     }
 }

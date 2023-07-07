@@ -29,7 +29,7 @@ public class AssociacaoController {
     @PostMapping("/adicionar")
     public ResponseEntity<ResponseAPI> crarAssociacoes(@RequestBody AssociacaoCriarDTOs dto) {
         Contacto contacto = contactoService.buscarContactoPorMsisdn(dto.getMsdisn());
-        Contacto novoContacto = null;
+        Contacto novoContacto;
         System.out.println(dto.getMsdisn());
         if (contacto == null) {
             novoContacto = new Contacto(dto);
@@ -44,7 +44,7 @@ public class AssociacaoController {
         }
         Licenca licenca = licencaService.buscarPorNumeroLicenca(dto.getNumeroLicenca());
         System.out.println(dto.getNumeroLicenca());
-        Licenca novaLicenca = null;
+        Licenca novaLicenca;
         if (licenca == null) {
             novaLicenca = new Licenca(dto, tipopLicenca);
             System.out.println(novaLicenca);
