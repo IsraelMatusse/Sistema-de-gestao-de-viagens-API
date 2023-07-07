@@ -1,5 +1,6 @@
 package com.sgvcore.sevices;
 
+import com.sgvcore.DTOs.associacaoDTOs.AssociacaoRespostaDTO;
 import com.sgvcore.DTOs.rotaDTO.RotaRespostaDTO;
 import com.sgvcore.Model.Associacao;
 import com.sgvcore.Model.AssociacaoRota;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AsociacaoRotaService {
@@ -33,9 +35,11 @@ public class AsociacaoRotaService {
          }
          return null;
      }
-
      public Rota buscarRotasPeloCodigoDaAssociacaoEAssociacao(Associacao associacao, String codigo){
          return associacaoRotaRepo.findByIdAssociacaoAndIdRotaCodigo(associacao, codigo).getIdRota();
      }
+     public List<RotaRespostaDTO> buscarPorAssociacao(Associacao associacao){
+     return associacaoRotaRepo.findByIdAssociacao(associacao).stream().map(associacaoRota ->new RotaRespostaDTO(associacaoRota.getIdRota())).collect(Collectors.toList());
+         }
 }
 

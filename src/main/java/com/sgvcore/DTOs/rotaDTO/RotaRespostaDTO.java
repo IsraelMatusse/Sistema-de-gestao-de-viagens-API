@@ -1,5 +1,6 @@
 package com.sgvcore.DTOs.rotaDTO;
 
+import com.sgvcore.Model.Associacao;
 import com.sgvcore.Model.Rota;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,4 +24,6 @@ public class RotaRespostaDTO {
         this.nomerota=rota.getNomerota();
         this.preco=rota.getPreco();
     }
+
+
 }

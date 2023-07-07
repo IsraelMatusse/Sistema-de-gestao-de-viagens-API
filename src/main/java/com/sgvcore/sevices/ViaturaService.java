@@ -1,5 +1,7 @@
 package com.sgvcore.sevices;
 import com.sgvcore.DTOs.viaturaDTOs.ViaturaRespostaDTO;
+import com.sgvcore.Model.Associacao;
+import com.sgvcore.Model.Rota;
 import com.sgvcore.Model.Viactura;
 import com.sgvcore.repository.ViacturaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +36,11 @@ public class ViaturaService {
     }
     public Viactura buscarPorCodigo(String codigoViactura){
        return viacturaRepo.findByCodigo(codigoViactura);
+    }
+    public List<ViaturaRespostaDTO> buscarViaturasDaDaAssociacao(Associacao associacao){
+        return viacturaRepo.findByIdAssociacao(associacao).stream().map(viactura -> new ViaturaRespostaDTO(viactura)).collect(Collectors.toList());
+    }
+    public List<ViaturaRespostaDTO> buscarViaturasDeUmaRota(Rota rota){
+        return viacturaRepo.findByIdRota(rota).stream().map(viactura -> new ViaturaRespostaDTO(viactura)).collect(Collectors.toList());
     }
 }

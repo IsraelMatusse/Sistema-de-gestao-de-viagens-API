@@ -25,6 +25,8 @@ public class AssociacaoController {
     private RotaService rotaService;
     @Autowired
     private AsociacaoRotaService associacaoRotaService;
+    @Autowired
+    private ViaturaService viaturaService;
 
     @PostMapping("/adicionar")
     public ResponseEntity<ResponseAPI> crarAssociacoes(@RequestBody AssociacaoCriarDTOs dto) {
@@ -81,6 +83,16 @@ public class AssociacaoController {
             return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
         }
         return ResponseEntity.status(201).body(new ResponseAPI(true, "201", "Associacao cadastrada com sucesso", null));
+    }
+
+    @GetMapping("/{codigo_associacao}/viaturas")
+    public ResponseEntity<ResponseAPI>listarViaturasAssociacao(@PathVariable(value = "codigo_associacao")String codigoAssociacao){
+        Associacao associacao=associacaoService.buscarPorCodigo(codigoAssociacao);
+        if(associacao==null){
+            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Associacao nao encontrada!", null));
+        }
+        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Viaturas da associacao"+associacao.getDesignacao()+ " ", viaturaService.buscarViaturasDaDaAssociacao(associacao)));
+
     }
 
     @GetMapping
