@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.stylesheets.LinkStyle;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,9 @@ public class ViagemService {
         return null;}
     public Long numeroViagens(){
         return viagemRepo.count();
+    }
+    public List<ViagemRespostaDTO> buscarViagensPelaDataDeHoje(Date saida){
+        return viagemRepo.findBySaida(saida).stream().map(viagem -> new ViagemRespostaDTO(viagem)).collect(Collectors.toList());
     }
 
 }

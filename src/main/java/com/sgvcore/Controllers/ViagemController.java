@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/viagens")
@@ -140,7 +141,11 @@ public class ViagemController {
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Viagem não encontrada!", null));
         }
         return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Numero de viajantes de uma viagem!", viagemViajanteService.numeroViagens(viagem)));
-
+    }
+    @GetMapping("/viagem_dia")
+    public ResponseEntity<ResponseAPI> viagensDoDia(){
+        Date saida= new Date();
+        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Viagens dos dia!", viagemService.buscarViagensPelaDataDeHoje(saida)));
     }
 }
 
