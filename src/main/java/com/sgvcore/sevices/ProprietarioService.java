@@ -25,4 +25,5 @@ public class ProprietarioService {
     public Proprietario buscarPorCodigo(String codigo){
         return proprietarioRepo.findByCodigo(codigo);
     }
+    public Long numeroProprietarios(){return proprietarioRepo.count();}
 }

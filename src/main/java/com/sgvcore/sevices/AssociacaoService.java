@@ -32,6 +32,9 @@ public class AssociacaoService {
             return new AssociacaoRespostaDTO(associacao);
         }
         return null;
+        }
+    public Long numeroDeAssociacoes(){
+        return associacaoRepo.count();
     }
 
 

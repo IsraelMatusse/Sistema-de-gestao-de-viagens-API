@@ -32,4 +32,7 @@ public class MotoristaService {
     public Motorista buscarPorCodigo(String codigo){
         return motoristaRepo.findByCodigo(codigo);
     }
+    public long numeroDeMotoristas(){
+        return motoristaRepo.count();
+    }
 }

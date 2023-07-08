@@ -37,4 +37,7 @@ public class RotaService {
     public Rota buscarRotaPorDesignacao(String designacao){
         return rotaRepo.findByNomerota(designacao);
     }
+    public Long numeroRotas(){
+        return rotaRepo.count();
+    }
 }

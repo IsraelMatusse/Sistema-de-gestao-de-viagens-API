@@ -1,6 +1,7 @@
 package com.sgvcore.sevices;
 
 import com.sgvcore.DTOs.viagemDTO.ViagemRespostaDTO;
+import com.sgvcore.DTOs.viajanteDTO.ViajanteRespostaDTO;
 import com.sgvcore.Model.Viagem;
 import com.sgvcore.repository.ViagemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class ViagemService {
         if(viagem!=null){
             return new ViagemRespostaDTO(viagem);
         }
-        return null;
+        return null;}
+    public Long numeroViagens(){
+        return viagemRepo.count();
     }
+
 }

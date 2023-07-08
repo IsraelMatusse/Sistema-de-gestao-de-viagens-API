@@ -28,4 +28,7 @@ public class ViajanteService {
         }
         return null;
     }
+    public Long numeroViajantes(){
+        return viajanteRepo.count();
+    }
 }

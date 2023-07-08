@@ -12,4 +12,5 @@ import java.util.List;
 public interface ViagemViajanteRepo extends JpaRepository<ViagemViajante, Long> {
 
    List< ViagemViajante> findByIdViagem(Viagem viagem);
+   Long countByIdViagem(Viagem viagem);
 }

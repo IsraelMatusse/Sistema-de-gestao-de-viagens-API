@@ -43,4 +43,7 @@ public class ViaturaService {
     public List<ViaturaRespostaDTO> buscarViaturasDeUmaRota(Rota rota){
         return viacturaRepo.findByIdRota(rota).stream().map(viactura -> new ViaturaRespostaDTO(viactura)).collect(Collectors.toList());
     }
+    public Long numeroViaturas(){
+        return viacturaRepo.count();
+    }
 }

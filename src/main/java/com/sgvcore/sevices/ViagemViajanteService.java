@@ -31,4 +31,7 @@ public class ViagemViajanteService {
     public List<ViajanteRespostaDTO> listarViajantesDeUmaViagem(Viagem viagem){
       return   viagemViajanteRepo.findByIdViagem(viagem).stream().map(viagemViajante -> new ViajanteRespostaDTO(viagemViajante.getIdViajante())).collect(Collectors.toList());
     }
+    public Long numeroViagens(Viagem viagem) {
+      return   viagemViajanteRepo.countByIdViagem(viagem);
+    }
 }

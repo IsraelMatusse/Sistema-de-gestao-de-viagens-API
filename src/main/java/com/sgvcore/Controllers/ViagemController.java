@@ -129,5 +129,18 @@ public class ViagemController {
         }
         return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Lista de viajantes!", viagemViajanteService.listarViajantesDeUmaViagem(viagem)));
     }
+    @GetMapping("/numero_viagens")
+    public ResponseEntity<ResponseAPI> numeroViagens(){
+        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Numeor de viagens do sistema!", viagemService.numeroViagens()));
+    }
+    @GetMapping("/{codigo_viagem}/numero_viajantes")
+    public ResponseEntity<ResponseAPI> numeroDeViajantes(@PathVariable(value = "codigo_viagem") String codigoViagem){
+        Viagem viagem=viagemService.buscarPorCodigo(codigoViagem);
+        if(viagem==null){
+            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Viagem não encontrada!", null));
+        }
+        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Numero de viajantes de uma viagem!", viagemViajanteService.numeroViagens(viagem)));
+
+    }
 }
 

@@ -106,6 +106,10 @@ public class AssociacaoController {
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Tipo de licenca nao encontrado!", null));
         }
         return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Associacoes do sistema", associacaoService.buscarPorCodigoRes(codigoAssociacao)));
+    }
+    @GetMapping("numero_associacoes")
+    public ResponseEntity<ResponseAPI>nuneroDeAssociacoes(){
+        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Numeor de Associacoes do sistema", associacaoService.numeroDeAssociacoes()));
 
     }
 }

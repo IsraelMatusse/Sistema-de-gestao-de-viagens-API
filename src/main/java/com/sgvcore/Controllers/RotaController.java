@@ -7,11 +7,13 @@ import com.sgvcore.Model.Rota;
 import com.sgvcore.sevices.AsociacaoRotaService;
 import com.sgvcore.sevices.AssociacaoService;
 import com.sgvcore.sevices.RotaService;
+import com.sgvcore.sevices.ViaturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
@@ -24,6 +26,8 @@ public class RotaController {
     private AssociacaoService associacaoService;
     @Autowired
     private AsociacaoRotaService asociacaoRotaService;
+    @Autowired
+    private ViaturaService viaturaService;
 
     @PostMapping("/adicionar")
     public ResponseEntity<ResponseAPI> criarRotas(@RequestBody @Valid RotaCriarDTO dto) throws NoSuchAlgorithmException {
@@ -46,6 +50,18 @@ public class RotaController {
         }
         return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Rotas da associacao "+associacao.getDesignacao()+" !", asociacaoRotaService.buscarPorAssociacao(associacao)));
 
+    }
+    @GetMapping("/{codigo_rota}/viaturas")
+    public ResponseEntity<ResponseAPI>listarRotasDeUmaRota(@PathVariable(value = "codigo_rota") String codigoRota){
+        Rota rota=rotaService.buscarPorCodigo(codigoRota);
+        if(rota==null){
+            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Rota nao encontrada!", null));
+        }
+        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Vituras da rota "+rota.getNomerota()+" !", viaturaService.buscarViaturasDeUmaRota(rota)));
+    }
+    @GetMapping("/numero_rotas")
+    public ResponseEntity<ResponseAPI> numeroRotas(){
+        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Numero de rotas do sistema", rotaService.numeroRotas()));
     }
 
 }
