@@ -88,6 +88,6 @@ public class ProprietarioController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno do servidor", null));
         }
-        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Proprietario cadastrado com sucesso", null));
+        return ResponseEntity.status(201).body(new ResponseAPI(false, "201", "Proprietario cadastrado com sucesso", null));
     }
 }

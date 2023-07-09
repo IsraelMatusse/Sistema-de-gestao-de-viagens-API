@@ -23,6 +23,63 @@ public class SgvCoreApplication {
 		generoService.criarGenero(new Genero(null, "Masculino", 'M'));
 		generoService.criarGenero(new Genero(null, "Feminino", 'F'));
 	}
+	public void inicializarMarcasEModelos(MarcaService marcaService, ModeloService modeloService, MarcaModeloService marcaModeloService){
+		Marca toyota=marcaService.criar(new Marca(null, "001","Toyota" ));
+		Modelo hilux= modeloService.criar(new Modelo(null, "001", "hilux"));
+		marcaModeloService.criar(new MarcaModelo(toyota, hilux));
+		Marca ford = marcaService.criar(new Marca(null, "002", "Ford"));
+		Modelo mustang = modeloService.criar(new Modelo(null, "002", "Mustang"));
+		marcaModeloService.criar(new MarcaModelo(ford, mustang));
+
+		Marca chevrolet = marcaService.criar(new Marca(null, "003", "Chevrolet"));
+		Modelo camaro = modeloService.criar(new Modelo(null, "003", "Camaro"));
+		Modelo corvette = modeloService.criar(new Modelo(null, "004", "Corvette"));
+		marcaModeloService.criar(new MarcaModelo(chevrolet, camaro));
+		marcaModeloService.criar(new MarcaModelo(chevrolet, corvette));
+
+		Marca bmw = marcaService.criar(new Marca(null, "005", "BMW"));
+		Modelo serie3 = modeloService.criar(new Modelo(null, "005", "Série 3"));
+		Modelo serie5 = modeloService.criar(new Modelo(null, "006", "Série 5"));
+		marcaModeloService.criar(new MarcaModelo(bmw, serie3));
+		marcaModeloService.criar(new MarcaModelo(bmw, serie5));
+
+		Modelo corolla = modeloService.criar(new Modelo(null, "001", "Corolla"));
+		Modelo rav4 = modeloService.criar(new Modelo(null, "002", "RAV4"));
+		Modelo hiace = modeloService.criar(new Modelo(null, "003", "Hiace"));
+
+		marcaModeloService.criar(new MarcaModelo(toyota, corolla));
+		marcaModeloService.criar(new MarcaModelo(toyota, rav4));
+		marcaModeloService.criar(new MarcaModelo(toyota, hiace));
+		Marca honda = marcaService.criar(new Marca(null, "002", "Honda"));
+		Marca mitsubishi = marcaService.criar(new Marca(null, "003", "Mitsubishi"));
+
+		Modelo coaster = modeloService.criar(new Modelo(null, "001", "Coaster"));
+		Modelo odyssey = modeloService.criar(new Modelo(null, "002", "Odyssey"));
+		Modelo rosa = modeloService.criar(new Modelo(null, "003", "Rosa"));
+		Modelo canter = modeloService.criar(new Modelo(null, "004", "Canter"));
+
+		marcaModeloService.criar(new MarcaModelo(toyota, coaster));
+		marcaModeloService.criar(new MarcaModelo(honda, odyssey));
+		marcaModeloService.criar(new MarcaModelo(mitsubishi, rosa));
+		marcaModeloService.criar(new MarcaModelo(mitsubishi, canter));
+
+
+
+	}
+
+	public void inicializarCores(CorService corService){
+		Cor branco= corService.criar(new Cor(null, " #FFFFFF", "branco"));
+		Cor vermelho = corService.criar(new Cor(null, "#FF0000", "vermelho"));
+		Cor verde = corService.criar(new Cor(null, "#00FF00", "verde"));
+		Cor azul = corService.criar(new Cor(null, "#0000FF", "azul"));
+		Cor amarelo = corService.criar(new Cor(null, "#FFFF00", "amarelo"));
+		Cor laranja = corService.criar(new Cor(null, "#FFA500", "laranja"));
+		Cor roxo = corService.criar(new Cor(null, "#800080", "roxo"));
+		Cor rosa = corService.criar(new Cor(null, "#FFC0CB", "rosa"));
+		Cor marrom = corService.criar(new Cor(null, "#A52A2A", "marrom"));
+		Cor preto = corService.criar(new Cor(null, "#000000", "preto"));
+		Cor cinza = corService.criar(new Cor(null, "#808080", "cinza"));
+	}
 
 	public void inicializarTipoProprietarios(TipoProprietarioService tipoProprietarioService){
 		TipoProprietario individual= tipoProprietarioService.criar(new TipoProprietario(null, "Proprietario", "0112"));
@@ -139,7 +196,8 @@ public class SgvCoreApplication {
 						  ProvinciaService provinciaService, DistritoService distritoService,
 						  ProvinciaDistritoService provinciaDistritoService,
 						  TipoDocumentoService tipoDocumentoService, TipoLicencaService tipoLicencaService, LicencaService licencaService,
-						  AssociacaoService associacaoService, ContactoService contactoService, RotaService rotaService, TipoProprietarioService tipoProprietarioService) {
+						  AssociacaoService associacaoService, ContactoService contactoService, RotaService rotaService, TipoProprietarioService tipoProprietarioService,
+			 CorService corService, ModeloService modeloService, MarcaService marcaService, MarcaModeloService marcaModeloService) {
 		return args -> {
 //			Auto Runnable code (on start)
 			if(generoService.listarGeneros().isEmpty()) {
@@ -151,6 +209,8 @@ public class SgvCoreApplication {
 				inicializarTipoDocumento(tipoDocumentoService);
 				inicializarAssociacoesLicencaseTipoDeLicenca(associacaoService, contactoService, tipoLicencaService, licencaService);
 				inicializarTipoProprietarios(tipoProprietarioService);
+				inicializarCores(corService);
+				inicializarMarcasEModelos(marcaService,modeloService,marcaModeloService);
 			}};
 	}
 }

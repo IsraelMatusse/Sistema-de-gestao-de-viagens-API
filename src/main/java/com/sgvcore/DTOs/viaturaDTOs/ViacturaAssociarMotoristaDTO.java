@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
@@ -19,6 +20,7 @@ import java.util.Date;
 public class
 ViacturaAssociarMotoristaDTO {
 
+    @Size(min=8, max=8)
     @NotBlank
     private String matricula;
     @NotBlank
