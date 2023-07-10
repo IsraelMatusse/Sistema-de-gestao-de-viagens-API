@@ -25,6 +25,7 @@ public class ModeloController {
     @Autowired
     private MarcaModeloService marcaModeloService;
 
+    @GetMapping
     public ResponseEntity<ResponseAPI> listar(){
         return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Modelos do sistema", modeloService.listarRes()));
     }

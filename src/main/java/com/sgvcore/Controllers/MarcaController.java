@@ -19,6 +19,6 @@ public class MarcaController {
 
     @GetMapping
     public ResponseEntity<ResponseAPI> listar(){
-        return ResponseEntity.status(201).body(new ResponseAPI(false, "201", "Marcas do sistema", marcaService.listar()));
+        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Marcas do sistema", marcaService.listar()));
     }
 }

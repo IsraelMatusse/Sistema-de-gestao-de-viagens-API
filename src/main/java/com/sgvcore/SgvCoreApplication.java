@@ -50,8 +50,8 @@ public class SgvCoreApplication {
 		marcaModeloService.criar(new MarcaModelo(toyota, corolla));
 		marcaModeloService.criar(new MarcaModelo(toyota, rav4));
 		marcaModeloService.criar(new MarcaModelo(toyota, hiace));
-		Marca honda = marcaService.criar(new Marca(null, "002", "Honda"));
-		Marca mitsubishi = marcaService.criar(new Marca(null, "003", "Mitsubishi"));
+		Marca honda = marcaService.criar(new Marca(null, "004", "Honda"));
+		Marca mitsubishi = marcaService.criar(new Marca(null, "006", "Mitsubishi"));
 
 		Modelo coaster = modeloService.criar(new Modelo(null, "001", "Coaster"));
 		Modelo odyssey = modeloService.criar(new Modelo(null, "002", "Odyssey"));
