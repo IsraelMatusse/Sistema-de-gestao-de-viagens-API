@@ -6,9 +6,12 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @DynamicUpdate
@@ -18,7 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Table(name = "Usuarios")
-public class Usuario {
+public class Usuario implements UserDetails {
     @Id
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +30,45 @@ public class Usuario {
     private String email;
     @Column(unique = true, nullable = false)
     private String username;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false)
+    private String password;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "usuario_funcoes",
+            joinColumns = {
+                    @JoinColumn(name = "usuario_id", referencedColumnName = "id",
+                            nullable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "funcao_id", referencedColumnName = "id",
+                            nullable = false)
+            }
+    )
+    private Set<FuncaoDoUsuario> funcoes = new HashSet<>();
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "usuario_permissoes",
+            joinColumns = {
+                    @JoinColumn(name = "usuario_id", referencedColumnName = "id",
+                            nullable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "permissao_id", referencedColumnName = "id",
+                            nullable = false)
+            }
+    )
+    private List<PermissaoAcesso> permissoesDeAcesso = new ArrayList<>();
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (var r: this.funcoes){
+            var sga = new SimpleGrantedAuthority(r.getName());
+            authorities.add(sga);
+        }
+        return authorities;
+    }
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean deleted = false;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -38,6 +80,7 @@ public class Usuario {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JoinColumn(name = "deleted_by")
     private String deletedBy;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -50,6 +93,30 @@ public class Usuario {
     @Column(name = "deleted_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedAt;
+    @JsonIgnore
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+    @JsonIgnore
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+    @JsonIgnore
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+    @JsonIgnore
+
+    @Override
+    public boolean isEnabled() {
+        return this.active;
+    }
 
 
 

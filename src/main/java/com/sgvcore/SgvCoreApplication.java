@@ -9,7 +9,10 @@ import org.springframework.context.annotation.Bean;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 @SpringBootApplication
 public class SgvCoreApplication {
@@ -18,6 +21,46 @@ public class SgvCoreApplication {
 		SpringApplication.run(SgvCoreApplication.class, args);
 	}
 	DateFormat f = DateFormat.getDateInstance();
+
+	private void criarSuperAdministrador(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
+		// Creating an Admin and Adding Role Admin
+		Usuario user = new Usuario(null, "sgv@gmail.com",
+				"sgv@gmail.com", "sgv123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
+				Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
+		usuarioService.criarUsuario(user);
+		funcaoUsuarioService.addRoleToUser("sgv@gmail.com", "ROLE_ADMIN");
+	}
+
+	private void criarSecretariaUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
+		// Creating an Admin and Adding Role Admin
+		Usuario user = new Usuario(null, "trdj@gmail.com",
+				"trdj@gmail.com", "trdj123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
+				Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
+		usuarioService.criarUsuario(user);
+		funcaoUsuarioService.addRoleToUser("trdj@gmail.com", "ROLE_TERMINAL");
+	}
+
+	private void criarAssociacaoUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
+		// Creating an Admin and Adding Role Admin
+		Usuario user = new Usuario(null, "atmp@gmail.com",
+				"atmp@gmail.com", "atmp123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
+				Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
+		usuarioService.criarUsuario(user);
+		funcaoUsuarioService.addRoleToUser("atmp@gmail.com", "ROLE_ASSOCIACAO");
+	}
+
+	private void criarFuncoesDeUsuarioPadrao(FuncaoUsuarioService funcaoUsuarioService){
+		funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_ADMIN"));
+		funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_ASSOCIACAO"));
+		funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_TERMINAL"));
+	}
+
+	public void inicializarNiveisDeAcesso(NivelAcessoService nivelAcessoService){
+		nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "CRIAR"));
+		nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "ATUALIZAR"));
+		nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "VER"));
+		nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "APAGAR"));
+	}
 
 	public void inicializarGeneros(GeneroService generoService) {
 		generoService.criarGenero(new Genero(null, "Masculino", 'M'));
