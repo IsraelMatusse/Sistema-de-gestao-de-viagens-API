@@ -31,7 +31,7 @@ public class SgvCoreApplication {
 		funcaoUsuarioService.addRoleToUser("sgv@gmail.com", "ROLE_ADMIN");
 	}
 
-	private void criarSecretariaUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
+	private void criarTerminalUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
 		// Creating an Admin and Adding Role Admin
 		Usuario user = new Usuario(null, "trdj@gmail.com",
 				"trdj@gmail.com", "trdj123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
@@ -161,7 +161,7 @@ public class SgvCoreApplication {
 		rotaService.criar(new Rota(null, "Maputo-Niassa", 900L, 5000L, "008"));
 	}
 
-	public void inicializarProvinciasEDistritos(ProvinciaService provinciaService,
+	/*public void inicializarProvinciasEDistritos(ProvinciaService provinciaService,
 												DistritoService distritoService, ProvinciaDistritoService provinciaDistritoService,
 												ZonaRegionalService zonaRegionalService){
 		ZonaRegional zonaSul = zonaRegionalService.criar(new ZonaRegional(null, "ZONA SUL"));
@@ -221,6 +221,8 @@ public class SgvCoreApplication {
 		provinciaService.criar(new Provincia(null, "Nampula", "1230", "NPL", zonaNorte));
 	}
 
+	 */
+
 	public void inicializarTipoDocumento(TipoDocumentoService tipoDocumentoService){
 		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Bilhete de identidade", "BI", "002"));
 		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Carta de conducao", "CC", "003"));
@@ -240,20 +242,24 @@ public class SgvCoreApplication {
 						  ProvinciaDistritoService provinciaDistritoService,
 						  TipoDocumentoService tipoDocumentoService, TipoLicencaService tipoLicencaService, LicencaService licencaService,
 						  AssociacaoService associacaoService, ContactoService contactoService, RotaService rotaService, TipoProprietarioService tipoProprietarioService,
-			 CorService corService, ModeloService modeloService, MarcaService marcaService, MarcaModeloService marcaModeloService) {
+			 CorService corService, ModeloService modeloService, MarcaService marcaService, MarcaModeloService marcaModeloService, FuncaoUsuarioService funcaoUsuarioService,
+			 NivelAcessoService nivelAcessoService, UsuarioService usuarioService) {
 		return args -> {
 //			Auto Runnable code (on start)
 			if(generoService.listarGeneros().isEmpty()) {
 				inicializarGeneros(generoService);
-				inicializarProvinciasEDistritos(provinciaService,
-						distritoService, provinciaDistritoService,
-						zonaRegionalService);
 				inicializarRotas(rotaService);
 				inicializarTipoDocumento(tipoDocumentoService);
 				inicializarAssociacoesLicencaseTipoDeLicenca(associacaoService, contactoService, tipoLicencaService, licencaService);
 				inicializarTipoProprietarios(tipoProprietarioService);
 				inicializarCores(corService);
 				inicializarMarcasEModelos(marcaService,modeloService,marcaModeloService);
+				criarAssociacaoUsuario(funcaoUsuarioService,usuarioService);
+				criarSuperAdministrador(funcaoUsuarioService,usuarioService);
+				criarTerminalUsuario(funcaoUsuarioService, usuarioService);
+				inicializarNiveisDeAcesso(nivelAcessoService);
+				criarFuncoesDeUsuarioPadrao(funcaoUsuarioService);
+
 			}};
 	}
 }

@@ -15,13 +15,18 @@ public class ViagemCriarDTO {
     @NotNull
     private String destinoViagem;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    //@NotNull
+    @NotNull
     private Date saida;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    //@NotNull
+    @NotNull
     private Date prevChegada;
-    //@NotNull
+    @NotNull
     private Long idRota;
-  //  @NotNull
+    @NotNull
     private String codigoAssociacao;
+    @NotNull
+    private String codigoViatura;
+    @NotNull
+    private String codigoMotorista;
+
 }

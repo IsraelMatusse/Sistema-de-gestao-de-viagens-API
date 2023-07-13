@@ -44,6 +44,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseAPI> authenticate(@RequestBody @Valid UsuarioLoginDTO request){
+        System.out.println("In");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );

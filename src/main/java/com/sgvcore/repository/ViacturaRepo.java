@@ -12,5 +12,6 @@ import java.util.List;
 public interface ViacturaRepo extends JpaRepository<Viactura, Long> {
     Viactura findByCodigo(String codigoViactura);
     List<Viactura> findByIdAssociacao(Associacao associacao);
+    Viactura findByIdAssociacaoAndCodigo(Associacao associacao, String codigoViatura);
     List<Viactura> findByIdRota(Rota rota);
 }

@@ -34,15 +34,20 @@ public class Viagem {
     private  Rota idRota;
     @ManyToOne
     private Associacao idAssociacao;
+    @ManyToOne
+    private Viactura idViactura;
+    @ManyToOne
+    private Motorista idMotorista;
 
-    public Viagem(ViagemCriarDTO dto, Rota rota, Associacao associacao) throws NoSuchAlgorithmException {
+    public Viagem(ViagemCriarDTO dto, Rota rota, Associacao associacao, Viactura viactura, Motorista motorista) throws NoSuchAlgorithmException {
         this.codigo= GeneratePin.generateStringPin();
         this.destino_viagem=dto.getDestinoViagem();
         this.idRota=rota;
         this.idAssociacao=associacao;
         this.saida=dto.getSaida();
         this.prevChegada=dto.getPrevChegada();
-
+        this.idViactura=viactura;
+        this.idMotorista=motorista;
     }
 
 }

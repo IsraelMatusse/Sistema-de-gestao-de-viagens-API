@@ -4,6 +4,7 @@ import ch.qos.logback.core.encoder.EchoEncoder;
 import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
 import com.sgvcore.DTOs.viagemDTO.ViagemCriarDTO;
 import com.sgvcore.Model.*;
+import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.sevices.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +42,19 @@ public class ViagemController {
     private ContactoService contactoService;
     @Autowired
     private CargaService cargaService;
-
+    @Autowired
+    private MotoristaService motoristaService;
+    @Autowired
+    private ViaturaService viaturaService;
+    @Autowired
+    private MotoristaViacturaService motoristaViacturaService;
 
     @PostMapping("/adicionar")
-    public ResponseEntity<ResponseAPI> criarViagem(@RequestBody @Valid ViagemCriarDTO dto) throws NoSuchAlgorithmException {
+    public ResponseEntity<ResponseAPI> criarViagem(@RequestBody @Valid ViagemCriarDTO dto) throws NoSuchAlgorithmException, ModelNotFound {
+      // verificar data de partida e chegada
+        if(dto.getSaida().before(dto.getPrevChegada()) || dto.getSaida().equals(dto.getPrevChegada())){
+            return ResponseEntity.status(422).body(new ResponseAPI(false, "422", "Verifiue as datas da viagem!", null));
+        }
         Rota rota = rotaService.buscarRotaPorId(dto.getIdRota()).orElse(null);
         if (rota == null) {
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Rota nao encontrada!", null));
@@ -53,8 +63,12 @@ public class ViagemController {
         if (associacao == null) {
             return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Associacao nao enocntrada!", null));
         }
+        //buscar viatura da associacao pelo codigo da viatura a a associacao
+        Viactura viactura= viaturaService.buscarViaturaPelaAssociacaoECodigoViatura(associacao, dto.getCodigoViatura());
+        Motorista motorista=motoristaViacturaService.buscarMotoristaPeloCodigoMotoristaEViatura(viactura, dto.getCodigoMotorista());
         try {
-            viagemService.criar(new Viagem(dto, rota, associacao));
+            Viagem novaViagem= new Viagem(dto, rota, associacao, viactura, motorista);
+            viagemService.criar(novaViagem);
 
         } catch (Exception e) {
             return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));

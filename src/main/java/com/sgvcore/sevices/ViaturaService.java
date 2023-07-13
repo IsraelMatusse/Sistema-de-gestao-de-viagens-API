@@ -3,6 +3,7 @@ import com.sgvcore.DTOs.viaturaDTOs.ViaturaRespostaDTO;
 import com.sgvcore.Model.Associacao;
 import com.sgvcore.Model.Rota;
 import com.sgvcore.Model.Viactura;
+import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.repository.ViacturaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,23 @@ public class ViaturaService {
     public List<ViaturaRespostaDTO> buscarViaturasDeUmaRota(Rota rota){
         return viacturaRepo.findByIdRota(rota).stream().map(viactura -> new ViaturaRespostaDTO(viactura)).collect(Collectors.toList());
     }
+    public ViaturaRespostaDTO buscarViaturaPelaAssociacaoECodigoViaturaRes(Associacao associacao, String codigViatura) throws ModelNotFound {
+        Viactura viatura= viacturaRepo.findByIdAssociacaoAndCodigo(associacao, codigViatura);
+        if(viatura !=null){
+            return new ViaturaRespostaDTO(viatura);
+        }
+        throw  new ModelNotFound("Viatura nao encontrada ou nao pertence a associacai");
+    }
+    public Viactura buscarViaturaPelaAssociacaoECodigoViatura(Associacao associacao, String codigoViatura) throws ModelNotFound {
+      Viactura viactura= viacturaRepo.findByIdAssociacaoAndCodigo(associacao, codigoViatura);
+      if(viactura !=null){
+          return viactura;
+      }
+      throw new ModelNotFound("Viatura nao encontrada");
+    }
+
+
+
     public Long numeroViaturas(){
         return viacturaRepo.count();
     }

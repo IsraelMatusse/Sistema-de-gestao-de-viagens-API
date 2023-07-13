@@ -50,6 +50,12 @@ public class DocumentoIdentifiacacao extends AccoesDoSistema {
         this.idIdentificacao=tipoDocumentoIdentificacao;
 
     }
+
+    public DocumentoIdentifiacacao(DocumentoIdentificacaoCriarDTO documentoidentificacaoCriarDTO, TipoDocumentoIdentificacao tipoDocumentoIdentificacao) {
+        this.numeroDocumento=documentoidentificacaoCriarDTO.getNumeroDocumento();
+        this.dataValidade=documentoidentificacaoCriarDTO.getDataValidade();
+        this.idIdentificacao=tipoDocumentoIdentificacao;
+    }
 }
 
 
