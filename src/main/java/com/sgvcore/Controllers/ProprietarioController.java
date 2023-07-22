@@ -2,13 +2,13 @@ package com.sgvcore.Controllers;
 
 import com.sgvcore.DTOs.proprietarioDTOs.ProprietarioCriarDTO;
 import com.sgvcore.Model.ResponseAPI;
+import com.sgvcore.exceptions.ContentAlreadyExists;
+import com.sgvcore.exceptions.ModelNotFound;
+import com.sgvcore.exceptions.NotOwner;
 import com.sgvcore.sevices.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -34,8 +34,18 @@ public class ProprietarioController {
     private DistritoService distritoService;
 
     @PostMapping("/adicionar")
-    public ResponseEntity<ResponseAPI> criarProprietario(@RequestBody ProprietarioCriarDTO proprietarioCriarDTO) throws NoSuchAlgorithmException {
+    public ResponseEntity<ResponseAPI> criarProprietario(@RequestBody ProprietarioCriarDTO proprietarioCriarDTO) throws NoSuchAlgorithmException, NotOwner, ContentAlreadyExists, ModelNotFound {
+        proprietarioService.criar(proprietarioCriarDTO);
+        return ResponseEntity.status(201).body(new ResponseAPI(true, "201", "Proprietario cadastrado com sucesso", null));
+    }
 
-        return ResponseEntity.status(201).body(new ResponseAPI(false, "201", "Proprietario cadastrado com sucesso", null));
+    @GetMapping
+    public ResponseEntity<ResponseAPI> listarProprietarios() throws NotOwner {
+        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Proprietarios do sistema", proprietarioService.listar()));
+    }
+
+    @GetMapping("/{codido-proprietario}")
+    public ResponseEntity<ResponseAPI> buscarProprietarioPorCodigo(@PathVariable(value = "codigo-proprietario") String codigoProprietario) throws NotOwner, ModelNotFound {
+        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Proprietarios do sistema", proprietarioService.buscarPorCodigo(codigoProprietario)));
     }
 }

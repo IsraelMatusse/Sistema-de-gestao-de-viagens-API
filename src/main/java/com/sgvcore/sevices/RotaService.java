@@ -1,12 +1,19 @@
 package com.sgvcore.sevices;
 
+import com.sgvcore.DTOs.rotaDTO.RotaCriarDTO;
 import com.sgvcore.DTOs.rotaDTO.RotaRespostaDTO;
+import com.sgvcore.Model.FuncaoDoUsuario;
 import com.sgvcore.Model.Rota;
+import com.sgvcore.Model.Usuario;
+import com.sgvcore.enums.FuncoesUsuarios;
+import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
+import com.sgvcore.exceptions.NotOwner;
 import com.sgvcore.repository.RotaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,10 +22,29 @@ import java.util.stream.Collectors;
 public class RotaService {
 
     @Autowired
+    UsuarioService usuarioService;
+    @Autowired
     private RotaRepo rotaRepo;
 
-    public Rota criar(Rota rota) {
-        return rotaRepo.save(rota);
+    public Rota criar(RotaCriarDTO dto) throws ContentAlreadyExists, NotOwner {
+        // verificar privilegios de criacao de rota
+        Usuario usuario = usuarioService.buscarUsuarioOnline();
+        List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
+        if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ADMIN.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name())) {
+            //verificar se rota ja existe no sistema
+            Boolean rotaExiste = rotaRepo.existsByNomerota(dto.getNomeRota());
+            if (rotaExiste) {
+                throw new ContentAlreadyExists("Rota ja existe no sistema");
+            }
+            Rota novaRota = null;
+            try {
+                novaRota = new Rota(dto);
+                rotaRepo.save(novaRota);
+            } catch (Exception e) {
+                throw new RuntimeException("Erro ao salvar a rota");
+            }
+        }
+        throw new NotOwner("Nao possui acesso a este recurso");
     }
 
     public List<RotaRespostaDTO> listarRotas() {

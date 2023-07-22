@@ -56,6 +56,6 @@ public class DocumentoIdentificacaoService {
     }
 
     public Boolean existePorNumeroDocumento(String numeroDocumento) {
-        documentoIdentificacaoRepo.existsByNumeroDocumento(numeroDocumento);
+        return documentoIdentificacaoRepo.existsByNumeroDocumento(numeroDocumento);
     }
 }
