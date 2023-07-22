@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AsociacaoRotaService {
+public class AssociacaoRotaService {
 
     @Autowired
     private AssociacaoRotaRepo associacaoRotaRepo;

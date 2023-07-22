@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Viactura extends AccoesDoSistema {
+public class Viatura extends AccoesDoSistema {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -51,7 +51,7 @@ public class Viactura extends AccoesDoSistema {
     @ManyToOne
     private Proprietario idProprietario;
 
-    public Viactura(ViaturaCriarDTO viaturaCriarDTO, Rota rota, Proprietario proprietario, Associacao associacao) throws NoSuchAlgorithmException {
+    public Viatura(ViaturaCriarDTO viaturaCriarDTO, Rota rota, Proprietario proprietario, Associacao associacao) throws NoSuchAlgorithmException {
         this.anofabrico=viaturaCriarDTO.getAnofabrico();
         this.cor=viaturaCriarDTO.getCor();
         this.idProprietario=proprietario;
@@ -69,7 +69,7 @@ public class Viactura extends AccoesDoSistema {
         this.codigo= GeneratePin.generateStringPin();
         this.idAssociacao=associacao;
     }
-    public Viactura(ViacturaAssociarMotoristaDTO dto, Rota rota, Proprietario proprietario, Associacao associacao) throws NoSuchAlgorithmException {
+    public Viatura(ViacturaAssociarMotoristaDTO dto, Rota rota, Proprietario proprietario, Associacao associacao) throws NoSuchAlgorithmException {
         this.codigo=GeneratePin.generateStringPin();
         this.tipo= dto.getTipo();
         this.nrmotor= dto.getNrmotor();

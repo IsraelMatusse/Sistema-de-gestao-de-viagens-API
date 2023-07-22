@@ -17,149 +17,96 @@ import java.util.HashSet;
 @SpringBootApplication
 public class SgvCoreApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SgvCoreApplication.class, args);
-	}
-	DateFormat f = DateFormat.getDateInstance();
+    DateFormat f = DateFormat.getDateInstance();
 
-	private void criarSuperAdministrador(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
-		// Creating an Admin and Adding Role Admin
-		Usuario user = new Usuario(null, "sgv@gmail.com",
-				"sgv@gmail.com", "sgv123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
-				Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
-		usuarioService.criarUsuario(user);
-		funcaoUsuarioService.addRoleToUser("sgv@gmail.com", "ROLE_ADMIN");
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SgvCoreApplication.class, args);
+    }
 
-	private void criarTerminalUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
-		// Creating an Admin and Adding Role Admin
-		Usuario user = new Usuario(null, "trdj@gmail.com",
-				"trdj@gmail.com", "trdj123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
-				Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
-		usuarioService.criarUsuario(user);
-		funcaoUsuarioService.addRoleToUser("trdj@gmail.com", "ROLE_TERMINAL");
-	}
+    private void criarSuperAdministrador(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
+        // Creating an Admin and Adding Role Admin
+        Usuario user = new Usuario(null, "sgv@gmail.com",
+                "sgv@gmail.com", "sgv123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
+                Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
+        usuarioService.criarUsuario(user);
+        funcaoUsuarioService.addRoleToUser("sgv@gmail.com", "ROLE_ADMIN");
+    }
 
-	private void criarAssociacaoUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
-		// Creating an Admin and Adding Role Admin
-		Usuario user = new Usuario(null, "atmp@gmail.com",
-				"atmp@gmail.com", "atmp123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
-				Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
-		usuarioService.criarUsuario(user);
-		funcaoUsuarioService.addRoleToUser("atmp@gmail.com", "ROLE_ASSOCIACAO");
-	}
+    private void criarTerminalUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
+        // Creating an Admin and Adding Role Admin
+        Usuario user = new Usuario(null, "trdj@gmail.com",
+                "trdj@gmail.com", "trdj123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
+                Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
+        usuarioService.criarUsuario(user);
+        funcaoUsuarioService.addRoleToUser("trdj@gmail.com", "ROLE_TERMINAL");
+    }
 
-	private void criarFuncoesDeUsuarioPadrao(FuncaoUsuarioService funcaoUsuarioService){
-		funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_ADMIN"));
-		funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_ASSOCIACAO"));
-		funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_TERMINAL"));
-	}
+    private void criarAssociacaoUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
+        // Creating an Admin and Adding Role Admin
+        Usuario user = new Usuario(null, "atmp@gmail.com",
+                "atmp@gmail.com", "atmp123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
+                Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
+        usuarioService.criarUsuario(user);
+        funcaoUsuarioService.addRoleToUser("atmp@gmail.com", "ROLE_ASSOCIACAO");
+    }
 
-	public void inicializarNiveisDeAcesso(NivelAcessoService nivelAcessoService){
-		nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "CRIAR"));
-		nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "ATUALIZAR"));
-		nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "VER"));
-		nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "APAGAR"));
-	}
+    private void criarFuncoesDeUsuarioPadrao(FuncaoUsuarioService funcaoUsuarioService) {
+        funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_ADMIN"));
+        funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_ASSOCIACAO"));
+        funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_TERMINAL"));
+    }
 
-	public void inicializarGeneros(GeneroService generoService) {
-		generoService.criarGenero(new Genero(null, "Masculino", 'M'));
-		generoService.criarGenero(new Genero(null, "Feminino", 'F'));
-	}
-	public void inicializarMarcasEModelos(MarcaService marcaService, ModeloService modeloService, MarcaModeloService marcaModeloService){
-		Marca toyota=marcaService.criar(new Marca(null, "001","Toyota" ));
-		Modelo hilux= modeloService.criar(new Modelo(null, "001", "hilux"));
-		marcaModeloService.criar(new MarcaModelo(toyota, hilux));
-		Marca ford = marcaService.criar(new Marca(null, "002", "Ford"));
-		Modelo mustang = modeloService.criar(new Modelo(null, "002", "Mustang"));
-		marcaModeloService.criar(new MarcaModelo(ford, mustang));
+    public void inicializarNiveisDeAcesso(NivelAcessoService nivelAcessoService) {
+        nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "CRIAR"));
+        nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "ATUALIZAR"));
+        nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "VER"));
+        nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "APAGAR"));
+    }
 
-		Marca chevrolet = marcaService.criar(new Marca(null, "003", "Chevrolet"));
-		Modelo camaro = modeloService.criar(new Modelo(null, "003", "Camaro"));
-		Modelo corvette = modeloService.criar(new Modelo(null, "004", "Corvette"));
-		marcaModeloService.criar(new MarcaModelo(chevrolet, camaro));
-		marcaModeloService.criar(new MarcaModelo(chevrolet, corvette));
-
-		Marca bmw = marcaService.criar(new Marca(null, "005", "BMW"));
-		Modelo serie3 = modeloService.criar(new Modelo(null, "005", "Série 3"));
-		Modelo serie5 = modeloService.criar(new Modelo(null, "006", "Série 5"));
-		marcaModeloService.criar(new MarcaModelo(bmw, serie3));
-		marcaModeloService.criar(new MarcaModelo(bmw, serie5));
-
-		Modelo corolla = modeloService.criar(new Modelo(null, "001", "Corolla"));
-		Modelo rav4 = modeloService.criar(new Modelo(null, "002", "RAV4"));
-		Modelo hiace = modeloService.criar(new Modelo(null, "003", "Hiace"));
-
-		marcaModeloService.criar(new MarcaModelo(toyota, corolla));
-		marcaModeloService.criar(new MarcaModelo(toyota, rav4));
-		marcaModeloService.criar(new MarcaModelo(toyota, hiace));
-		Marca honda = marcaService.criar(new Marca(null, "004", "Honda"));
-		Marca mitsubishi = marcaService.criar(new Marca(null, "006", "Mitsubishi"));
-
-		Modelo coaster = modeloService.criar(new Modelo(null, "001", "Coaster"));
-		Modelo odyssey = modeloService.criar(new Modelo(null, "002", "Odyssey"));
-		Modelo rosa = modeloService.criar(new Modelo(null, "003", "Rosa"));
-		Modelo canter = modeloService.criar(new Modelo(null, "004", "Canter"));
-
-		marcaModeloService.criar(new MarcaModelo(toyota, coaster));
-		marcaModeloService.criar(new MarcaModelo(honda, odyssey));
-		marcaModeloService.criar(new MarcaModelo(mitsubishi, rosa));
-		marcaModeloService.criar(new MarcaModelo(mitsubishi, canter));
+    public void inicializarGeneros(GeneroService generoService) {
+        generoService.criarGenero(new Genero(null, "Masculino", 'M'));
+        generoService.criarGenero(new Genero(null, "Feminino", 'F'));
+    }
 
 
+    public void inicializarTipoProprietarios(TipoProprietarioService tipoProprietarioService) {
+        TipoProprietario individual = tipoProprietarioService.criar(new TipoProprietario(null, "Proprietario", "0112"));
+        TipoProprietario empresa = tipoProprietarioService.criar(new TipoProprietario(null, "Empresa", "0113"));
+    }
 
-	}
+    public void inicializarAssociacoesLicencaseTipoDeLicenca(AssociacaoService associacaoService, ContactoService contactoService,
+                                                             TipoLicencaService tipoLicencaService,
+                                                             LicencaService licencaService) throws ParseException {
 
-	public void inicializarCores(CorService corService){
-		Cor branco= corService.criar(new Cor(null, " #FFFFFF", "branco"));
-		Cor vermelho = corService.criar(new Cor(null, "#FF0000", "vermelho"));
-		Cor verde = corService.criar(new Cor(null, "#00FF00", "verde"));
-		Cor azul = corService.criar(new Cor(null, "#0000FF", "azul"));
-		Cor amarelo = corService.criar(new Cor(null, "#FFFF00", "amarelo"));
-		Cor laranja = corService.criar(new Cor(null, "#FFA500", "laranja"));
-		Cor roxo = corService.criar(new Cor(null, "#800080", "roxo"));
-		Cor rosa = corService.criar(new Cor(null, "#FFC0CB", "rosa"));
-		Cor marrom = corService.criar(new Cor(null, "#A52A2A", "marrom"));
-		Cor preto = corService.criar(new Cor(null, "#000000", "preto"));
-		Cor cinza = corService.criar(new Cor(null, "#808080", "cinza"));
-	}
+        Contacto etrago = contactoService.criar(new Contacto(null, "829283901"));
+        Contacto nagi = contactoService.criar(new Contacto(null, "847283892"));
+        Contacto tco = contactoService.criar(new Contacto(null, "873902097"));
 
-	public void inicializarTipoProprietarios(TipoProprietarioService tipoProprietarioService){
-		TipoProprietario individual= tipoProprietarioService.criar(new TipoProprietario(null, "Proprietario", "0112"));
-		TipoProprietario empresa= tipoProprietarioService.criar(new TipoProprietario(null, "Empresa", "0113"));
-	}
-	public void inicializarAssociacoesLicencaseTipoDeLicenca(AssociacaoService associacaoService, ContactoService contactoService,
-									   TipoLicencaService tipoLicencaService,
-									   LicencaService licencaService) throws ParseException {
+        TipopLicenca transporte = tipoLicencaService.criar(new TipopLicenca(null, "transporte", "tr", "001"));
+        TipopLicenca comercial = tipoLicencaService.criar(new TipopLicenca(null, "comercial", "cl", "002"));
 
-		Contacto etrago= contactoService.criar(new Contacto(null, "829283901"));
-		Contacto nagi=contactoService.criar(new Contacto(null, "847283892"));
-		Contacto tco=contactoService.criar(new Contacto(null, "873902097"));
+        Date data1 = new Date();
 
-		TipopLicenca transporte=tipoLicencaService.criar(new TipopLicenca(null,"transporte", "tr","001"));
-		TipopLicenca comercial=tipoLicencaService.criar(new TipopLicenca(null,"comercial", "cl", "002"));
+        Licenca transnporteRodoviario = licencaService.criar(new Licenca(null, "12678029p", data1, transporte));
+        Licenca coomercioGeral = licencaService.criar(new Licenca(null, "8340987ol", data1, comercial));
 
-		Date data1= new Date();
+        associacaoService.criarr(new Associacao(null, "ETRAGO", "etrago@gmail.com", etrago, transnporteRodoviario, "1234"));
+        associacaoService.criarr(new Associacao(null, "NAGI", "nagi@gmail.com", nagi, transnporteRodoviario, "1578"));
+        associacaoService.criarr(new Associacao(null, "TCO", "tco@gmail.com", tco, transnporteRodoviario, "7380"));
 
-		Licenca transnporteRodoviario=licencaService.criar(new Licenca(null, "12678029p", data1, transporte));
-		Licenca coomercioGeral=licencaService.criar(new Licenca(null, "8340987ol", data1, comercial));
+    }
 
-		associacaoService.criar(new Associacao(null, "ETRAGO", "etrago@gmail.com",etrago, transnporteRodoviario, "1234" ));
-		associacaoService.criar(new Associacao(null, "NAGI", "nagi@gmail.com",nagi, transnporteRodoviario,"1578" ));
-		associacaoService.criar(new Associacao(null, "TCO", "tco@gmail.com",tco, transnporteRodoviario, "7380" ));
-
-	}
-	public void inicializarRotas(RotaService rotaService){
-		rotaService.criar(new Rota((Long) null, "Maputo-Gaza", 150L, 500L, "001"));
-		rotaService.criar(new Rota((Long) null, "Maputo-Inhambane", 400L, 800L, "002"));
-		rotaService.criar(new Rota(null, "Maputo-Beira", 800L, 1500L, "003"));
-		rotaService.criar(new Rota(null, "Maputo-Zambezia", 810L, 2000L, "003"));
-		rotaService.criar(new Rota(null, "Maputo-Tete", 849L, 2050L, "004"));
-		rotaService.criar(new Rota(null, "Maputo-Manica", 900L, 2500L, "005"));
-		rotaService.criar(new Rota(null, "Maputo-Nampula", 870L, 3000L, "006"));
-		rotaService.criar(new Rota(null, "Maputo-Cabo-Delegado", 890L, 2900L, "007"));
-		rotaService.criar(new Rota(null, "Maputo-Niassa", 900L, 5000L, "008"));
-	}
+    public void inicializarRotas(RotaService rotaService) {
+        rotaService.criar(new Rota(null, "Maputo-Gaza", 150L, 500L, "001"));
+        rotaService.criar(new Rota(null, "Maputo-Inhambane", 400L, 800L, "002"));
+        rotaService.criar(new Rota(null, "Maputo-Beira", 800L, 1500L, "003"));
+        rotaService.criar(new Rota(null, "Maputo-Zambezia", 810L, 2000L, "003"));
+        rotaService.criar(new Rota(null, "Maputo-Tete", 849L, 2050L, "004"));
+        rotaService.criar(new Rota(null, "Maputo-Manica", 900L, 2500L, "005"));
+        rotaService.criar(new Rota(null, "Maputo-Nampula", 870L, 3000L, "006"));
+        rotaService.criar(new Rota(null, "Maputo-Cabo-Delegado", 890L, 2900L, "007"));
+        rotaService.criar(new Rota(null, "Maputo-Niassa", 900L, 5000L, "008"));
+    }
 
 	/*public void inicializarProvinciasEDistritos(ProvinciaService provinciaService,
 												DistritoService distritoService, ProvinciaDistritoService provinciaDistritoService,
@@ -223,44 +170,45 @@ public class SgvCoreApplication {
 
 	 */
 
-	public void inicializarTipoDocumento(TipoDocumentoService tipoDocumentoService){
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Bilhete de identidade", "BI", "002"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Carta de conducao", "CC", "003"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Cartao de eleitor", "CE", "004"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Cedula", "Ced", "005"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Bolentim de nascimento", "BN", "006"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Assento", "Ass", "007"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Passaporte", "Pass", "008"));
-		tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Documento de identificacao e residencia para estrangeiro", "DIRE", "009"));
+    public void inicializarTipoDocumento(TipoDocumentoService tipoDocumentoService) {
+        tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Bilhete de identidade", "BI", "002"));
+        tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Carta de conducao", "CC", "003"));
+        tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Cartao de eleitor", "CE", "004"));
+        tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Cedula", "Ced", "005"));
+        tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Bolentim de nascimento", "BN", "006"));
+        tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Assento", "Ass", "007"));
+        tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Passaporte", "Pass", "008"));
+        tipoDocumentoService.criar(new TipoDocumentoIdentificacao(null, "Documento de identificacao e residencia para estrangeiro", "DIRE", "009"));
 
-	}
+    }
 
-	@Bean
-	CommandLineRunner run
-			(GeneroService generoService, ZonaRegionalService zonaRegionalService,
-						  ProvinciaService provinciaService, DistritoService distritoService,
-						  ProvinciaDistritoService provinciaDistritoService,
-						  TipoDocumentoService tipoDocumentoService, TipoLicencaService tipoLicencaService, LicencaService licencaService,
-						  AssociacaoService associacaoService, ContactoService contactoService, RotaService rotaService, TipoProprietarioService tipoProprietarioService,
-			 CorService corService, ModeloService modeloService, MarcaService marcaService, MarcaModeloService marcaModeloService, FuncaoUsuarioService funcaoUsuarioService,
-			 NivelAcessoService nivelAcessoService, UsuarioService usuarioService) {
-		return args -> {
+    @Bean
+    CommandLineRunner run
+            (GeneroService generoService, ZonaRegionalService zonaRegionalService,
+             ProvinciaService provinciaService, DistritoService distritoService,
+             ProvinciaDistritoService provinciaDistritoService,
+             TipoDocumentoService tipoDocumentoService, TipoLicencaService tipoLicencaService, LicencaService licencaService,
+             AssociacaoService associacaoService, ContactoService contactoService, RotaService rotaService, TipoProprietarioService tipoProprietarioService,
+             CorService corService, ModeloService modeloService, MarcaService marcaService, MarcaModeloService marcaModeloService, FuncaoUsuarioService funcaoUsuarioService,
+             NivelAcessoService nivelAcessoService, UsuarioService usuarioService) {
+        return args -> {
 //			Auto Runnable code (on start)
-			if(generoService.listarGeneros().isEmpty()) {
-				inicializarGeneros(generoService);
-				inicializarRotas(rotaService);
-				inicializarTipoDocumento(tipoDocumentoService);
-				inicializarAssociacoesLicencaseTipoDeLicenca(associacaoService, contactoService, tipoLicencaService, licencaService);
-				inicializarTipoProprietarios(tipoProprietarioService);
-				inicializarCores(corService);
-				inicializarMarcasEModelos(marcaService,modeloService,marcaModeloService);
-				criarAssociacaoUsuario(funcaoUsuarioService,usuarioService);
-				criarSuperAdministrador(funcaoUsuarioService,usuarioService);
-				criarTerminalUsuario(funcaoUsuarioService, usuarioService);
-				inicializarNiveisDeAcesso(nivelAcessoService);
-				criarFuncoesDeUsuarioPadrao(funcaoUsuarioService);
+            if (generoService.listarGeneros().isEmpty()) {
+                inicializarGeneros(generoService);
+                inicializarRotas(rotaService);
+                inicializarTipoDocumento(tipoDocumentoService);
+                inicializarAssociacoesLicencaseTipoDeLicenca(associacaoService, contactoService, tipoLicencaService, licencaService);
+                inicializarTipoProprietarios(tipoProprietarioService);
+                inicializarCores(corService);
+                inicializarMarcasEModelos(marcaService, modeloService, marcaModeloService);
+                criarAssociacaoUsuario(funcaoUsuarioService, usuarioService);
+                criarSuperAdministrador(funcaoUsuarioService, usuarioService);
+                criarTerminalUsuario(funcaoUsuarioService, usuarioService);
+                inicializarNiveisDeAcesso(nivelAcessoService);
+                criarFuncoesDeUsuarioPadrao(funcaoUsuarioService);
 
-			}};
-	}
+            }
+        };
+    }
 }
 

@@ -2,6 +2,7 @@ package com.sgvcore.Controllers;
 
 import com.sgvcore.Model.Provincia;
 import com.sgvcore.Model.ResponseAPI;
+import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.sevices.DistritoService;
 import com.sgvcore.sevices.ProvinciaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,8 @@ public class DistritoController {
     }
 
     @GetMapping("/p/{id}")
-    public ResponseEntity<ResponseAPI> distritosPorIdDeProvincia(@PathVariable Long id) {
+    public ResponseEntity<ResponseAPI> distritosPorIdDeProvincia(@PathVariable Long id) throws ModelNotFound {
         Provincia provincia = provinciaService.buscarPorId(id);
-        if (provincia == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(true, "404", "Provincia com id: " + id + " não existe!", null));
-        }
         return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Todas os distritos da provincia de!" + provincia.getDesignacao() + " ", distritoService.listarTodosPorProvincia(provincia)));
     }
 
