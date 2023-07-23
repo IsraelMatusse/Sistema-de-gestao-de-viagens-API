@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface AssociacaoRepo extends JpaRepository<Associacao, Long> {
-    Associacao findByCodigo(String codigo);
+    Optional<Associacao> findByCodigo(String codigo);
 
     Optional<Associacao> findByUsuario(Usuario usuario);
 }

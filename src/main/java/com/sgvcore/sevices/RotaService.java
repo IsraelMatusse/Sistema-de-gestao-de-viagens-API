@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,8 +50,8 @@ public class RotaService {
         return rotaRepo.findAll().stream().map(rota -> new RotaRespostaDTO(rota)).collect(Collectors.toList());
     }
 
-    public Optional<Rota> buscarRotaPorId(Long id) {
-        return rotaRepo.findById(id);
+    public Rota buscarRotaPorId(Long id) throws ModelNotFound {
+        return rotaRepo.findById(id).orElseThrow(() -> new ModelNotFound("Rota nao encontrada"));
     }
 
     public Rota buscarPorCodigo(String codigoRota) throws ModelNotFound {
@@ -67,7 +66,13 @@ public class RotaService {
         return rotaRepo.findByNomerota(designacao).orElseThrow(() -> new ModelNotFound("Rota nao encontrada!"));
     }
 
-    public Long numeroRotas() {
-        return rotaRepo.count();
+    public Long numeroRotas() throws NotOwner {
+        // verificar privilegios para ver estatisticas
+        Usuario usuario = usuarioService.buscarUsuarioOnline();
+        List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
+        if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ADMIN.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name())) {
+            return rotaRepo.count();
+        }
+        throw new NotOwner("Nao possui acesso a esse recurso");
     }
 }

@@ -6,6 +6,7 @@ import com.sgvcore.Model.FuncaoDoUsuario;
 import com.sgvcore.Model.ResponseAPI;
 import com.sgvcore.Model.Usuario;
 import com.sgvcore.enums.FuncoesUsuarios;
+import com.sgvcore.exceptions.BadRequest;
 import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.exceptions.NotOwner;
@@ -67,7 +68,7 @@ public class AssociacaoController {
     }
 
     @GetMapping("/perfil")
-    public ResponseEntity<ResponseAPI> buscarPorCodigo(@RequestParam(value = "codigoAssociacao", required = false) String codigoAssociacao) throws ModelNotFound, NotOwner {
+    public ResponseEntity<ResponseAPI> buscarPorCodigo(@RequestParam(value = "codigoAssociacao", required = false) String codigoAssociacao) throws ModelNotFound, NotOwner, BadRequest {
         Usuario usuario = usuarioService.buscarUsuarioOnline();
         return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Associacoes do sistema", associacaoService.buscarAssociacaoPorUsuarioOnlineRes(usuario, codigoAssociacao)));
     }

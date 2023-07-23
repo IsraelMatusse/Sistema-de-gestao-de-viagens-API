@@ -4,6 +4,7 @@ import com.sgvcore.DTOs.associacaoDTOs.AssociacaoCriarDTO;
 import com.sgvcore.DTOs.associacaoDTOs.AssociacaoRespostaDTO;
 import com.sgvcore.Model.*;
 import com.sgvcore.enums.FuncoesUsuarios;
+import com.sgvcore.exceptions.BadRequest;
 import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.exceptions.NotOwner;
@@ -85,16 +86,13 @@ public class AssociacaoService {
         return associacaoRepo.findAll().stream().map(associacao -> new AssociacaoRespostaDTO(associacao)).collect(Collectors.toList());
     }
 
-    public Associacao buscarPorCodigo(String codigo) {
-        return associacaoRepo.findByCodigo(codigo);
+    public Associacao buscarPorCodigo(String codigo) throws ModelNotFound {
+        return associacaoRepo.findByCodigo(codigo).orElseThrow(() -> new ModelNotFound("Associacao nao encontrada"));
     }
 
-    public AssociacaoRespostaDTO buscarPorCodigoRes(String codigo) {
-        Associacao associacao = associacaoRepo.findByCodigo(codigo);
-        if (associacao != null) {
-            return new AssociacaoRespostaDTO(associacao);
-        }
-        return null;
+    public AssociacaoRespostaDTO buscarPorCodigoRes(String codigo) throws ModelNotFound {
+        Associacao associacao = associacaoRepo.findByCodigo(codigo).orElseThrow(() -> new ModelNotFound("Associacao nao encontrada"));
+        return new AssociacaoRespostaDTO(associacao);
     }
 
     public Long numeroDeAssociacoes() {
@@ -106,16 +104,16 @@ public class AssociacaoService {
         return associacaoRepo.findByUsuario(usuario).orElseThrow(() -> new ModelNotFound("Associacao nao encontrada"));
     }
 
-    public AssociacaoRespostaDTO buscarAssociacaoPorUsuarioOnlineRes(Usuario usuario, @RequestParam(value = "codigoAssociacao", required = false) String codigoAssociacao) throws ModelNotFound, NotOwner {
+    public AssociacaoRespostaDTO buscarAssociacaoPorUsuarioOnlineRes(Usuario usuario, @RequestParam(value = "codigoAssociacao", required = false) String codigoAssociacao) throws ModelNotFound, NotOwner, BadRequest {
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
         if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ASSOCIACAO.name())) {
             Associacao associacao = associacaoRepo.findByUsuario(usuario).orElseThrow(() -> new ModelNotFound("Associacao nao encontrada"));
             return new AssociacaoRespostaDTO(associacao);
         } else {
             if (codigoAssociacao == null) {
-                throw new ModelNotFound("codigo de associacao nao presente na requesicao");
+                throw new BadRequest("codigo de associacao nao presente na requesicao");
             }
-            Associacao associacao = associacaoRepo.findByCodigo(codigoAssociacao);
+            Associacao associacao = associacaoRepo.findByCodigo(codigoAssociacao).orElseThrow(() -> new ModelNotFound("Associacao nao encontrada"));
             return new AssociacaoRespostaDTO(associacao);
         }
     }

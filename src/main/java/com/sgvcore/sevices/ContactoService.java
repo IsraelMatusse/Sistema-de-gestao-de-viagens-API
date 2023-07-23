@@ -2,7 +2,7 @@ package com.sgvcore.sevices;
 
 import com.sgvcore.DTOs.contactoDTO.ContactoRespostaDTO;
 import com.sgvcore.Model.Contacto;
-import com.sgvcore.exceptions.ModelNotFound;
+import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.repository.ContactoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +28,8 @@ public class ContactoService {
         return contactoRepo.findById(id).orElse(null);
     }
 
-    public Contacto buscarContactoPorMsisdn(String msisdn) throws ModelNotFound {
-        return contactoRepo.findByMsisdn(msisdn).orElseThrow(() -> new ModelNotFound("Contacto nao encontrado"));
+    public Contacto buscarContactoPorMsisdn(String msisdn) throws ContentAlreadyExists {
+        return contactoRepo.findByMsisdn(msisdn).orElseThrow(() -> new ContentAlreadyExists("Contacto Ja existe"));
     }
 
     public Boolean existePorMsisdn(String msisdn) {
