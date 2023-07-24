@@ -1,5 +1,6 @@
 package com.sgvcore.sevices;
 
+import com.sgvcore.DTOs.documentoIdentificacaoDTOs.DocumentoIdentificacaoCriarDTO;
 import com.sgvcore.DTOs.proprietarioDTOs.ProprietarioCriarDTO;
 import com.sgvcore.Model.*;
 import com.sgvcore.enums.FuncoesUsuarios;
@@ -67,11 +68,12 @@ public class ProprietarioService {
             if(docExiste){
                 throw new ContentAlreadyExists("documento ja existe");
             }
+
             DocumentoIdentifiacacao novoDocumento;
             Proprietario novoProprietario = null;
             try {
-                novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
-                documentoIdentificacaoService.criar(documentoIdentificacaoService.converterDTO(novoDocumento));
+                novoDocumento=new DocumentoIdentifiacacao(dto,tipoDocumentoIdentificacao);
+                documentoIdentificacaoService.criarr(novoDocumento);
                 contactoService.criar(novoContacto);
                 novoProprietario = new Proprietario(dto, genero, novoContacto, provincia, tipoProprietario, novoDocumento, distrito);
                 proprietarioRepo.save(novoProprietario);

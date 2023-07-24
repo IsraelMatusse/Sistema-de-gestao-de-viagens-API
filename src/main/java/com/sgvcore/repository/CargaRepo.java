@@ -12,4 +12,5 @@ public interface CargaRepo extends JpaRepository<Carga, Long> {
     Optional<Carga> findByCodigoCarga(String codigoCarga);
 
     Optional<Carga> findByDesignacao(String designacao);
+    Boolean existsByDesignacao(String designacao);
 }

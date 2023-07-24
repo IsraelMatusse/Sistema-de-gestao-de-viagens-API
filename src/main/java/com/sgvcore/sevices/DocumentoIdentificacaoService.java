@@ -21,6 +21,9 @@ public class DocumentoIdentificacaoService {
     @Autowired
     private TipoDocumentoService tipoDocumentoService;
 
+    public DocumentoIdentifiacacao criarr(DocumentoIdentifiacacao documentoIdentifiacacao){
+        return documentoIdentificacaoRepo.save(documentoIdentifiacacao);
+    }
 
     public DocumentoIdentifiacacao criar(DocumentoIdentificacaoCriarDTO dto) throws ModelNotFound {
         TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getIdTipoDocumento());

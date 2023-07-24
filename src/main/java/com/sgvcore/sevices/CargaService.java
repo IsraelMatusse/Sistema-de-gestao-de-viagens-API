@@ -31,4 +31,8 @@ public class CargaService {
     public Carga buscarCargaPorDesignacao(String designacaoCarga) throws ContentAlreadyExists {
         return cargaRepo.findByDesignacao(designacaoCarga).orElseThrow(() -> new ContentAlreadyExists("Carga ja existe"));
     }
+    public Boolean existeCargaPorDesignacao(String designacao){
+        return cargaRepo.existsByDesignacao(designacao);
+    }
+
 }

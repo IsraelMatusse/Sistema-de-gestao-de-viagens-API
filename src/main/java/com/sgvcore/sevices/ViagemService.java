@@ -39,7 +39,7 @@ public class ViagemService {
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
         if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ASSOCIACAO.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name()))
             // verificar data de partida e chegada
-            if (dto.getSaida().before(dto.getPrevChegada()) || dto.getSaida().equals(dto.getPrevChegada())) {
+            if (dto.getSaida().after(dto.getPrevChegada()) || dto.getSaida().equals(dto.getPrevChegada())) {
                 throw new BadRequest("Verique as datas");
             }
         //verificar a existencia da rota e da viatura

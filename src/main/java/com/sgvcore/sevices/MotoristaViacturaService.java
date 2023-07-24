@@ -39,25 +39,22 @@ public class MotoristaViacturaService {
     private MotoristaService motoristaService;
 
     public MotoristaViactura criar(ViacturaAssociarMotoristaDTO dto) throws NotOwner, ModelNotFound, ContentAlreadyExists {
-        Proprietario proprietario = proprietarioService.buscarPorCodigo(dto.getCodigoProprietario());
-        Associacao associacao = associacaoService.buscarPorCodigo(dto.getCodigoAssociacao());
-        Rota rota = asociacaoRotaService.buscarRotasPeloCodigoDaAssociacaoEAssociacao(associacao, dto.getCodigoRota());
         Genero genero = generoService.buscarPorId(dto.getIdGenero());
         Provincia provincia = provinciaService.buscarProvinciaporCodigo(dto.getCodigoProvincia());
         TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getTipoDocumento());
         documentoIdentificacaoService.existePorNumeroDocumento(dto.getNumeroDocumento());
         DocumentoIdentifiacacao novoDocumento;
         MotoristaViactura novoMotoristaViatura = null;
+        Viatura viatura=viaturaService.buscarPorCodigo(dto.getCodigoViatura());
         try {
             novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
-            documentoIdentificacaoService.criar(documentoIdentificacaoService.converterDTO(novoDocumento));
+            documentoIdentificacaoService.criarr(novoDocumento);
             Motorista motorista = new Motorista(dto, novoDocumento, genero, provincia);
             motoristaService.cirar(motorista);
-            Viatura viatura = new Viatura(dto, rota, proprietario, associacao);
-            viaturaService.criar(viaturaService.converterDTO(viatura));
             novoMotoristaViatura = new MotoristaViactura(motorista, viatura);
             motoristaViacturaRepo.save(novoMotoristaViatura);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException("Erro ao salvar motorista");
         }
         return novoMotoristaViatura;

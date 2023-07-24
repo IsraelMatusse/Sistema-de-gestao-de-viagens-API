@@ -59,13 +59,22 @@ public class ViagemViajanteService {
         Distrito distrito = distritoService.buscarDistritoPorCodigoEProvincia(dto.getCodigoDistrito(), provincia);
         TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getIdTipoDocumento());
         // Verificar a não existência dos objetos antes de criá-los
-        DocumentoIdentifiacacao documentoIdentifiacacao = documentoIdentificacaoService.buscarPorNumeroDocumento(dto.getNumeroDocumento());
-        Contacto contacto = contactoService.buscarContactoPorMsisdn(dto.getMsisdn());
-        Carga carga = cargaService.buscarCargaPorDesignacao(dto.getDesignacao());
+        Boolean docExiste= documentoIdentificacaoService.existePorNumeroDocumento(dto.getNumeroDocumento());
+        if(docExiste){
+            throw new ContentAlreadyExists("Documeto ja existe");
+        }
+        Boolean contExiste = contactoService.existePorMsisdn(dto.getMsisdn());
+        if(contExiste){
+            throw new ContentAlreadyExists("Contacto ja existe");
+        }
+        Boolean cargaExiste = cargaService.existeCargaPorDesignacao(dto.getDesignacao());
+        if(cargaExiste){
+            throw new ContentAlreadyExists("Carga ja existe");
+        }
         // Criar salvar os objetos
         try {
             DocumentoIdentifiacacao novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
-            documentoIdentificacaoService.criar(documentoIdentificacaoService.converterDTO(documentoIdentifiacacao));
+            documentoIdentificacaoService.criarr(novoDocumento);
 
             Contacto novoContacto = new Contacto(dto);
             contactoService.criar(novoContacto);
@@ -74,7 +83,7 @@ public class ViagemViajanteService {
             cargaService.criar(novaCarga);
 
             Viajante viajante = new Viajante(dto, genero, novaCarga, novoDocumento, provincia, distrito, novoContacto);
-            viajanteService.criar(viajanteService.converterDTO(viajante));
+            viajanteService.criarr(viajante);
 
             ViagemViajante viagemViajante = new ViagemViajante(viagem, viajante);
             return viagemViajanteRepo.save(viagemViajante);

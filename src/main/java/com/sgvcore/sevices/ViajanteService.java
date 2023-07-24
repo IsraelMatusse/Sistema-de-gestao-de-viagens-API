@@ -38,6 +38,9 @@ public class ViajanteService {
     @Autowired
     private TipoDocumentoService tipoDocumentoService;
 
+    public Viajante criarr(Viajante viajante){
+        return viajanteRepo.save(viajante);
+    }
     public Viajante criar(ViajanteCriarDTO dto) throws ModelNotFound, ContentAlreadyExists {
         Genero genero = generoService.buscarPorId(dto.getIdGenero());
         Provincia provincia = provinciaService.buscarProvinciaporCodigo(dto.getCodigoProvincia());

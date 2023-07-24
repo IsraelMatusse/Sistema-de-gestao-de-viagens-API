@@ -69,22 +69,8 @@ public class Viatura extends AccoesDoSistema {
         this.codigo= GeneratePin.generateStringPin();
         this.idAssociacao=associacao;
     }
-    public Viatura(ViacturaAssociarMotoristaDTO dto, Rota rota, Proprietario proprietario, Associacao associacao) throws NoSuchAlgorithmException {
+    public Viatura(ViacturaAssociarMotoristaDTO dto) throws NoSuchAlgorithmException {
         this.codigo=GeneratePin.generateStringPin();
-        this.tipo= dto.getTipo();
-        this.nrmotor= dto.getNrmotor();
-        this.pesobruto=dto.getPesobruto();
-        this.idAssociacao=associacao;
-        this.quilometragem=dto.getQuilometragem();
-        this.idRota=rota;
-        this.modelo=dto.getModelo();
-        this.matricula=dto.getMatricula();
-        this.combustivel=dto.getCombustivel();
-        this.anofabrico=dto.getAnofabrico();
-        this.idProprietario=proprietario;
-        this.cor=dto.getCor();
-        this.marca=dto.getMarca();
-        this.lotacao=dto.getLotacao();
-        this.nrportas=dto.getNrPortas();
+
     }
 }
