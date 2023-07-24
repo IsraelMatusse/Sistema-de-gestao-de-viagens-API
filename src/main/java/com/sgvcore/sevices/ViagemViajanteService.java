@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 public class ViagemViajanteService {
 
     @Autowired
-    TipoDocumentoService tipoDocumentoService;
+    private TipoDocumentoService tipoDocumentoService;
     @Autowired
-    DocumentoIdentificacaoService documentoIdentificacaoService;
+    private DocumentoIdentificacaoService documentoIdentificacaoService;
     @Autowired
     private ViagemViajanteRepo viagemViajanteRepo;
     @Autowired
