@@ -38,7 +38,7 @@ public class SgvCoreApplication {
 
      */
 
-    private void criarSuperAdministrador(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) throws ModelNotFound {
+    /*private void criarSuperAdministrador(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) throws ModelNotFound {
         // Creating an Admin and Adding Role Admin
         Usuario user = new Usuario(null,
                 "sgv@gmail.com", "sgv123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
@@ -241,7 +241,7 @@ public class SgvCoreApplication {
 
  */
 
-    @Bean
+   /* @Bean
     CommandLineRunner run
             (GeneroService generoService, ZonaRegionalService zonaRegionalService,
              ProvinciaService provinciaService, DistritoService distritoService,
@@ -270,4 +270,6 @@ public class SgvCoreApplication {
 
             }};
     }
+
+    */
 }
