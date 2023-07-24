@@ -25,15 +25,15 @@ public class TipoDocumentoService {
     }
 
     public TipoDocumentoIdentificacao buscarTipoDocumentoporId(Long id) throws ModelNotFound {
-        return tipoDocumentoIdentificacaoRepo.findById(id).orElseThrow(() -> new ModelNotFound("Tipo de documento nao encontrado"));
+        return tipoDocumentoIdentificacaoRepo.findById(id).orElse(null);
     }
 
     public TipoDocumentoIdentificacao buscarPorDesignacao(String designacao) throws ModelNotFound {
         return tipoDocumentoIdentificacaoRepo.findByDesignacao(designacao).orElseThrow(() -> new ModelNotFound("Tipo de documento nao encontrado"));
     }
 
-    public TipoDocumentoIdentificacao buscarPorCodigo(String codigo) throws ModelNotFound {
-        return tipoDocumentoIdentificacaoRepo.findByCodigo(codigo).orElseThrow(() -> new ModelNotFound("Tipo de documento nao encontrado"));
+    public TipoDocumentoIdentificacao buscarPorCodigo(String codigo){
+        return tipoDocumentoIdentificacaoRepo.findByCodigo(codigo);
     }
 
     public boolean existePorId(Long id) {

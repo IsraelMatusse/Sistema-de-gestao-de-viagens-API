@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class AssociacaoController {
 
     //cadastrar uma associacoa e as suas rotas
     @PostMapping("/adicionar")
-    public ResponseEntity<ResponseAPI> crarAssociacoes(@RequestBody AssociacaoCriarDTO dto) throws ContentAlreadyExists, ModelNotFound, NotOwner {
+    public ResponseEntity<ResponseAPI> crarAssociacoes(@RequestBody AssociacaoCriarDTO dto) throws ContentAlreadyExists, ModelNotFound, NotOwner, NoSuchAlgorithmException {
         associacaoService.criar(dto);
         return ResponseEntity.status(201).body(new ResponseAPI(true, "201", "Associacao cadastrada com sucesso", null));
     }

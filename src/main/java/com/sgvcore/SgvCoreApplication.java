@@ -1,6 +1,7 @@
 package com.sgvcore;
 
 import com.sgvcore.Model.*;
+import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.sevices.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -22,35 +23,7 @@ public class SgvCoreApplication {
     public static void main(String[] args) {
         SpringApplication.run(SgvCoreApplication.class, args);
     }
-
-    private void criarSuperAdministrador(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
-        // Creating an Admin and Adding Role Admin
-        Usuario user = new Usuario(null, "sgv@gmail.com",
-                "sgv@gmail.com", "sgv123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
-                Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
-        usuarioService.criarUsuario(user);
-        funcaoUsuarioService.addRoleToUser("sgv@gmail.com", "ROLE_ADMIN");
-    }
-
-    private void criarTerminalUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
-        // Creating an Admin and Adding Role Admin
-        Usuario user = new Usuario(null, "trdj@gmail.com",
-                "trdj@gmail.com", "trdj123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
-                Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
-        usuarioService.criarUsuario(user);
-        funcaoUsuarioService.addRoleToUser("trdj@gmail.com", "ROLE_TERMINAL");
-    }
-
-    private void criarAssociacaoUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) {
-        // Creating an Admin and Adding Role Admin
-        Usuario user = new Usuario(null, "atmp@gmail.com",
-                "atmp@gmail.com", "atmp123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
-                Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
-        usuarioService.criarUsuario(user);
-        funcaoUsuarioService.addRoleToUser("atmp@gmail.com", "ROLE_ASSOCIACAO");
-    }
-
-    private void criarFuncoesDeUsuarioPadrao(FuncaoUsuarioService funcaoUsuarioService) {
+    /*private void criarFuncoesDeUsuarioPadrao(FuncaoUsuarioService funcaoUsuarioService) {
         funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_ADMIN"));
         funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_ASSOCIACAO"));
         funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_TERMINAL"));
@@ -63,10 +36,45 @@ public class SgvCoreApplication {
         nivelAcessoService.criarNivelDeAcesso(new NivelAcesso(null, "APAGAR"));
     }
 
+     */
+
+    private void criarSuperAdministrador(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) throws ModelNotFound {
+        // Creating an Admin and Adding Role Admin
+        Usuario user = new Usuario(null,
+                "sgv@gmail.com", "sgv123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
+                Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
+        usuarioService.criarUsuario(user);
+        funcaoUsuarioService.adicionarFuncaoAUsuario("sgv@gmail.com", "ROLE_ADMIN");
+    }
+
+    private void criarTerminalUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) throws ModelNotFound {
+        // Creating an Admin and Adding Role Admin
+        Usuario user = new Usuario(null,
+                "trdj@gmail.com", "trdj123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
+                Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
+        usuarioService.criarUsuario(user);
+        funcaoUsuarioService.adicionarFuncaoAUsuario("trdj@gmail.com", "ROLE_TERMINAL");
+    }
+
+    private void criarAssociacaoUsuario(FuncaoUsuarioService funcaoUsuarioService, UsuarioService usuarioService) throws ModelNotFound {
+        // Creating an Admin and Adding Role Admin
+        Usuario user = new Usuario(null,
+                "atmp@gmail.com", "atmp123", new HashSet<>(), new ArrayList<>(), false, true, null, null, null,
+                Date.from(Instant.ofEpochSecond(System.currentTimeMillis())), null, null);
+        usuarioService.criarUsuario(user);
+        funcaoUsuarioService.adicionarFuncaoAUsuario("atmp@gmail.com", "ROLE_ASSOCIACAO");
+    }
+
+
+
+
     public void inicializarGeneros(GeneroService generoService) {
         generoService.criarGenero(new Genero(null, "Masculino", 'M'));
         generoService.criarGenero(new Genero(null, "Feminino", 'F'));
     }
+
+
+/*
     public void inicializarMarcasEModelos(MarcaService marcaService, ModeloService modeloService, MarcaModeloService marcaModeloService){
         Marca toyota=marcaService.criar(new Marca(null, "001","Toyota" ));
         Modelo hilux= modeloService.criar(new Modelo(null, "001", "hilux"));
@@ -231,6 +239,8 @@ public class SgvCoreApplication {
 
     }
 
+ */
+
     @Bean
     CommandLineRunner run
             (GeneroService generoService, ZonaRegionalService zonaRegionalService,
@@ -242,20 +252,20 @@ public class SgvCoreApplication {
              NivelAcessoService nivelAcessoService, UsuarioService usuarioService) {
         return args -> {
 //			Auto Runnable code (on start)
-            if (funcaoUsuarioService.listarFuncoes().isEmpty()) {
+            if (generoService.listarGeneros().isEmpty()) {
                 inicializarGeneros(generoService);
-                inicializarRotas(rotaService);
-                inicializarTipoDocumento(tipoDocumentoService);
-                inicializarAssociacoesLicencaseTipoDeLicenca(associacaoService, contactoService, tipoLicencaService, licencaService);
-                inicializarTipoProprietarios(tipoProprietarioService);
-                inicializarCores(corService);
-                inicializarMarcasEModelos(marcaService, modeloService, marcaModeloService);
+//                inicializarRotas(rotaService);
+//                inicializarTipoDocumento(tipoDocumentoService);
+//                inicializarAssociacoesLicencaseTipoDeLicenca(associacaoService, contactoService, tipoLicencaService, licencaService);
+//                inicializarTipoProprietarios(tipoProprietarioService);
+//                inicializarCores(corService);
+//                inicializarMarcasEModelos(marcaService, modeloService, marcaModeloService);
                 criarAssociacaoUsuario(funcaoUsuarioService, usuarioService);
-                criarSuperAdministrador(funcaoUsuarioService, usuarioService);
-                criarTerminalUsuario(funcaoUsuarioService, usuarioService);
-                inicializarNiveisDeAcesso(nivelAcessoService);
-                criarFuncoesDeUsuarioPadrao(funcaoUsuarioService);
-                inicializarProvinciasEDistritos(provinciaService, distritoService, provinciaDistritoService, zonaRegionalService);
+               criarSuperAdministrador(funcaoUsuarioService, usuarioService);
+               criarTerminalUsuario(funcaoUsuarioService, usuarioService);
+//                inicializarNiveisDeAcesso(nivelAcessoService);
+//                criarFuncoesDeUsuarioPadrao(funcaoUsuarioService);
+//                inicializarProvinciasEDistritos(provinciaService, distritoService, provinciaDistritoService, zonaRegionalService);
 
 
             }};

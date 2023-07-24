@@ -11,7 +11,7 @@ public interface TipoDocumentoRepo extends JpaRepository<TipoDocumentoIdentifica
 
     Optional<TipoDocumentoIdentificacao> findByDesignacao(String designacao);
 
-    Optional<TipoDocumentoIdentificacao> findByCodigo(String codigo);
+    TipoDocumentoIdentificacao findByCodigo(String codigo);
 
     boolean existsById(Long id);
 }

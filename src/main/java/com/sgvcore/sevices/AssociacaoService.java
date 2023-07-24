@@ -41,21 +41,27 @@ public class AssociacaoService {
 
     public Associacao criar(AssociacaoCriarDTO dto) throws ContentAlreadyExists, ModelNotFound, NotOwner {
         //verificar se usuario online e administrador
-        Usuario usuario = usuarioService.buscarUsuarioOnline();
+       /* Usuario usuario = usuarioService.buscarUsuarioOnline();
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
         if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ADMIN.name())) {
+           */
             //verificar se contacto ja existe
             Boolean contExiste = contactoService.existePorMsisdn(dto.getMsisdn());
+        System.out.println(contExiste);
             if (contExiste) {
                 throw new ContentAlreadyExists("Contacto ja existe");
             }
             Contacto novoContacto = new Contacto(dto);
+        System.out.println(novoContacto);
             TipopLicenca tipopLicenca = tipoLicencaService.buscarTipoLicencaPorId(dto.getTipoLicenca());
+        System.out.println(tipopLicenca);
             Boolean existeLicenca = licencaService.existePorNumeroDeLicenca(dto.getNumeroLicenca());
             if (existeLicenca) {
                 throw new ContentAlreadyExists("Erro, licenca ja existe");
             }
+        System.out.println(existeLicenca);
             Licenca novaLicenca = new Licenca(dto, tipopLicenca);
+        System.out.println(novaLicenca);
             Associacao novaAssociao = null;
             try {
                 licencaService.criar(novaLicenca);
@@ -67,7 +73,9 @@ public class AssociacaoService {
                             throw new ModelNotFound("Rota nao encontrda");
                         }
                     }
+
                     novaAssociao = new Associacao(dto, novoContacto, novaLicenca);
+                     associacaoRepo.save(novaAssociao);
                     for (int i = 0; i < dto.getRotas().size(); i++) {
                         Rota rota = rotaService.buscarRotaPorDesignacao(dto.getRotas().get(i));
                         AssociacaoRota novaAssociacaoRota = new AssociacaoRota(rota, novaAssociao);
@@ -75,12 +83,13 @@ public class AssociacaoService {
                     }
                 }
             } catch (Exception e) {
+                System.out.println(e.getMessage());
                 throw new RuntimeException("Erro ao cadastrar a associacao");
             }
             return novaAssociao;
         }
-        throw new NotOwner("Nao possui acesso a este recurso");
-    }
+    //    throw new NotOwner("Nao possui acesso a este recurso");
+   // }
 
     public List<AssociacaoRespostaDTO> listarAssociacao() {
         return associacaoRepo.findAll().stream().map(associacao -> new AssociacaoRespostaDTO(associacao)).collect(Collectors.toList());

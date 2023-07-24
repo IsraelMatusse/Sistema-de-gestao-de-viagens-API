@@ -11,7 +11,6 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepo extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByUsername(String username);
-    Optional<Usuario> findByEmail(String email);
 
     List<Usuario> findByCreatedAt(Date date);
 
@@ -28,5 +27,5 @@ public interface UsuarioRepo extends JpaRepository<Usuario, Long> {
 
     Boolean existsByUsername(String username);
 
-    Boolean existsByEmail(String email);
+
 }

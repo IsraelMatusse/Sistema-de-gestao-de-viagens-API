@@ -2,6 +2,8 @@ package com.sgvcore.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sgvcore.Model.FuncaoDoUsuario;
+import com.sgvcore.Model.PermissaoAcesso;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
@@ -11,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @Entity
@@ -26,8 +29,6 @@ public class Usuario implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, nullable = false)
-    private String email;
     @Column(unique = true, nullable = false)
     private String username;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -117,6 +118,7 @@ public class Usuario implements UserDetails {
     public boolean isEnabled() {
         return this.active;
     }
+
 
 
 
