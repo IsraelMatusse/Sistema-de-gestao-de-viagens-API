@@ -10,6 +10,7 @@ import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.exceptions.NotOwner;
 import com.sgvcore.repository.ViacturaRepo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,27 +23,12 @@ public class ViaturaService {
     @Autowired
     private ViacturaRepo viacturaRepo;
     @Autowired
-    private ViaturaService viaturaService;
-    @Autowired
-    private RotaService rotaService;
-    @Autowired
     private ProprietarioService proprietarioService;
     @Autowired
     private AssociacaoService associacaoService;
     @Autowired
     private AssociacaoRotaService asociacaoRotaService;
-    @Autowired
-    private ProvinciaService provinciaService;
-    @Autowired
-    private GeneroService generoService;
-    @Autowired
-    private DocumentoIdentificacaoService documentoIdentificacaoService;
-    @Autowired
-    private TipoDocumentoService tipoDocumentoService;
-    @Autowired
-    private MotoristaViacturaService motoristaViacturaService;
-    @Autowired
-    private MotoristaService motoristaService;
+
 
     public Viatura criar(ViaturaCriarDTO dto) throws NotOwner, ModelNotFound, ContentAlreadyExists {
         if (viacturaRepo.existsByMatricula(dto.getMatricula())) {
@@ -100,5 +86,11 @@ public class ViaturaService {
 
     public Long numeroViaturas() {
         return viacturaRepo.count();
+    }
+
+    public ViaturaCriarDTO converterDTO(Viatura viatura) {
+        ViaturaCriarDTO dto = new ViaturaCriarDTO();
+        BeanUtils.copyProperties(viatura, dto);
+        return dto;
     }
 }

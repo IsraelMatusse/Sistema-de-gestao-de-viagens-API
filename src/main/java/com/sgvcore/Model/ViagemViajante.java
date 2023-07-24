@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ViagemViajante {
+public class ViagemViajante extends AccoesDoSistema {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +25,8 @@ public class ViagemViajante {
     private Viajante idViajante;
 
     public ViagemViajante(Viagem viagem, Viajante viajante) throws NoSuchAlgorithmException {
-        this.idViagem=viagem;
-        this.idViajante=viajante;
-        this.codigo= GeneratePin.generateStringPin();
+        this.idViagem = viagem;
+        this.idViajante = viajante;
+        this.codigo = GeneratePin.generateStringPin();
     }
 }

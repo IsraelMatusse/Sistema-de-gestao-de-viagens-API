@@ -2,7 +2,7 @@ package com.sgvcore.Controllers;
 
 import com.sgvcore.DTOs.viaturaDTOs.ViacturaAssociarMotoristaDTO;
 import com.sgvcore.DTOs.viaturaDTOs.ViaturaCriarDTO;
-import com.sgvcore.Model.*;
+import com.sgvcore.Model.ResponseAPI;
 import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.exceptions.NotOwner;
@@ -48,49 +48,8 @@ public class ViaturaController {
     }
 
     @PostMapping("/associar-motorista")
-    public ResponseEntity<ResponseAPI> associarViacturaMotorista(@RequestBody @Valid ViacturaAssociarMotoristaDTO dto) {
-        Proprietario proprietario = proprietarioService.buscarPorCodigo(dto.getCodigoProprietario());
-        if (proprietario == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Proprietario nao encontrado!", null));
-        }
-        Associacao associacao = associacaoService.buscarPorCodigo(dto.getCodigoAssociacao());
-        if (associacao == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Associacao nao encontrada!", null));
-        }
-        Rota rota = asociacaoRotaService.buscarRotasPeloCodigoDaAssociacaoEAssociacao(associacao, dto.getCodigoRota());
-        if (rota == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Rota nao encontrada ou nao pertence a associacao!", null));
-        }
-        Genero genero = generoService.buscarPorId(dto.getIdGenero());
-        if (genero == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Gnero nao existe!", null));
-        }
-        Provincia provincia = provinciaService.buscarProvinciaporCodigo(dto.getCodigoProvincia());
-        if (provincia == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Provincia nao encontrada!", null));
-        }
-        TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getTipoDocumento());
-        if (tipoDocumentoIdentificacao == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Tipo de documento nao encontrado!", null));
-        }
-        DocumentoIdentifiacacao documentoIdentifiacacao = documentoIdentificacaoService.buscarPorNumeroDocumento(dto.getNumeroDocumento());
-        DocumentoIdentifiacacao novoDocumento;
-        if (documentoIdentifiacacao != null) {
-            return ResponseEntity.status(422).body(new ResponseAPI(false, "422", "documento ja existe!", null));
-        }
-        try {
-            novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
-            documentoIdentificacaoService.criar(novoDocumento);
-            Motorista motorista = new Motorista(dto, novoDocumento, genero, provincia);
-            motoristaService.cirar(motorista);
-            Viatura viatura = new Viatura(dto, rota, proprietario, associacao);
-            viaturaService.criar(viatura);
-            MotoristaViactura novoMotoristaViatura = new MotoristaViactura(motorista, viatura);
-            motoristaViacturaService.criar(novoMotoristaViatura);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
-        }
+    public ResponseEntity<ResponseAPI> associarViacturaMotorista(@RequestBody @Valid ViacturaAssociarMotoristaDTO dto) throws NotOwner, ContentAlreadyExists, ModelNotFound {
+        motoristaViacturaService.criar(dto);
         return ResponseEntity.status(201).body(new ResponseAPI(true, "200", "Viactura e motorista Cadastrados com sucesso!", null));
     }
 

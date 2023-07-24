@@ -7,7 +7,8 @@ import com.sgvcore.Model.Viagem;
 import com.sgvcore.exceptions.BadRequest;
 import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
-import com.sgvcore.sevices.*;
+import com.sgvcore.sevices.ViagemService;
+import com.sgvcore.sevices.ViagemViajanteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,36 +22,11 @@ import java.util.Date;
 @RequestMapping("/api/viagens")
 public class ViagemController {
 
-    @Autowired
-    TipoDocumentoService tipoDocumentoService;
-    @Autowired
-    DocumentoIdentificacaoService documentoIdentificacaoService;
+
     @Autowired
     private ViagemService viagemService;
     @Autowired
-    private ViajanteService viajanteService;
-    @Autowired
-    private RotaService rotaService;
-    @Autowired
     private ViagemViajanteService viagemViajanteService;
-    @Autowired
-    private AssociacaoService associacaoService;
-    @Autowired
-    private GeneroService generoService;
-    @Autowired
-    private ProvinciaService provinciaService;
-    @Autowired
-    private DistritoService distritoService;
-    @Autowired
-    private ContactoService contactoService;
-    @Autowired
-    private CargaService cargaService;
-    @Autowired
-    private MotoristaService motoristaService;
-    @Autowired
-    private ViaturaService viaturaService;
-    @Autowired
-    private MotoristaViacturaService motoristaViacturaService;
 
     @PreAuthorize("hasAnyRole('ROLE_ASSOCIACAO', 'ROLE_TERMINAL')")
     @PostMapping("/adicionar")

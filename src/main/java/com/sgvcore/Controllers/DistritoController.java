@@ -34,7 +34,7 @@ public class DistritoController {
     }
 
     @GetMapping("/provincia")
-    public ResponseEntity<ResponseAPI> distritosPorIdDeProvincia(@RequestParam("codigo") Optional<String> codigo) {
+    public ResponseEntity<ResponseAPI> distritosPorIdDeProvincia(@RequestParam("codigo") Optional<String> codigo) throws ModelNotFound {
         if (codigo.isPresent()) {
             Provincia provincia = provinciaService.buscarProvinciaporCodigo(codigo.get());
             if (provincia == null) {

@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Viajante {
+public class Viajante extends AccoesDoSistema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,29 +38,29 @@ public class Viajante {
     @ManyToOne
     private Contacto idContacto;
 
-    public Viajante(ViajanteCriarDTO dto, Genero genero,Carga carga,  DocumentoIdentifiacacao documentoIdentifiacacao, Provincia provincia, Distrito distrito, Contacto contacto){
-        this.apelido=dto.getApelido();
-        this.dataNascimento=dto.getDataNascimento();
-        this.nome=dto.getNome();
-        this.email=dto.getEmail();
-        this.idCarga=carga;
-        this.idGenero=genero;
-        this.idProvincia=provincia;
-        this.idIdentificacao=documentoIdentifiacacao;
-        this.idDistrito= distrito;
-        this.idContacto=contacto;
+    public Viajante(ViajanteCriarDTO dto, Genero genero, Carga carga, DocumentoIdentifiacacao documentoIdentifiacacao, Provincia provincia, Distrito distrito, Contacto contacto) {
+        this.apelido = dto.getApelido();
+        this.dataNascimento = dto.getDataNascimento();
+        this.nome = dto.getNome();
+        this.email = dto.getEmail();
+        this.idCarga = carga;
+        this.idGenero = genero;
+        this.idProvincia = provincia;
+        this.idIdentificacao = documentoIdentifiacacao;
+        this.idDistrito = distrito;
+        this.idContacto = contacto;
     }
 
     public Viajante(ViagemAssociarViajanteDTO dto, Genero genero, Carga carga, DocumentoIdentifiacacao documentoIdentifiacacao, Provincia provincia, Distrito distrito, Contacto contacto) {
-        this.apelido=dto.getApelido();
-        this.dataNascimento=dto.getDataNascimento();
-        this.nome=dto.getNome();
-        this.email=dto.getEmail();
-        this.idCarga=carga;
-        this.idGenero=genero;
-        this.idProvincia=provincia;
-        this.idIdentificacao=documentoIdentifiacacao;
-        this.idDistrito= distrito;
-        this.idContacto=contacto;
+        this.apelido = dto.getApelido();
+        this.dataNascimento = dto.getDataNascimento();
+        this.nome = dto.getNome();
+        this.email = dto.getEmail();
+        this.idCarga = carga;
+        this.idGenero = genero;
+        this.idProvincia = provincia;
+        this.idIdentificacao = documentoIdentifiacacao;
+        this.idDistrito = distrito;
+        this.idContacto = contacto;
     }
 }

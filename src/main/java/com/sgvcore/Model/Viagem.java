@@ -15,7 +15,7 @@ import java.util.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Viagem {
+public class Viagem extends AccoesDoSistema {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

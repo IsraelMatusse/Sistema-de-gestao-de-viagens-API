@@ -10,7 +10,9 @@ import com.sgvcore.exceptions.BadRequest;
 import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.exceptions.NotOwner;
-import com.sgvcore.sevices.*;
+import com.sgvcore.sevices.AssociacaoService;
+import com.sgvcore.sevices.UsuarioService;
+import com.sgvcore.sevices.ViaturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,14 +26,6 @@ import java.util.List;
 public class AssociacaoController {
     @Autowired
     private AssociacaoService associacaoService;
-    @Autowired
-    private ContactoService contactoService;
-    @Autowired
-    private LicencaService licencaService;
-    @Autowired
-    private TipoLicencaService tipoLicencaService;
-    @Autowired
-    private RotaService rotaService;
     @Autowired
     private ViaturaService viaturaService;
     @Autowired

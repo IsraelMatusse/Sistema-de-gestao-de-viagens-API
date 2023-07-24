@@ -1,7 +1,6 @@
 package com.sgvcore.sevices;
 
 import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
-import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
 import com.sgvcore.DTOs.viajanteDTO.ViajanteRespostaDTO;
 import com.sgvcore.Model.*;
 import com.sgvcore.exceptions.ContentAlreadyExists;
@@ -31,8 +30,6 @@ public class ViagemViajanteService {
     private ViajanteService viajanteService;
     @Autowired
     private RotaService rotaService;
-    @Autowired
-    private ViagemViajanteService viagemViajanteService;
     @Autowired
     private AssociacaoService associacaoService;
     @Autowired
@@ -76,10 +73,10 @@ public class ViagemViajanteService {
             Carga novaCarga = new Carga(dto);
             cargaService.criar(novaCarga);
 
-            ViajanteCriarDTO viajante = new ViajanteCriarDTO(dto, genero, novaCarga, novoDocumento, provincia, distrito, novoContacto);
-            viajanteService.criar(viajante);
+            Viajante viajante = new Viajante(dto, genero, novaCarga, novoDocumento, provincia, distrito, novoContacto);
+            viajanteService.criar(viajanteService.converterDTO(viajante));
 
-            ViagemViajante viagemViajante = new ViagemViajante(viagem, viajanteService.converterDTO(viajante));
+            ViagemViajante viagemViajante = new ViagemViajante(viagem, viajante);
             return viagemViajanteRepo.save(viagemViajante);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar o viajante");

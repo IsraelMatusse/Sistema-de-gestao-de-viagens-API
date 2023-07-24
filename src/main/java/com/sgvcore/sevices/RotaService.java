@@ -25,6 +25,10 @@ public class RotaService {
     @Autowired
     private RotaRepo rotaRepo;
 
+    public Rota criarr(Rota rota) {
+        return rotaRepo.save(rota);
+    }
+
     public Rota criar(RotaCriarDTO dto) throws ContentAlreadyExists, NotOwner {
         // verificar privilegios de criacao de rota
         Usuario usuario = usuarioService.buscarUsuarioOnline();

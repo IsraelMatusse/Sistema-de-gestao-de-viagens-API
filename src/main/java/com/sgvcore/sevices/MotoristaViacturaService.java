@@ -1,10 +1,12 @@
 package com.sgvcore.sevices;
 
+import com.sgvcore.DTOs.viaturaDTOs.ViacturaAssociarMotoristaDTO;
 import com.sgvcore.Model.*;
+import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
+import com.sgvcore.exceptions.NotOwner;
 import com.sgvcore.repository.MotoristaViacturaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,54 +34,33 @@ public class MotoristaViacturaService {
     private DocumentoIdentificacaoService documentoIdentificacaoService;
     @Autowired
     private TipoDocumentoService tipoDocumentoService;
-    @Autowired
-    private MotoristaViacturaService motoristaViacturaService;
+   
     @Autowired
     private MotoristaService motoristaService;
 
-    public MotoristaViactura criar(MotoristaAssociarViaturaCriarDTO dto) {
+    public MotoristaViactura criar(ViacturaAssociarMotoristaDTO dto) throws NotOwner, ModelNotFound, ContentAlreadyExists {
         Proprietario proprietario = proprietarioService.buscarPorCodigo(dto.getCodigoProprietario());
-        if (proprietario == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Proprietario nao encontrado!", null));
-        }
         Associacao associacao = associacaoService.buscarPorCodigo(dto.getCodigoAssociacao());
-        if (associacao == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Associacao nao encontrada!", null));
-        }
         Rota rota = asociacaoRotaService.buscarRotasPeloCodigoDaAssociacaoEAssociacao(associacao, dto.getCodigoRota());
-        if (rota == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Rota nao encontrada ou nao pertence a associacao!", null));
-        }
         Genero genero = generoService.buscarPorId(dto.getIdGenero());
-        if (genero == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Gnero nao existe!", null));
-        }
         Provincia provincia = provinciaService.buscarProvinciaporCodigo(dto.getCodigoProvincia());
-        if (provincia == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Provincia nao encontrada!", null));
-        }
         TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getTipoDocumento());
-        if (tipoDocumentoIdentificacao == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Tipo de documento nao encontrado!", null));
-        }
-        DocumentoIdentifiacacao documentoIdentifiacacao = documentoIdentificacaoService.buscarPorNumeroDocumento(dto.getNumeroDocumento());
+        documentoIdentificacaoService.existePorNumeroDocumento(dto.getNumeroDocumento());
         DocumentoIdentifiacacao novoDocumento;
-        if (documentoIdentifiacacao != null) {
-            return ResponseEntity.status(422).body(new ResponseAPI(false, "422", "documento ja existe!", null));
-        }
+        MotoristaViactura novoMotoristaViatura = null;
         try {
             novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
-            documentoIdentificacaoService.criar(novoDocumento);
+            documentoIdentificacaoService.criar(documentoIdentificacaoService.converterDTO(novoDocumento));
             Motorista motorista = new Motorista(dto, novoDocumento, genero, provincia);
             motoristaService.cirar(motorista);
             Viatura viatura = new Viatura(dto, rota, proprietario, associacao);
-            viaturaService.criar(viatura);
-            MotoristaViactura novoMotoristaViatura = new MotoristaViactura(motorista, viatura);
-            motoristaViacturaService.criar(novoMotoristaViatura);
+            viaturaService.criar(viaturaService.converterDTO(viatura));
+            novoMotoristaViatura = new MotoristaViactura(motorista, viatura);
+            motoristaViacturaRepo.save(novoMotoristaViatura);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
+            throw new RuntimeException("Erro ao salvar motorista");
         }
+        return novoMotoristaViatura;
     }
 
     public List<MotoristaViactura> listar() {

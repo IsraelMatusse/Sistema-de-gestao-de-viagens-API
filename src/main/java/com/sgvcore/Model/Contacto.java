@@ -15,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Contacto {
+public class Contacto extends AccoesDoSistema {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

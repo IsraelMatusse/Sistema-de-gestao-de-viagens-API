@@ -6,7 +6,6 @@ import com.sgvcore.DTOs.viajanteDTO.ViajanteRespostaDTO;
 import com.sgvcore.Model.*;
 import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
-import com.sgvcore.repository.ViagemRepo;
 import com.sgvcore.repository.ViajanteRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +18,11 @@ import java.util.stream.Collectors;
 public class ViajanteService {
 
     @Autowired
-    DocumentoIdentificacaoService documentoIdentificacaoService;
+    private DocumentoIdentificacaoService documentoIdentificacaoService;
     @Autowired
     private ViajanteRepo viajanteRepo;
     @Autowired
-    private ViagemRepo viagemRepo;
-    @Autowired
-    private ViagemService viagemService;
-    @Autowired
-    private ViajanteService viajanteService;
-    @Autowired
     private RotaService rotaService;
-    @Autowired
-    private ViagemViajanteService viagemViajanteService;
     @Autowired
     private AssociacaoService associacaoService;
     @Autowired

@@ -19,31 +19,11 @@ import java.util.stream.Collectors;
 public class ViagemService {
 
     @Autowired
-    TipoDocumentoService tipoDocumentoService;
-    @Autowired
-    DocumentoIdentificacaoService documentoIdentificacaoService;
-    @Autowired
     private ViagemRepo viagemRepo;
-    @Autowired
-    private ViagemService viagemService;
-    @Autowired
-    private ViajanteService viajanteService;
     @Autowired
     private RotaService rotaService;
     @Autowired
-    private ViagemViajanteService viagemViajanteService;
-    @Autowired
     private AssociacaoService associacaoService;
-    @Autowired
-    private GeneroService generoService;
-    @Autowired
-    private ProvinciaService provinciaService;
-    @Autowired
-    private DistritoService distritoService;
-    @Autowired
-    private ContactoService contactoService;
-    @Autowired
-    private CargaService cargaService;
     @Autowired
     private MotoristaService motoristaService;
     @Autowired

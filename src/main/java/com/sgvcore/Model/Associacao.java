@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Associacao {
+public class Associacao extends AccoesDoSistema {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,11 +21,15 @@ public class Associacao {
     private String designacao;
     @Column
     private String emailassociacao;
+    @Column
+    private String codigo;
     @ManyToOne
     private Contacto idContacto;
     @ManyToOne
     private Licenca idLicenca;
-    private String codigo;
+    @ManyToOne
+    private Usuario usuario;
+
 
     public Associacao(AssociacaoCriarDTO dto, Contacto contacto, Licenca licenca) throws NoSuchAlgorithmException {
         this.codigo = GeneratePin.generateStringPin();
