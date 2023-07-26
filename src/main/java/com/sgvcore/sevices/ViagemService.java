@@ -5,11 +5,21 @@ import com.sgvcore.DTOs.viagemDTO.ViagemRespostaDTO;
 import com.sgvcore.Model.*;
 import com.sgvcore.enums.FuncoesUsuarios;
 import com.sgvcore.exceptions.BadRequest;
+import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
+import com.sgvcore.exceptions.UnprocessableEntity;
 import com.sgvcore.repository.ViagemRepo;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,14 +43,14 @@ public class ViagemService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Viagem criar(ViagemCriarDTO dto) throws BadRequest, ModelNotFound {
+    public Viagem criar(ViagemCriarDTO dto) throws BadRequest, ModelNotFound, UnprocessableEntity, ContentAlreadyExists {
         //verificar permissoes do usuario para aceder a  funcionalidade
         Usuario usuario = usuarioService.buscarUsuarioOnline();
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
         if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ASSOCIACAO.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name()))
             // verificar data de partida e chegada
             if (dto.getSaida().after(dto.getPrevChegada()) || dto.getSaida().equals(dto.getPrevChegada())) {
-                throw new BadRequest("Verique as datas");
+                throw new UnprocessableEntity("Verique as datas");
             }
         //verificar a existencia da rota e da viatura
         Rota rota = rotaService.buscarRotaPorId(dto.getIdRota());
@@ -51,8 +61,12 @@ public class ViagemService {
         try {
             Viagem novaViagem = new Viagem(dto, rota, associacao, viatura, motorista);
             return viagemRepo.save(novaViagem);
-        } catch (Exception e) {
+        } catch (DataIntegrityViolationException ex) {
+            throw new ContentAlreadyExists("Viagem ja existe");
+        } catch (HibernateException ex) {
             throw new RuntimeException("Erro ao salvar a viagem");
+        } catch (DataAccessException | NoSuchAlgorithmException ex) {
+            throw new RuntimeException("Erro ao aceder a base de dados");
         }
     }
 
@@ -77,8 +91,13 @@ public class ViagemService {
         return viagemRepo.count();
     }
 
-    public List<ViagemRespostaDTO> buscarViagensPelaDataDeHoje(Date saida) {
+    public List<ViagemRespostaDTO> listarViagensPelaDataDeHoje(Date saida) {
         return viagemRepo.findBySaida(saida).stream().map(viagem -> new ViagemRespostaDTO(viagem)).collect(Collectors.toList());
+    }
+
+    public Page<Viagem> listarViagnsDoDiaPaginado(int page, int size, Sort sort, Date saida) {
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return viagemRepo.findAllBySaida(saida, pageable);
     }
 
 }

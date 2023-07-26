@@ -30,7 +30,7 @@ public class ViaturaRespostaDTO {
         this.anofabrico = viactura.getAnofabrico();
         this.designacaoAssociacao = viactura.getIdAssociacao().getDesignacao();
         this.cor = viactura.getCor();
-        this.designacaoRota = viactura.getIdRota().getNomerota();
+        this.designacaoRota = viactura.getIdRota().getNomeRota();
         this.lotacao = viactura.getLotacao();
         this.marca = viactura.getMarca();
         this.modelo = viactura.getModelo();

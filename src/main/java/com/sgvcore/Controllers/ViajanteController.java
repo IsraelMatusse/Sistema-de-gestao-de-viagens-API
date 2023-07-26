@@ -34,13 +34,12 @@ public class ViajanteController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<ResponseAPI> criarViajante(@RequestBody ViajanteCriarDTO dto) throws ContentAlreadyExists, ModelNotFound {
-        viajanteService.criar(dto);
+        viajanteService.criarViajante(dto);
         return ResponseEntity.status(201).body(new ResponseAPI(true, "201", "Viajante criado com sucesso!", null));
     }
 
     @GetMapping
     public ResponseEntity<ResponseAPI> ListarViajantesDoSistema(@RequestBody ViajanteCriarDTO dto) throws ContentAlreadyExists, ModelNotFound {
-        viajanteService.criar(dto);
         return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Viajantes do sistema", viajanteService.listarViajantes()));
     }
 }

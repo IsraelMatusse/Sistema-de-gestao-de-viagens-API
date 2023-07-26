@@ -17,15 +17,15 @@ import java.util.stream.Collectors;
 @Service
 public class DocumentoIdentificacaoService {
     @Autowired
-    DocumentoIdentificacaoRepo documentoIdentificacaoRepo;
+    private DocumentoIdentificacaoRepo documentoIdentificacaoRepo;
     @Autowired
     private TipoDocumentoService tipoDocumentoService;
 
-    public DocumentoIdentifiacacao criarr(DocumentoIdentifiacacao documentoIdentifiacacao){
+    public DocumentoIdentifiacacao criar(DocumentoIdentifiacacao documentoIdentifiacacao) {
         return documentoIdentificacaoRepo.save(documentoIdentifiacacao);
     }
 
-    public DocumentoIdentifiacacao criar(DocumentoIdentificacaoCriarDTO dto) throws ModelNotFound {
+    public DocumentoIdentifiacacao criarDocumento(DocumentoIdentificacaoCriarDTO dto) throws ModelNotFound {
         TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getIdTipoDocumento());
         try {
             DocumentoIdentifiacacao documentoIdentificacao = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);

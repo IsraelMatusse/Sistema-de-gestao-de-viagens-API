@@ -59,22 +59,22 @@ public class ViagemViajanteService {
         Distrito distrito = distritoService.buscarDistritoPorCodigoEProvincia(dto.getCodigoDistrito(), provincia);
         TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getIdTipoDocumento());
         // Verificar a não existência dos objetos antes de criá-los
-        Boolean docExiste= documentoIdentificacaoService.existePorNumeroDocumento(dto.getNumeroDocumento());
-        if(docExiste){
+        Boolean docExiste = documentoIdentificacaoService.existePorNumeroDocumento(dto.getNumeroDocumento());
+        if (docExiste) {
             throw new ContentAlreadyExists("Documeto ja existe");
         }
         Boolean contExiste = contactoService.existePorMsisdn(dto.getMsisdn());
-        if(contExiste){
+        if (contExiste) {
             throw new ContentAlreadyExists("Contacto ja existe");
         }
         Boolean cargaExiste = cargaService.existeCargaPorDesignacao(dto.getDesignacao());
-        if(cargaExiste){
+        if (cargaExiste) {
             throw new ContentAlreadyExists("Carga ja existe");
         }
         // Criar salvar os objetos
         try {
             DocumentoIdentifiacacao novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
-            documentoIdentificacaoService.criarr(novoDocumento);
+            documentoIdentificacaoService.criar(novoDocumento);
 
             Contacto novoContacto = new Contacto(dto);
             contactoService.criar(novoContacto);
@@ -83,7 +83,7 @@ public class ViagemViajanteService {
             cargaService.criar(novaCarga);
 
             Viajante viajante = new Viajante(dto, genero, novaCarga, novoDocumento, provincia, distrito, novoContacto);
-            viajanteService.criarr(viajante);
+            viajanteService.criar(viajante);
 
             ViagemViajante viagemViajante = new ViagemViajante(viagem, viajante);
             return viagemViajanteRepo.save(viagemViajante);

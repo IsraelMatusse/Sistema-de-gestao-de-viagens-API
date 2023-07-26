@@ -1,6 +1,5 @@
 package com.sgvcore.sevices;
 
-import com.sgvcore.DTOs.documentoIdentificacaoDTOs.DocumentoIdentificacaoCriarDTO;
 import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
 import com.sgvcore.DTOs.viajanteDTO.ViajanteRespostaDTO;
 import com.sgvcore.Model.*;
@@ -38,10 +37,11 @@ public class ViajanteService {
     @Autowired
     private TipoDocumentoService tipoDocumentoService;
 
-    public Viajante criarr(Viajante viajante){
+    public Viajante criar(Viajante viajante) {
         return viajanteRepo.save(viajante);
     }
-    public Viajante criar(ViajanteCriarDTO dto) throws ModelNotFound, ContentAlreadyExists {
+
+    public Viajante criarViajante(ViajanteCriarDTO dto) throws ModelNotFound, ContentAlreadyExists {
         Genero genero = generoService.buscarPorId(dto.getIdGenero());
         Provincia provincia = provinciaService.buscarProvinciaporCodigo(dto.getCodigoProvincia());
         Distrito distrito = distritoService.buscarDistritoPorCodigoEProvincia(dto.getCodigoDistrito(), provincia);
@@ -62,7 +62,7 @@ public class ViajanteService {
             try {
                 novaCarga = cargaService.criar(new Carga(dto));
                 novoContacto = contactoService.criar(new Contacto(dto));
-                novoDocumento = documentoIdentificacaoService.criar(new DocumentoIdentificacaoCriarDTO(dto, tipoDocumentoIdentificacao));
+                novoDocumento = documentoIdentificacaoService.criar(new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao));
                 return viajanteRepo.save(new Viajante(dto, genero, novaCarga, novoDocumento, provincia, distrito, novoContacto));
             } catch (Exception e) {
                 throw new RuntimeException("Erro ao salvar o viajante");

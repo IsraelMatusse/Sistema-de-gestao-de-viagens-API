@@ -34,7 +34,7 @@ public class MotoristaViacturaService {
     private DocumentoIdentificacaoService documentoIdentificacaoService;
     @Autowired
     private TipoDocumentoService tipoDocumentoService;
-   
+
     @Autowired
     private MotoristaService motoristaService;
 
@@ -45,10 +45,10 @@ public class MotoristaViacturaService {
         documentoIdentificacaoService.existePorNumeroDocumento(dto.getNumeroDocumento());
         DocumentoIdentifiacacao novoDocumento;
         MotoristaViactura novoMotoristaViatura = null;
-        Viatura viatura=viaturaService.buscarPorCodigo(dto.getCodigoViatura());
+        Viatura viatura = viaturaService.buscarPorCodigo(dto.getCodigoViatura());
         try {
             novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
-            documentoIdentificacaoService.criarr(novoDocumento);
+            documentoIdentificacaoService.criar(novoDocumento);
             Motorista motorista = new Motorista(dto, novoDocumento, genero, provincia);
             motoristaService.cirar(motorista);
             novoMotoristaViatura = new MotoristaViactura(motorista, viatura);

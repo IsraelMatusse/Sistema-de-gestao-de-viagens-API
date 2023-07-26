@@ -9,10 +9,18 @@ import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.exceptions.NotOwner;
 import com.sgvcore.repository.AssociacaoRepo;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,64 +43,67 @@ public class AssociacaoService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Associacao criarr(Associacao associacao) {
+    public Associacao criar(Associacao associacao) {
         return associacaoRepo.save(associacao);
     }
 
-    public Associacao criar(AssociacaoCriarDTO dto) throws ContentAlreadyExists, ModelNotFound, NotOwner {
+    public Associacao criarAssociacao(AssociacaoCriarDTO dto) throws ContentAlreadyExists, ModelNotFound, NotOwner {
         //verificar se usuario online e administrador
-       /* Usuario usuario = usuarioService.buscarUsuarioOnline();
+        Usuario usuario = usuarioService.buscarUsuarioOnline();
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
         if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ADMIN.name())) {
-           */
             //verificar se contacto ja existe
             Boolean contExiste = contactoService.existePorMsisdn(dto.getMsisdn());
-        System.out.println(contExiste);
             if (contExiste) {
                 throw new ContentAlreadyExists("Contacto ja existe");
             }
             Contacto novoContacto = new Contacto(dto);
-        System.out.println(novoContacto);
             TipopLicenca tipopLicenca = tipoLicencaService.buscarTipoLicencaPorId(dto.getTipoLicenca());
-        System.out.println(tipopLicenca);
             Boolean existeLicenca = licencaService.existePorNumeroDeLicenca(dto.getNumeroLicenca());
             if (existeLicenca) {
                 throw new ContentAlreadyExists("Erro, licenca ja existe");
             }
-        System.out.println(existeLicenca);
             Licenca novaLicenca = new Licenca(dto, tipopLicenca);
-        System.out.println(novaLicenca);
             Associacao novaAssociao = null;
             try {
                 licencaService.criar(novaLicenca);
                 contactoService.criar(novoContacto);
                 if (!dto.getRotas().isEmpty()) {
                     for (int i = 0; i < dto.getRotas().size(); i++) {
-                        Boolean existe = rotaService.verificarAexistenciaDaRotaPorDesignacao(dto.getRotas().get(i));
+                        Boolean existe = rotaService.existePorDesignacao(dto.getRotas().get(i));
                         if (!existe) {
                             throw new ModelNotFound("Rota nao encontrda");
                         }
                     }
-
                     novaAssociao = new Associacao(dto, novoContacto, novaLicenca);
-                     associacaoRepo.save(novaAssociao);
+                    associacaoRepo.save(novaAssociao);
+
                     for (int i = 0; i < dto.getRotas().size(); i++) {
                         Rota rota = rotaService.buscarRotaPorDesignacao(dto.getRotas().get(i));
                         AssociacaoRota novaAssociacaoRota = new AssociacaoRota(rota, novaAssociao);
                         associacaoRotaService.criar(novaAssociacaoRota);
                     }
                 }
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            } catch (HibernateException ex) {
                 throw new RuntimeException("Erro ao cadastrar a associacao");
+            } catch (DataIntegrityViolationException ex) {
+                throw new ContentAlreadyExists("Associacao ja existe");
+            } catch (DataAccessException | NoSuchAlgorithmException ex) {
+                throw new RuntimeException("Erro ao acessar a base de dados");
             }
             return novaAssociao;
+        } else {
+            throw new NotOwner("Nao possui acesso a este recurso");
         }
-    //    throw new NotOwner("Nao possui acesso a este recurso");
-   // }
+    }
 
     public List<AssociacaoRespostaDTO> listarAssociacao() {
         return associacaoRepo.findAll().stream().map(associacao -> new AssociacaoRespostaDTO(associacao)).collect(Collectors.toList());
+    }
+
+    public Page<Associacao> listarAssociacoesPorPaginacao(int page, int size, Sort sort) {
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return associacaoRepo.findAll(pageable);
     }
 
     public Associacao buscarPorCodigo(String codigo) throws ModelNotFound {
