@@ -50,7 +50,7 @@ public class AssociacaoController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TERMINAL')")
-    @GetMapping
+    @GetMapping("/pag")
     public ResponseEntity<ResponseAPI> listarAssociacoesPorPaginacao(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,

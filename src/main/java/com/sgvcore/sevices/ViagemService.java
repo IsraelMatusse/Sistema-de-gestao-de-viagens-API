@@ -74,6 +74,11 @@ public class ViagemService {
         return viagemRepo.findAll().stream().map(viagem -> new ViagemRespostaDTO(viagem)).collect(Collectors.toList());
     }
 
+    public Page<Viagem> listarTodasViagensPaginadas(int page, int size, Sort sort) {
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return viagemRepo.findAll(pageable);
+    }
+
     public Viagem buscarPorId(Long id) throws ModelNotFound {
         return viagemRepo.findById(id).orElseThrow(() -> new ModelNotFound("Viagem nao encontrada"));
     }

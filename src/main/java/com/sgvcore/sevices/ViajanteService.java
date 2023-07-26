@@ -8,6 +8,10 @@ import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.repository.ViajanteRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,6 +76,11 @@ public class ViajanteService {
 
     public List<ViajanteRespostaDTO> listarViajantes() {
         return viajanteRepo.findAll().stream().map(viajante -> new ViajanteRespostaDTO(viajante)).collect(Collectors.toList());
+    }
+
+    public Page<Viajante> listarViajanatesDoSistemaPaginado(int page, int size, Sort sort) {
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return viajanteRepo.findAll(pageable);
     }
 
     public ViajanteRespostaDTO buscarViajantPorId(Long id) {

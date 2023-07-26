@@ -13,6 +13,7 @@ import com.sgvcore.sevices.ViagemViajanteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +32,28 @@ public class ViagemController {
     private ViagemService viagemService;
     @Autowired
     private ViagemViajanteService viagemViajanteService;
+
+    //lISTAR TODAS VIAGENS DO SISTEMA PAGINADAS
+    @GetMapping
+    public ResponseEntity<ResponseAPI> listarTodasViagensDoSistema(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nomeRota") String filter,
+            @RequestParam(defaultValue = "desc") String order
+    ) {
+        //definir a ordem
+        Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, filter);
+
+        Page<Viagem> viagensDoSistemaPaginadas = viagemService.listarTodasViagensPaginadas(page, size, sort);
+        ResponseAPI response = new ResponseAPI(true, "200", "Lista de todas viagens do sistema", viagensDoSistemaPaginadas);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("paginas", String.valueOf(viagensDoSistemaPaginadas.getTotalPages()));
+        headers.add("quantidade", String.valueOf(viagensDoSistemaPaginadas.getTotalElements()));
+
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
+    }
 
     @PreAuthorize("hasAnyRole('ROLE_ASSOCIACAO', 'ROLE_TERMINAL')")
     @PostMapping("/adicionar")
@@ -68,7 +91,8 @@ public class ViagemController {
         Date saida = new Date();
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Viagens dos dia!", viagemService.listarViagensPelaDataDeHoje(saida)));
     }
-    @GetMapping
+
+    @GetMapping("/hoje")
     public ResponseEntity<ResponseAPI> listarViagensDoDiaPaginada(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -78,9 +102,14 @@ public class ViagemController {
         // Definir o objeto de ordenação com base nos parâmetros de filtro
         Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         Sort sort = Sort.by(direction, filter);
-        Date saida= new Date();
-        Page<Viagem> viagensDoDiaPaginadas= viagemService.listarViagnsDoDiaPaginado(page, size, sort, saida);
-        ResponseAPI response= new ResponseAPI(true, "200", "Viagens dos dia", viagensDoDiaPaginadas);
+        Date saida = new Date();
+        Page<Viagem> viagensDoDiaPaginadas = viagemService.listarViagnsDoDiaPaginado(page, size, sort, saida);
+        ResponseAPI response = new ResponseAPI(true, "200", "Viagens dos dia", viagensDoDiaPaginadas);
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Paginas", String.valueOf(viagensDoDiaPaginadas.getTotalPages()));
+        headers.add("quantidade", String.valueOf(viagensDoDiaPaginadas.getTotalElements()));
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
+    }
 }
 
