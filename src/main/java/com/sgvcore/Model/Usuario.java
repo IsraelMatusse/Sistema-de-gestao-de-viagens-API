@@ -2,8 +2,6 @@ package com.sgvcore.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sgvcore.Model.FuncaoDoUsuario;
-import com.sgvcore.Model.PermissaoAcesso;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
@@ -13,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 @Entity
@@ -64,7 +61,7 @@ public class Usuario implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        for (var r: this.funcoes){
+        for (FuncaoDoUsuario r: this.funcoes){
             var sga = new SimpleGrantedAuthority(r.getName());
             authorities.add(sga);
         }
@@ -118,7 +115,6 @@ public class Usuario implements UserDetails {
     public boolean isEnabled() {
         return this.active;
     }
-
 
 
 
