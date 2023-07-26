@@ -20,7 +20,7 @@ public class Viagem extends AccoesDoSistema {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(nullable = false)
-    private String destino_viagem;
+    private String destinoViagem;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     @Column(nullable = false)
     private Date saida;
@@ -41,7 +41,7 @@ public class Viagem extends AccoesDoSistema {
 
     public Viagem(ViagemCriarDTO dto, Rota rota, Associacao associacao, Viatura viactura, Motorista motorista) throws NoSuchAlgorithmException {
         this.codigo = GeneratePin.generateStringPin();
-        this.destino_viagem = dto.getDestinoViagem();
+        this.destinoViagem = dto.getDestinoViagem();
         this.idRota = rota;
         this.idAssociacao = associacao;
         this.saida = dto.getSaida();

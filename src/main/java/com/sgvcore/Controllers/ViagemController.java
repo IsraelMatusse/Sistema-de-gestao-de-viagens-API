@@ -38,7 +38,7 @@ public class ViagemController {
     public ResponseEntity<ResponseAPI> listarTodasViagensDoSistema(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nomeRota") String filter,
+            @RequestParam(defaultValue = "destinoViagem") String filter,
             @RequestParam(defaultValue = "desc") String order
     ) {
         //definir a ordem
@@ -96,7 +96,7 @@ public class ViagemController {
     public ResponseEntity<ResponseAPI> listarViagensDoDiaPaginada(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nomeRota") String filter,
+            @RequestParam(defaultValue = "destinoViagem") String filter,
             @RequestParam(defaultValue = "desc") String order
     ) {
         // Definir o objeto de ordenação com base nos parâmetros de filtro

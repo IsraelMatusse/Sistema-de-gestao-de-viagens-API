@@ -54,7 +54,7 @@ public class AssociacaoController {
     public ResponseEntity<ResponseAPI> listarAssociacoesPorPaginacao(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "nomeRota") String filter,
+            @RequestParam(defaultValue = "designacao") String filter,
             @RequestParam(defaultValue = "desc") String order
     ) {
         Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
