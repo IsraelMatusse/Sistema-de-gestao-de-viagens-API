@@ -4,6 +4,7 @@ import com.sgvcore.DTOs.viaturaDTOs.ViacturaAssociarMotoristaDTO;
 import com.sgvcore.DTOs.viaturaDTOs.ViaturaCriarDTO;
 import com.sgvcore.Model.ResponseAPI;
 import com.sgvcore.exceptions.ContentAlreadyExists;
+import com.sgvcore.exceptions.ForbiddenException;
 import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.exceptions.NotOwner;
 import com.sgvcore.sevices.*;
@@ -42,13 +43,13 @@ public class ViaturaController {
     private MotoristaService motoristaService;
 
     @PostMapping("/adicionar")
-    public ResponseEntity<ResponseAPI> criarViacturas(@RequestBody @Valid ViaturaCriarDTO viaturaCriarDTO) throws NoSuchAlgorithmException, NotOwner, ModelNotFound, ContentAlreadyExists {
+    public ResponseEntity<ResponseAPI> criarViacturas(@RequestBody @Valid ViaturaCriarDTO viaturaCriarDTO) throws NoSuchAlgorithmException, NotOwner, ModelNotFound, ContentAlreadyExists, ForbiddenException {
         viaturaService.criar(viaturaCriarDTO);
         return ResponseEntity.status(201).body(new ResponseAPI(true, "201", "Viatura criada com sucesso!", null));
     }
 
     @PostMapping("/associar-motorista")
-    public ResponseEntity<ResponseAPI> associarViacturaMotorista(@RequestBody @Valid ViacturaAssociarMotoristaDTO dto) throws NotOwner, ContentAlreadyExists, ModelNotFound {
+    public ResponseEntity<ResponseAPI> associarViacturaMotorista(@RequestBody @Valid ViacturaAssociarMotoristaDTO dto) throws NotOwner, ContentAlreadyExists, ModelNotFound, ForbiddenException {
         motoristaViacturaService.criar(dto);
         return ResponseEntity.status(201).body(new ResponseAPI(true, "200", "Viactura e motorista Cadastrados com sucesso!", null));
     }

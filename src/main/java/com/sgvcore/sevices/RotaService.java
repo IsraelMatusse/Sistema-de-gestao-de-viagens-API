@@ -79,8 +79,8 @@ public class RotaService {
         return rotaRepo.existsByNomeRota(rota);
     }
 
-    public Rota buscarRotaPorDesignacao(String designacao) throws ModelNotFound {
-        return rotaRepo.findByNomeRota(designacao).orElseThrow(() -> new ModelNotFound("Rota nao encontrada!"));
+    public Rota buscarRotaPorDesignacao(String nomeRota) throws ModelNotFound {
+        return rotaRepo.findByNomeRota(nomeRota).orElseThrow(() -> new ModelNotFound("Rota nao encontrada!"));
     }
 
     public Long numeroRotas() throws NotOwner {

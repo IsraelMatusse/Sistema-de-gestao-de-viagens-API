@@ -3,13 +3,16 @@ package com.sgvcore.sevices;
 import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
 import com.sgvcore.DTOs.viajanteDTO.ViajanteRespostaDTO;
 import com.sgvcore.Model.*;
+import com.sgvcore.enums.FuncoesUsuarios;
 import com.sgvcore.exceptions.ContentAlreadyExists;
+import com.sgvcore.exceptions.ForbiddenException;
 import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.repository.ViagemRepo;
 import com.sgvcore.repository.ViagemViajanteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,45 +54,50 @@ public class ViagemViajanteService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public ViagemViajante criar(ViagemAssociarViajanteDTO dto) throws ModelNotFound, ContentAlreadyExists {
-        // validações de existência
-        Viagem viagem = viagemService.buscarPorCodigo(dto.getCodigoViagem());
-        Genero genero = generoService.buscarPorId(dto.getIdGenero());
-        Provincia provincia = provinciaService.buscarProvinciaporCodigo(dto.getCodigoProvincia());
-        Distrito distrito = distritoService.buscarDistritoPorCodigoEProvincia(dto.getCodigoDistrito(), provincia);
-        TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getIdTipoDocumento());
-        // Verificar a não existência dos objetos antes de criá-los
-        Boolean docExiste = documentoIdentificacaoService.existePorNumeroDocumento(dto.getNumeroDocumento());
-        if (docExiste) {
-            throw new ContentAlreadyExists("Documeto ja existe");
-        }
-        Boolean contExiste = contactoService.existePorMsisdn(dto.getMsisdn());
-        if (contExiste) {
-            throw new ContentAlreadyExists("Contacto ja existe");
-        }
-        Boolean cargaExiste = cargaService.existeCargaPorDesignacao(dto.getDesignacao());
-        if (cargaExiste) {
-            throw new ContentAlreadyExists("Carga ja existe");
-        }
-        // Criar salvar os objetos
-        try {
-            DocumentoIdentifiacacao novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
-            documentoIdentificacaoService.criar(novoDocumento);
+    public ViagemViajante criar(ViagemAssociarViajanteDTO dto) throws ModelNotFound, ContentAlreadyExists, ForbiddenException {
+        Usuario usuario = usuarioService.buscarUsuarioOnline();
+        List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
+        if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ASSOCIACAO.name())) {
+            // validações de existência
+            Viagem viagem = viagemService.buscarPorCodigo(dto.getCodigoViagem());
+            Genero genero = generoService.buscarPorId(dto.getIdGenero());
+            Provincia provincia = provinciaService.buscarProvinciaporCodigo(dto.getCodigoProvincia());
+            Distrito distrito = distritoService.buscarDistritoPorCodigoEProvincia(dto.getCodigoDistrito(), provincia);
+            TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getIdTipoDocumento());
+            // Verificar a não existência dos objetos antes de criá-los
+            Boolean docExiste = documentoIdentificacaoService.existePorNumeroDocumento(dto.getNumeroDocumento());
+            if (docExiste) {
+                throw new ContentAlreadyExists("Documeto ja existe");
+            }
+            Boolean contExiste = contactoService.existePorMsisdn(dto.getMsisdn());
+            if (contExiste) {
+                throw new ContentAlreadyExists("Contacto ja existe");
+            }
+            Boolean cargaExiste = cargaService.existeCargaPorDesignacao(dto.getDesignacao());
+            if (cargaExiste) {
+                throw new ContentAlreadyExists("Carga ja existe");
+            }
+            // Criar salvar os objetos
+            try {
+                DocumentoIdentifiacacao novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
+                documentoIdentificacaoService.criar(novoDocumento);
 
-            Contacto novoContacto = new Contacto(dto);
-            contactoService.criar(novoContacto);
+                Contacto novoContacto = new Contacto(dto);
+                contactoService.criar(novoContacto);
 
-            Carga novaCarga = new Carga(dto);
-            cargaService.criar(novaCarga);
+                Carga novaCarga = new Carga(dto);
+                cargaService.criar(novaCarga);
 
-            Viajante viajante = new Viajante(dto, genero, novaCarga, novoDocumento, provincia, distrito, novoContacto);
-            viajanteService.criar(viajante);
+                Viajante viajante = new Viajante(dto, genero, novaCarga, novoDocumento, provincia, distrito, novoContacto);
+                viajanteService.criar(viajante);
 
-            ViagemViajante viagemViajante = new ViagemViajante(viagem, viajante);
-            return viagemViajanteRepo.save(viagemViajante);
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao salvar o viajante");
+                ViagemViajante viagemViajante = new ViagemViajante(viagem, viajante);
+                return viagemViajanteRepo.save(viagemViajante);
+            } catch (Exception e) {
+                throw new RuntimeException("Erro ao salvar o viajante");
+            }
         }
+        throw new ForbiddenException("Nao possui acesso a esse recurso");
     }
 
     public List<ViagemViajante> listar() {

@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface RotaRepo extends JpaRepository<Rota, Long> {
     Optional<Rota> findByCodigo(String codigoRota);
 
-    Optional<Rota> findByNomeRota(String rota);
+    Optional<Rota> findByNomeRota(String nomeRota);
 
-    Boolean existsByNomeRota(String rota);
+    Boolean existsByNomeRota(String nomeRota);
 }

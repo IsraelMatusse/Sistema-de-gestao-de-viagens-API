@@ -3,10 +3,9 @@ package com.sgvcore.sevices;
 import com.sgvcore.DTOs.proprietarioDTOs.ProprietarioCriarDTO;
 import com.sgvcore.Model.*;
 import com.sgvcore.enums.FuncoesUsuarios;
-import com.sgvcore.exceptions.ContentAlreadyExists;
-import com.sgvcore.exceptions.ModelNotFound;
-import com.sgvcore.exceptions.NotOwner;
+import com.sgvcore.exceptions.*;
 import com.sgvcore.repository.ProprietarioRepo;
+import com.sgvcore.utils.PhoneNumberValidator;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,37 +41,41 @@ public class ProprietarioService {
     private UsuarioService usuarioService;
     @Autowired
     private FuncaoUsuarioService funcaoUsuarioService;
+    @Autowired
+    private PhoneNumberValidator phoneNumberValidator;
 
-    public Proprietario criar(ProprietarioCriarDTO dto) throws ModelNotFound, ContentAlreadyExists, NotOwner {
+    public Proprietario criar(ProprietarioCriarDTO dto) throws ModelNotFound, ContentAlreadyExists, NotOwner, UnprocessableEntity, ForbiddenException {
         //verificar se usuario tem perfil de terminal, administrador
         Usuario usuario = usuarioService.buscarUsuarioOnline();
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
-        if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ADMIN.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name())) {
-
+        if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name())) {
+            Boolean propExist = existePorNuit(dto.getNuit());
+            if (propExist) {
+                throw new ContentAlreadyExists("Proprietario ja esta cadastrado");
+            }
             //verificar existencia de objectos
             Genero genero = generoService.buscarPorId(dto.getIdGenero());
-            System.out.println(genero);
             TipoProprietario tipoProprietario = tipoProprietarioService.buscarPorCodigo(dto.getCodigoTipoProprietario());
-            System.out.println(tipoProprietario);
             Provincia provincia = provinciaService.buscarProvinciaporCodigo(dto.getCodigoProvincia());
-            System.out.println(provincia);
             Distrito distrito = distritoService.buscarDistritoPorCodigoEProvincia(dto.getCodigoDistrito(), provincia);
-            System.out.println(distrito);
             TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getIdTipoDocumento());
-            System.out.println(tipoDocumentoIdentificacao);
             Boolean contExiste = contactoService.existePorMsisdn(dto.getMsidsn());
-            System.out.println(contExiste);
             if (contExiste) {
                 throw new ContentAlreadyExists("O Contacto ja existe");
             }
+            boolean prefixMoz = phoneNumberValidator.validarTelefoneMocambicano(dto.getMsidsn());
+            if (!prefixMoz) {
+                throw new UnprocessableEntity("O contacto inserdio nao e mocambicano");
+            }
             Contacto novoContacto = new Contacto(dto);
-            System.out.println(novoContacto);
             Boolean docExiste = documentoIdentificacaoService.existePorNumeroDocumento(dto.getNumeroDocumento());
             if (docExiste) {
                 throw new ContentAlreadyExists("documento ja existe");
             }
-
             DocumentoIdentifiacacao novoDocumento;
+            if (dto.getDataValidade().before(new Date())) {
+                throw new UnprocessableEntity("Documento expirado");
+            }
             Proprietario novoProprietario = null;
             try {
                 novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
@@ -88,18 +92,18 @@ public class ProprietarioService {
             }
             return novoProprietario;
         } else {
-            throw new NotOwner("Nao possui acesso a esse recurso");
+            throw new ForbiddenException("Nao possui acesso a esse recurso");
         }
     }
 
-    public List<Proprietario> listar() throws NotOwner {
+    public List<Proprietario> listar() throws NotOwner, ForbiddenException {
         //verificar se usuario tem perfil de terminal, administrador
         Usuario usuario = usuarioService.buscarUsuarioOnline();
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
         if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ADMIN.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ASSOCIACAO.name())) {
             return proprietarioRepo.findAll();
         }
-        throw new NotOwner("Nao possui acesso a esse recurso");
+        throw new ForbiddenException("Nao possui acesso a esse recurso");
     }
 
     public Proprietario buscarPorId(Long id) {
@@ -118,13 +122,16 @@ public class ProprietarioService {
         throw new NotOwner("Nao possui acesso a esse recurso");
     }
 
-    public Long numeroProprietarios() throws NotOwner {
+    public Long numeroProprietarios() throws ForbiddenException {
         Usuario usuario = usuarioService.buscarUsuarioOnline();
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
         if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ADMIN.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name())) {
             return proprietarioRepo.count();
         }
-        throw new NotOwner("Nao possui acesso a esse recurso");
+        throw new ForbiddenException("Nao possui acesso a esse recurso");
+    }
 
+    public Boolean existePorNuit(String nuit) {
+        return proprietarioRepo.existsByNuit(nuit);
     }
 }

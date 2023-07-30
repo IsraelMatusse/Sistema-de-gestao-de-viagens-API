@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -12,8 +11,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CargaCriarDTO {
 
-    @NotNull
+    @NotNull(message = "A designacao da carga nao pode ser nula")
     private String designacao;
-    @NotNull
+    @NotNull(message = "O peso da carga nao pode ser nula")
     private Long peso;
 }

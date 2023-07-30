@@ -11,6 +11,7 @@ import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.exceptions.NotOwner;
 import com.sgvcore.sevices.AssociacaoService;
+import com.sgvcore.sevices.FuncaoUsuarioService;
 import com.sgvcore.sevices.UsuarioService;
 import com.sgvcore.sevices.ViaturaService;
 import lombok.RequiredArgsConstructor;
@@ -35,11 +36,22 @@ public class AssociacaoController {
     private final AssociacaoService associacaoService;
     private final ViaturaService viaturaService;
     private final UsuarioService usuarioService;
+    private final FuncaoUsuarioService funcaoUsuarioService;
 
     //cadastrar uma associacoa e as suas rotas
     @PostMapping("/adicionar")
     public ResponseEntity<ResponseAPI> crarAssociacoes(@Valid @RequestBody AssociacaoCriarDTO dto) throws ContentAlreadyExists, ModelNotFound, NotOwner, NoSuchAlgorithmException {
-        associacaoService.criarAssociacao(dto);
+        Associacao associacao = associacaoService.criarAssociacao(dto);
+
+        Usuario usuario = new Usuario();
+        usuario.setUsername(dto.getEmailassociacao());
+        usuario.setPassword(dto.getMsisdn());
+        Usuario associacaoAuth = usuarioService.criarUsuario(usuario);
+        // Dar role de docente
+        funcaoUsuarioService.adicionarFuncaoAUsuario(dto.getEmailassociacao(), "ROLE_ASSOCIACAO");
+        // Atualizar docente
+        associacao.setUsuario(associacaoAuth);
+        associacaoService.criar(associacao);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Associacao cadastrada com sucesso", null));
     }
 

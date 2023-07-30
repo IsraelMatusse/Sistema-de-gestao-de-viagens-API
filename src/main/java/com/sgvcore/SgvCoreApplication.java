@@ -7,6 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -23,6 +26,7 @@ public class SgvCoreApplication {
     public static void main(String[] args) {
         SpringApplication.run(SgvCoreApplication.class, args);
     }
+
 
     private void criarFuncoesDeUsuarioPadrao(FuncaoUsuarioService funcaoUsuarioService) {
         funcaoUsuarioService.criarFuncao(new FuncaoDoUsuario(null, "ROLE_ADMIN"));
@@ -274,5 +278,19 @@ public class SgvCoreApplication {
         };
     }
 
+    @Bean
+    public javax.validation.Validator localValidatorFactoryBean() {
+        return new LocalValidatorFactoryBean();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**");
+            }
+        };
+    }
 
 }

@@ -44,7 +44,7 @@ public class Viagem extends AccoesDoSistema {
         this.destinoViagem = dto.getDestinoViagem();
         this.idRota = rota;
         this.idAssociacao = associacao;
-        this.saida = dto.getSaida();
+        this.saida = new Date();
         this.prevChegada = dto.getPrevChegada();
         this.idViactura = viactura;
         this.idMotorista = motorista;

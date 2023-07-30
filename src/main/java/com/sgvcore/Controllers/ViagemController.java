@@ -4,10 +4,7 @@ import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
 import com.sgvcore.DTOs.viagemDTO.ViagemCriarDTO;
 import com.sgvcore.Model.ResponseAPI;
 import com.sgvcore.Model.Viagem;
-import com.sgvcore.exceptions.BadRequest;
-import com.sgvcore.exceptions.ContentAlreadyExists;
-import com.sgvcore.exceptions.ModelNotFound;
-import com.sgvcore.exceptions.UnprocessableEntity;
+import com.sgvcore.exceptions.*;
 import com.sgvcore.sevices.ViagemService;
 import com.sgvcore.sevices.ViagemViajanteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,16 +52,16 @@ public class ViagemController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ASSOCIACAO', 'ROLE_TERMINAL')")
+    @PreAuthorize("hasRole('ROLE_ASSOCIACAO')")
     @PostMapping("/adicionar")
-    public ResponseEntity<ResponseAPI> criarViagem(@RequestBody @Valid ViagemCriarDTO dto) throws NoSuchAlgorithmException, ModelNotFound, BadRequest, ContentAlreadyExists, UnprocessableEntity {
+    public ResponseEntity<ResponseAPI> criarViagem(@RequestBody @Valid ViagemCriarDTO dto) throws NoSuchAlgorithmException, ModelNotFound, BadRequest, ContentAlreadyExists, UnprocessableEntity, ForbiddenException {
         viagemService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Viagem criada com sucesso!", null));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ASSOCIACAO', 'ROLE_TERMINAL')")
+    @PreAuthorize("hasAnyRole('ROLE_ASSOCIACAO')")
     @PostMapping("/associar-viajante")
-    public ResponseEntity<ResponseAPI> associarViajante(@RequestBody ViagemAssociarViajanteDTO dto) throws ModelNotFound, ContentAlreadyExists {
+    public ResponseEntity<ResponseAPI> associarViajante(@RequestBody ViagemAssociarViajanteDTO dto) throws ModelNotFound, ContentAlreadyExists, ForbiddenException {
         viagemViajanteService.criar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Viajante associado com sucesso!", null));
     }

@@ -1,9 +1,10 @@
 package com.sgvcore.DTOs.proprietarioDTOs;
 
-import com.sgvcore.Model.*;
+import com.sgvcore.validators.constraints.Nuit;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -19,9 +20,10 @@ public class ProprietarioCriarDTO {
     private Long anocriacao;
     @Size(min = 9, max = 9)
     @NotBlank(message = "O nuit nao pode ser nulo")
+    @Nuit
     private String nuit;
     @NotBlank(message = "O codigo da provincia nao pode ser nula")
-    private String  codigoProvincia;
+    private String codigoProvincia;
     @NotBlank(message = "O codigo do sistrito nao pode ser nulo")
     private String codigoDistrito;
     @NotBlank(message = "O numero do documento nao pode ser nulo")
@@ -31,6 +33,7 @@ public class ProprietarioCriarDTO {
     @NotNull(message = "O tipo de documento nao pode ser nulo")
     private Long idTipoDocumento;
     @NotBlank(message = "Contacto nao pode ser nulo")
+    @Size(min = 9, max = 9)
     private String msidsn;
     @NotBlank(message = "Codigo de proprietario nao pode ser nulo")
     private String codigoTipoProprietario;

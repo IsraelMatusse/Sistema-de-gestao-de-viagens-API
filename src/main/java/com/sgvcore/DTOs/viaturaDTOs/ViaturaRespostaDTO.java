@@ -14,14 +14,14 @@ public class ViaturaRespostaDTO {
     private String cor;
     private String marca;
     private String modelo;
-    private Long lotacao;
+    private int lotacao;
     private Long pesobruto;
     private String tipo;
-    private Long anofabrico;
+    private int anofabrico;
     private Long quilometragem;
     private String combustivel;
     private String nrmotor;
-    private Long nrportas;
+    private int nrportas;
     private String designacaoRota;
     private String designacaoAssociacao;
     private String nomeProprietario;

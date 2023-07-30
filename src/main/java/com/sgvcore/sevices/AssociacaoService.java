@@ -11,8 +11,6 @@ import com.sgvcore.exceptions.NotOwner;
 import com.sgvcore.repository.AssociacaoRepo;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -51,7 +49,7 @@ public class AssociacaoService {
         //verificar se usuario online e administrador
         Usuario usuario = usuarioService.buscarUsuarioOnline();
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
-        if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ADMIN.name())) {
+        if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ADMIN.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name())) {
             //verificar se contacto ja existe
             Boolean contExiste = contactoService.existePorMsisdn(dto.getMsisdn());
             if (contExiste) {
@@ -66,8 +64,7 @@ public class AssociacaoService {
             Licenca novaLicenca = new Licenca(dto, tipopLicenca);
             Associacao novaAssociao = null;
             try {
-                licencaService.criar(novaLicenca);
-                contactoService.criar(novoContacto);
+
                 if (!dto.getRotas().isEmpty()) {
                     for (int i = 0; i < dto.getRotas().size(); i++) {
                         Boolean existe = rotaService.existePorDesignacao(dto.getRotas().get(i));
@@ -75,6 +72,8 @@ public class AssociacaoService {
                             throw new ModelNotFound("Rota nao encontrda");
                         }
                     }
+                    licencaService.criar(novaLicenca);
+                    contactoService.criar(novoContacto);
                     novaAssociao = new Associacao(dto, novoContacto, novaLicenca);
                     associacaoRepo.save(novaAssociao);
 
@@ -84,13 +83,10 @@ public class AssociacaoService {
                         associacaoRotaService.criar(novaAssociacaoRota);
                     }
                 }
-            } catch (HibernateException ex) {
+            } catch (HibernateException | NoSuchAlgorithmException ex) {
                 throw new RuntimeException("Erro ao cadastrar a associacao");
-            } catch (DataIntegrityViolationException ex) {
-                throw new ContentAlreadyExists("Associacao ja existe");
-            } catch (DataAccessException | NoSuchAlgorithmException ex) {
-                throw new RuntimeException("Erro ao acessar a base de dados");
             }
+
             return novaAssociao;
         } else {
             throw new NotOwner("Nao possui acesso a este recurso");

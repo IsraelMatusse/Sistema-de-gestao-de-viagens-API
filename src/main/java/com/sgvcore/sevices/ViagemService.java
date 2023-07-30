@@ -4,10 +4,7 @@ import com.sgvcore.DTOs.viagemDTO.ViagemCriarDTO;
 import com.sgvcore.DTOs.viagemDTO.ViagemRespostaDTO;
 import com.sgvcore.Model.*;
 import com.sgvcore.enums.FuncoesUsuarios;
-import com.sgvcore.exceptions.BadRequest;
-import com.sgvcore.exceptions.ContentAlreadyExists;
-import com.sgvcore.exceptions.ModelNotFound;
-import com.sgvcore.exceptions.UnprocessableEntity;
+import com.sgvcore.exceptions.*;
 import com.sgvcore.repository.ViagemRepo;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,31 +40,39 @@ public class ViagemService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Viagem criar(ViagemCriarDTO dto) throws BadRequest, ModelNotFound, UnprocessableEntity, ContentAlreadyExists {
+    public Viagem criar(ViagemCriarDTO dto) throws BadRequest, ModelNotFound, UnprocessableEntity, ContentAlreadyExists, ForbiddenException {
         //verificar permissoes do usuario para aceder a  funcionalidade
         Usuario usuario = usuarioService.buscarUsuarioOnline();
+        System.out.println(usuario);
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
-        if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ASSOCIACAO.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name()))
+        System.out.println(funcaoDoUsuario);
+        if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ASSOCIACAO.name())) {
             // verificar data de partida e chegada
             if (dto.getSaida().after(dto.getPrevChegada()) || dto.getSaida().equals(dto.getPrevChegada())) {
                 throw new UnprocessableEntity("Verique as datas");
             }
-        //verificar a existencia da rota e da viatura
-        Rota rota = rotaService.buscarRotaPorId(dto.getIdRota());
-        Associacao associacao = associacaoService.buscarPorCodigo(dto.getCodigoAssociacao());
-        //buscar viatura da associacao pelo codigo da viatura a a associacao
-        Viatura viatura = viaturaService.buscarViaturaPelaAssociacaoECodigoViatura(associacao, dto.getCodigoViatura());
-        Motorista motorista = motoristaViacturaService.buscarMotoristaPeloCodigoMotoristaEViatura(viatura, dto.getCodigoMotorista());
-        try {
-            Viagem novaViagem = new Viagem(dto, rota, associacao, viatura, motorista);
-            return viagemRepo.save(novaViagem);
-        } catch (DataIntegrityViolationException ex) {
-            throw new ContentAlreadyExists("Viagem ja existe");
-        } catch (HibernateException ex) {
-            throw new RuntimeException("Erro ao salvar a viagem");
-        } catch (DataAccessException | NoSuchAlgorithmException ex) {
-            throw new RuntimeException("Erro ao aceder a base de dados");
+            //verificar a existencia da rota e da viatura
+            Rota rota = rotaService.buscarRotaPorId(dto.getIdRota());
+            System.out.println(rota);
+            Associacao associacao = associacaoService.buscarAssociacaoPorUsuarioOnline(usuario);
+            System.out.println(associacao);
+            //buscar viatura da associacao pelo codigo da viatura a a associacao
+            Viatura viatura = viaturaService.buscarViaturaPelaAssociacaoECodigoViatura(associacao, dto.getCodigoViatura());
+            System.out.println(viatura);
+            Motorista motorista = motoristaViacturaService.buscarMotoristaPeloCodigoMotoristaEViatura(viatura, dto.getCodigoMotorista());
+            System.out.println(motorista);
+            try {
+                Viagem novaViagem = new Viagem(dto, rota, associacao, viatura, motorista);
+                return viagemRepo.save(novaViagem);
+            } catch (DataIntegrityViolationException ex) {
+                throw new ContentAlreadyExists("Viagem ja existe");
+            } catch (HibernateException ex) {
+                throw new RuntimeException("Erro ao salvar a viagem");
+            } catch (DataAccessException | NoSuchAlgorithmException ex) {
+                throw new RuntimeException("Erro ao aceder a base de dados");
+            }
         }
+        throw new ForbiddenException("Nao possuir acesso a esse recurso");
     }
 
     public List<ViagemRespostaDTO> listar() {

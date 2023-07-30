@@ -1,12 +1,13 @@
 package com.sgvcore.DTOs.viaturaDTOs;
 
-import com.sgvcore.Model.Associacao;
-import com.sgvcore.Model.Rota;
+import com.sgvcore.enums.TipoCombustivel;
+import com.sgvcore.enums.TipoViatura;
+import com.sgvcore.validators.constraints.EnumValidation;
+import com.sgvcore.validators.constraints.Matricula;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -14,7 +15,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ViaturaCriarDTO {
-    @NotBlank
+    @NotBlank(message = "Matricula nao pode ser nula")
+    @Matricula(message = "Matricula invalida")
     private String matricula;
     @NotBlank
     private String cor;
@@ -23,21 +25,23 @@ public class ViaturaCriarDTO {
     @NotBlank
     private String modelo;
     @NotNull
-    private Long lotacao;
+    private int lotacao;
     @NotNull
     private Long pesobruto;
     @NotBlank
+    @EnumValidation(message = "Tipo de viatura invalido", enumClass = TipoViatura.class)
     private String tipo;
     @NotNull
-    private Long anofabrico;
+    private int anofabrico;
     @NotNull
     private Long quilometragem;
-    @NotBlank
+    @NotBlank(message = "O combustivel nao pode ser nulo")
+    @EnumValidation(message = "Insira um combustivel valido", enumClass = TipoCombustivel.class)
     private String combustivel;
     @NotBlank
     private String nrmotor;
     @NotNull
-    private Long nrportas;
+    private int nrportas;
     @NotBlank
     private String codigoRota;
     @NotBlank

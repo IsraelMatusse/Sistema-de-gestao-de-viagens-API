@@ -2,9 +2,7 @@ package com.sgvcore.Controllers;
 
 import com.sgvcore.DTOs.proprietarioDTOs.ProprietarioCriarDTO;
 import com.sgvcore.Model.ResponseAPI;
-import com.sgvcore.exceptions.ContentAlreadyExists;
-import com.sgvcore.exceptions.ModelNotFound;
-import com.sgvcore.exceptions.NotOwner;
+import com.sgvcore.exceptions.*;
 import com.sgvcore.sevices.ProprietarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,13 +19,13 @@ public class ProprietarioController {
     private final ProprietarioService proprietarioService;
 
     @PostMapping("/adicionar")
-    public ResponseEntity<ResponseAPI> criarProprietario(@RequestBody ProprietarioCriarDTO proprietarioCriarDTO) throws NoSuchAlgorithmException, NotOwner, ContentAlreadyExists, ModelNotFound {
+    public ResponseEntity<ResponseAPI> criarProprietario(@RequestBody ProprietarioCriarDTO proprietarioCriarDTO) throws NoSuchAlgorithmException, NotOwner, ContentAlreadyExists, ModelNotFound, ForbiddenException, UnprocessableEntity {
         proprietarioService.criar(proprietarioCriarDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Proprietario cadastrado com sucesso", null));
     }
 
     @GetMapping
-    public ResponseEntity<ResponseAPI> listarProprietarios() throws NotOwner {
+    public ResponseEntity<ResponseAPI> listarProprietarios() throws NotOwner, ForbiddenException {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Proprietarios do sistema", proprietarioService.listar()));
     }
 
