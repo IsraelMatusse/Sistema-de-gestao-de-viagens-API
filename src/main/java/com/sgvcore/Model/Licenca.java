@@ -1,7 +1,7 @@
 package com.sgvcore.Model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sgvcore.DTOs.associacaoDTOs.AssociacaoCriarDTOs;
+import com.sgvcore.DTOs.associacaoDTOs.AssociacaoCriarDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,9 +13,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Licenca extends AccoesDoSistema{
+public class Licenca extends AccoesDoSistema {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String numeroLicenca;
@@ -25,10 +25,11 @@ public class Licenca extends AccoesDoSistema{
     @ManyToOne
     private TipopLicenca idLicenca;
 
-    public Licenca(AssociacaoCriarDTOs licenca, TipopLicenca tipopLicenca){
-        this.dataValidade=licenca.getDataValidade();
-        this.numeroLicenca=licenca.getNumeroLicenca();
-        this.idLicenca=tipopLicenca;
+    public Licenca(AssociacaoCriarDTO licenca, TipopLicenca tipopLicenca) {
+        this.dataValidade = licenca.getDataValidade();
+        this.numeroLicenca = licenca.getNumeroLicenca();
+        this.idLicenca = tipopLicenca;
 
     }
+
 }

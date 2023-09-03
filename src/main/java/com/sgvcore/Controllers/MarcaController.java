@@ -1,24 +1,33 @@
 package com.sgvcore.Controllers;
 
+import com.sgvcore.DTOs.marcaDTOs.MarcaCriarDTO;
 import com.sgvcore.Model.ResponseAPI;
 import com.sgvcore.sevices.MarcaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.xml.ws.Response;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/marcas")
+@RequiredArgsConstructor
 public class MarcaController {
 
-    @Autowired
-    private MarcaService marcaService;
+    private final MarcaService marcaService;
 
     @GetMapping
-    public ResponseEntity<ResponseAPI> listar(){
-        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Marcas do sistema", marcaService.listar()));
+    public ResponseEntity<ResponseAPI> listar() {
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Marcas do sistema", marcaService.listar()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseAPI> buscarModeloPorId(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "marca de carro", marcaService));
+    }
+
+    @PostMapping("/adicionar")
+    public ResponseEntity<ResponseAPI> criarUmaMarca(MarcaCriarDTO dto) {
+        marcaService.criarMarca(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Marca criado com sucesso", null));
     }
 }

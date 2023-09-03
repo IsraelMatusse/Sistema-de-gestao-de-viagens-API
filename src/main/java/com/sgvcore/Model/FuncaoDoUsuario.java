@@ -1,9 +1,6 @@
 package com.sgvcore.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -22,5 +19,6 @@ public class FuncaoDoUsuario implements Serializable {
     @NotNull(message = "O nome da Role não pode ser nulo!")
     @Size(min = 3, message = "A Role deve ter no minimo 3 digitos")
     @Column(unique = true)
+    @Getter
     private String name;
 }

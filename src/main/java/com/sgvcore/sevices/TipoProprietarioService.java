@@ -2,6 +2,7 @@ package com.sgvcore.sevices;
 
 import com.sgvcore.DTOs.tipoProprietarioDTOs.TipoProprietarioRespostaDTO;
 import com.sgvcore.Model.TipoProprietario;
+import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.repository.TipoProprietariRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,23 +24,17 @@ public class TipoProprietarioService {
         return tipoProprietariRepo.findAll().stream().map(tipoProprietario -> new TipoProprietarioRespostaDTO(tipoProprietario)).collect(Collectors.toList());
     }
 
-    public TipoProprietarioRespostaDTO buscarPorDesignacao(String designacao) {
-        TipoProprietario tipoProprietario = tipoProprietariRepo.findByDesignacao(designacao);
-        if (tipoProprietario != null) {
+    public TipoProprietarioRespostaDTO buscarPorDesignacao(String designacao) throws ModelNotFound {
+        TipoProprietario tipoProprietario = tipoProprietariRepo.findByDesignacao(designacao).orElseThrow(() -> new ModelNotFound("Tipo de proprietario nao encontrado"));
         return new TipoProprietarioRespostaDTO(tipoProprietario);
-        }
-        return null;
     }
 
-    public TipoProprietarioRespostaDTO buscarPorCodigoRes(String codigo){
-        TipoProprietario tipoProprietario= tipoProprietariRepo.findByCodigo(codigo);
-        if(tipoProprietario !=null){
-            return new TipoProprietarioRespostaDTO(tipoProprietario);
-        }
-        return null;
+    public TipoProprietarioRespostaDTO buscarPorCodigoRes(String codigo) throws ModelNotFound {
+        TipoProprietario tipoProprietario = tipoProprietariRepo.findByCodigo(codigo).orElseThrow(() -> new ModelNotFound("Tipo de proprietario nao encontrado"));
+        return new TipoProprietarioRespostaDTO(tipoProprietario);
     }
 
-    public TipoProprietario buscarPorCodigo(String codigo){
-        return tipoProprietariRepo.findByCodigo(codigo);
+    public TipoProprietario buscarPorCodigo(String codigo) throws ModelNotFound {
+        return tipoProprietariRepo.findByCodigo(codigo).orElseThrow(() -> new ModelNotFound("Tipo de proprietario nao encontrado"));
     }
 }

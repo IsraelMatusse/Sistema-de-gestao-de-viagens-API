@@ -1,5 +1,7 @@
 package com.sgvcore.Controllers;
 
+
+
 import com.sgvcore.DTOs.usuarioDTOs.UsuarioCriarDTO;
 import com.sgvcore.DTOs.usuarioDTOs.UsuarioLoginDTO;
 import com.sgvcore.Model.ResponseAPI;
@@ -20,13 +22,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -44,7 +46,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseAPI> authenticate(@RequestBody @Valid UsuarioLoginDTO request){
-        System.out.println("In");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
@@ -62,15 +63,11 @@ public class AuthController {
         if (usuarioService.usuarioExistePorUsername(userDTO.getUsername())) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseAPI(false, "422", "Já existe um usuário com esse username!", null));
         }
-        if (usuarioService.usuarioExistePorEmail(userDTO.getEmail())){
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseAPI(false, "422", "Já existe um usuário com esse email!", null));
-        }
         Usuario usuario = new Usuario();
         BeanUtils.copyProperties(userDTO, usuario) ;
-        usuario.setEmail(userDTO.getUsername());
         try {
             usuarioService.criarUsuario(usuario);
-            funcaoUsuarioService.addRoleToUser(usuario.getUsername(), "ROLE_GUEST");
+            funcaoUsuarioService.adicionarFuncaoAUsuario(usuario.getUsername(), "ROLE_GUEST");
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
         }

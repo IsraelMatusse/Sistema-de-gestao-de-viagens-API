@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface ProprietarioRepo extends JpaRepository<Proprietario, Long> {
 
     Proprietario findByCodigo(String codigoProprietario);
+
+    Boolean existsByNuit(String nuit);
 }

@@ -4,6 +4,7 @@ import com.sgvcore.Model.Viagem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.Date;
 
 @Data
@@ -11,15 +12,15 @@ import java.util.Date;
 @NoArgsConstructor
 public class ViagemRespostaDTO {
 
-    private String destino_viagem;
+    private String destinoViagem;
     private Date saida;
-    private Date prev_chegada;
+    private Date prevChegada;
     private String codigoViagem;
 
-    public ViagemRespostaDTO(Viagem viagem){
-        this.codigoViagem=viagem.getCodigo();
-        this.destino_viagem=viagem.getDestino_viagem();
-        this.prev_chegada=viagem.getPrevChegada();
-        this.saida=viagem.getSaida();
+    public ViagemRespostaDTO(Viagem viagem) {
+        this.codigoViagem = viagem.getCodigo();
+        this.destinoViagem = viagem.getDestinoViagem();
+        this.prevChegada = viagem.getPrevChegada();
+        this.saida = viagem.getSaida();
     }
 }

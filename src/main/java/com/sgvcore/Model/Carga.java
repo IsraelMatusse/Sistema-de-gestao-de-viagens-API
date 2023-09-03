@@ -15,31 +15,32 @@ import java.security.NoSuchAlgorithmException;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Carga {
+public class Carga extends AccoesDoSistema {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String designacao;
-    @Column(nullable=false)
+    @Column(nullable = false)
     private Long peso;
     @Column
     private String codigoCarga;
 
     public Carga(CargaCriarDTO dto) throws NoSuchAlgorithmException {
-        this.designacao=dto.getDesignacao();
-        this.peso=dto.getPeso();
-        this.codigoCarga= GeneratePin.generateStringPin();
+        this.designacao = dto.getDesignacao();
+        this.peso = dto.getPeso();
+        this.codigoCarga = GeneratePin.generateStringPin();
     }
+
     public Carga(ViajanteCriarDTO dto) throws NoSuchAlgorithmException {
-        this.designacao=dto.getDesignacao();
-        this.peso=dto.getPeso();
-        this.codigoCarga= GeneratePin.generateStringPin();
+        this.designacao = dto.getDesignacao();
+        this.peso = dto.getPeso();
+        this.codigoCarga = GeneratePin.generateStringPin();
     }
 
     public Carga(ViagemAssociarViajanteDTO dto) {
-        this.designacao=dto.getDesignacao();
-        this.peso=dto.getPeso();
+        this.designacao = dto.getDesignacao();
+        this.peso = dto.getPeso();
     }
 }

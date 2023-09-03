@@ -19,38 +19,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class
 ViacturaAssociarMotoristaDTO {
-
-    @Size(min=8, max=8)
     @NotBlank
-    private String matricula;
-    @NotBlank
-    private String cor;
-    @NotBlank
-    private String marca;
-    @NotBlank
-    private String modelo;
-    @NotNull
-    private Long lotacao;
-    @NotNull
-    private Long pesobruto;
-    @NotBlank
-    private String tipo;
-    @NotNull
-    private Long anofabrico;
-    @NotNull
-    private Long quilometragem;
-    @NotBlank
-    private String combustivel;
-    @NotBlank
-    private String nrmotor;
-    @NotNull
-    private Long nrPortas;
-    @NotBlank
-    private String codigoRota;
-    @NotBlank
-    private String codigoAssociacao;
-    @NotBlank
-    private String codigoProprietario;
+    private String codigoViatura;
     @NotBlank
     private String nome;
     @NotBlank

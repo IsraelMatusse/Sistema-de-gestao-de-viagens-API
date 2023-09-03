@@ -27,8 +27,6 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true, nullable = false)
-    private String email;
-    @Column(unique = true, nullable = false)
     private String username;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
@@ -63,7 +61,7 @@ public class Usuario implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        for (var r: this.funcoes){
+        for (FuncaoDoUsuario r: this.funcoes){
             var sga = new SimpleGrantedAuthority(r.getName());
             authorities.add(sga);
         }

@@ -1,6 +1,6 @@
 package com.sgvcore.Model;
 
-import com.sgvcore.DTOs.associacaoDTOs.AssociacaoCriarDTOs;
+import com.sgvcore.DTOs.associacaoDTOs.AssociacaoCriarDTO;
 import com.sgvcore.utils.GeneratePin;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,25 +13,31 @@ import java.security.NoSuchAlgorithmException;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Associacao {
+public class Associacao extends AccoesDoSistema {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column
     private String designacao;
     @Column
     private String emailassociacao;
+    @Column
+    private String codigo;
     @ManyToOne
     private Contacto idContacto;
     @ManyToOne
     private Licenca idLicenca;
-    private String codigo;
+    @ManyToOne
+    private Usuario usuario;
 
-    public Associacao(AssociacaoCriarDTOs dto, Contacto contacto, Licenca licenca) throws NoSuchAlgorithmException {
-        this.codigo= GeneratePin.generateStringPin();
-        this.designacao=dto.getDesignacao();
-        this.idContacto=contacto;
-        this.idLicenca=licenca;
-        this.emailassociacao=dto.getEmailassociacao();
+
+    public Associacao(AssociacaoCriarDTO dto, Contacto contacto, Licenca licenca) throws NoSuchAlgorithmException {
+        this.codigo = GeneratePin.generateStringPin();
+        this.designacao = dto.getDesignacao();
+        this.idContacto = contacto;
+        this.idLicenca = licenca;
+        this.emailassociacao = dto.getEmailassociacao();
     }
+
+
 }

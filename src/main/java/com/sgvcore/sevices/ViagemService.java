@@ -1,13 +1,23 @@
 package com.sgvcore.sevices;
 
+import com.sgvcore.DTOs.viagemDTO.ViagemCriarDTO;
 import com.sgvcore.DTOs.viagemDTO.ViagemRespostaDTO;
-import com.sgvcore.DTOs.viajanteDTO.ViajanteRespostaDTO;
-import com.sgvcore.Model.Viagem;
+import com.sgvcore.Model.*;
+import com.sgvcore.enums.FuncoesUsuarios;
+import com.sgvcore.exceptions.*;
 import com.sgvcore.repository.ViagemRepo;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.stylesheets.LinkStyle;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,30 +27,87 @@ public class ViagemService {
 
     @Autowired
     private ViagemRepo viagemRepo;
+    @Autowired
+    private RotaService rotaService;
+    @Autowired
+    private AssociacaoService associacaoService;
+    @Autowired
+    private MotoristaService motoristaService;
+    @Autowired
+    private ViaturaService viaturaService;
+    @Autowired
+    private MotoristaViacturaService motoristaViacturaService;
+    @Autowired
+    private UsuarioService usuarioService;
 
-    public Viagem criar(Viagem viagem){
-        return  viagemRepo.save(viagem);
+    public Viagem criar(ViagemCriarDTO dto) throws BadRequest, ModelNotFound, UnprocessableEntity, ContentAlreadyExists, ForbiddenException {
+        //verificar permissoes do usuario para aceder a  funcionalidade
+        Usuario usuario = usuarioService.buscarUsuarioOnline();
+        System.out.println(usuario);
+        List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
+        System.out.println(funcaoDoUsuario);
+        if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ASSOCIACAO.name())) {
+            // verificar data de partida e chegada
+            if (dto.getSaida().after(dto.getPrevChegada()) || dto.getSaida().equals(dto.getPrevChegada())) {
+                throw new UnprocessableEntity("Verique as datas");
+            }
+            //verificar a existencia da rota e da viatura
+            Rota rota = rotaService.buscarRotaPorId(dto.getIdRota());
+            System.out.println(rota);
+            Associacao associacao = associacaoService.buscarAssociacaoPorUsuarioOnline(usuario);
+            System.out.println(associacao);
+            //buscar viatura da associacao pelo codigo da viatura a a associacao
+            Viatura viatura = viaturaService.buscarViaturaPelaAssociacaoECodigoViatura(associacao, dto.getCodigoViatura());
+            System.out.println(viatura);
+            Motorista motorista = motoristaViacturaService.buscarMotoristaPeloCodigoMotoristaEViatura(viatura, dto.getCodigoMotorista());
+            System.out.println(motorista);
+            try {
+                Viagem novaViagem = new Viagem(dto, rota, associacao, viatura, motorista);
+                return viagemRepo.save(novaViagem);
+            } catch (DataIntegrityViolationException ex) {
+                throw new ContentAlreadyExists("Viagem ja existe");
+            } catch (HibernateException ex) {
+                throw new RuntimeException("Erro ao salvar a viagem");
+            } catch (DataAccessException | NoSuchAlgorithmException ex) {
+                throw new RuntimeException("Erro ao aceder a base de dados");
+            }
+        }
+        throw new ForbiddenException("Nao possuir acesso a esse recurso");
     }
-    public List<ViagemRespostaDTO> listar(){
+
+    public List<ViagemRespostaDTO> listar() {
         return viagemRepo.findAll().stream().map(viagem -> new ViagemRespostaDTO(viagem)).collect(Collectors.toList());
     }
-    public Viagem buscarPorId(Long id){
-        return viagemRepo.findById(id).orElse(null);
+
+    public Page<Viagem> listarTodasViagensPaginadas(int page, int size, Sort sort) {
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return viagemRepo.findAll(pageable);
     }
-    public Viagem buscarPorCodigo (String codigo){
-       return viagemRepo.findByCodigo(codigo);
+
+    public Viagem buscarPorId(Long id) throws ModelNotFound {
+        return viagemRepo.findById(id).orElseThrow(() -> new ModelNotFound("Viagem nao encontrada"));
     }
-    public ViagemRespostaDTO buscarPorCodigoRes(String codigo){
-        Viagem viagem=viagemRepo.findByCodigo(codigo);
-        if(viagem!=null){
-            return new ViagemRespostaDTO(viagem);
-        }
-        return null;}
-    public Long numeroViagens(){
+
+    public Viagem buscarPorCodigo(String codigo) throws ModelNotFound {
+        return viagemRepo.findByCodigo(codigo).orElseThrow(() -> new ModelNotFound("Viagem nao encontrada"));
+    }
+
+    public ViagemRespostaDTO buscarPorCodigoRes(String codigo) throws ModelNotFound {
+        Viagem viagem = viagemRepo.findByCodigo(codigo).orElseThrow(() -> new ModelNotFound("Viagem nao encontrada"));
+        return new ViagemRespostaDTO(viagem);
+    }
+
+    public Long numeroViagens() {
         return viagemRepo.count();
     }
-    public List<ViagemRespostaDTO> buscarViagensPelaDataDeHoje(Date saida){
+
+    public List<ViagemRespostaDTO> listarViagensPelaDataDeHoje(Date saida) {
         return viagemRepo.findBySaida(saida).stream().map(viagem -> new ViagemRespostaDTO(viagem)).collect(Collectors.toList());
+    }
+
+    public Page<Viagem> listarViagnsDoDiaPaginado(int page, int size, Sort sort, Date saida) {
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return viagemRepo.findAllBySaida(saida, pageable);
     }
 
 }

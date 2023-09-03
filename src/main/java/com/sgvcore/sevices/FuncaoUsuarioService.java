@@ -2,6 +2,7 @@ package com.sgvcore.sevices;
 
 import com.sgvcore.Model.FuncaoDoUsuario;
 import com.sgvcore.Model.Usuario;
+import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.repository.FuncaoUsuarioRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,16 @@ public class FuncaoUsuarioService {
         this.funcaoUsuarioRepo = funcaoUsuarioRepo;
         this.usuarioService = usuarioService;
     }
+    public FuncaoDoUsuario getRoleByName(String name) throws ModelNotFound {
+        return funcaoUsuarioRepo.findByName(name).orElseThrow(() -> new ModelNotFound("A funcao de usuario nao foi encontrada"));
+    }
+    public Optional<Usuario> adicionarFuncaoAUsuario(String username, String rolename) throws ModelNotFound {
+        Usuario usuario = usuarioService.buscarUsuarioPorUsername(username);
+        FuncaoDoUsuario role = getRoleByName(rolename);
+        usuario.getFuncoes().add(role);
+        return Optional.ofNullable(usuarioService.atualizarUsuario(usuario));
+    }
+
 
     public FuncaoDoUsuario criarFuncao(FuncaoDoUsuario funcaoDoUsuario){
         return funcaoUsuarioRepo.save(funcaoDoUsuario);
@@ -29,18 +40,6 @@ public class FuncaoUsuarioService {
         return funcaoUsuarioRepo.findAll();
     }
 
-    public Optional<FuncaoDoUsuario> getRoleByName(String name){
-        return funcaoUsuarioRepo.findByName(name);
-    }
-
-    public Optional<Usuario> addRoleToUser(String username, String rolename){
-        Usuario usuario = usuarioService.buscarUsuarioPorUsername(username);
-        Optional<FuncaoDoUsuario> role = getRoleByName(rolename);
-        if (role.isPresent()){
-            usuario.getFuncoes().add(role.get());
-        }
-        return Optional.ofNullable(usuarioService.atualizarUsuario(usuario));
-    }
 
     public FuncaoDoUsuario updateRole(FuncaoDoUsuario item){
         return funcaoUsuarioRepo.save(item);

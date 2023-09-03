@@ -1,102 +1,56 @@
 package com.sgvcore.Controllers;
 
 import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
-import com.sgvcore.Model.*;
-import com.sgvcore.sevices.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sgvcore.Model.ResponseAPI;
+import com.sgvcore.Model.Viajante;
+import com.sgvcore.exceptions.ContentAlreadyExists;
+import com.sgvcore.exceptions.ModelNotFound;
+import com.sgvcore.sevices.ViajanteService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.security.NoSuchAlgorithmException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/viajantes")
+@RequiredArgsConstructor
 public class ViajanteController {
 
-    @Autowired
-    private ViajanteService viajanteService;
-    @Autowired
-    private GeneroService generoService;
-    @Autowired
-    private ProvinciaDistritoService provinciaDistritoService;
-    @Autowired
-    private ProvinciaService provinciaService;
-    @Autowired
-    private DistritoService distritoService;
-    @Autowired
-    private DocumentoIdentificacaoService documentoIdentificacaoService;
-    @Autowired
-    private TipoDocumentoService tipoDocumentoService;
-    @Autowired
-    private ContactoService contactoService;
-    @Autowired
-    private CargaService cargaService;
+    private final ViajanteService viajanteService;
 
     @PostMapping("/adicionar")
-    public ResponseEntity<ResponseAPI> criarViajante(@RequestBody ViajanteCriarDTO dto) {
-        Genero genero = generoService.buscarPorId(dto.getIdGenero());
-        if (genero == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Genero nao encontrado!", null));
-        }
-        Provincia provincia = provinciaService.buscarProvinciaporCodigo(dto.getCodigoProvincia());
-        if (provincia == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Provincia nao encontrada!", null));
-        }
-        Distrito distrito = distritoService.buscarDistritoPorCodigoEProvincia(dto.getCodigoDistrito(), provincia);
-        if (distrito == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Distrito nao encontrado!", null));
-        }
-        TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getIdTipoDocumento());
-        if (tipoDocumentoIdentificacao == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Tipo de documento nao encontrado!", null));
-        }
-        DocumentoIdentifiacacao documentoIdentifiacacao = documentoIdentificacaoService.buscarPorNumeroDocumento(dto.getNumeroDocumento());
-        DocumentoIdentifiacacao novoDocmento = null;
-        if (documentoIdentifiacacao == null) {
-            try {
-                novoDocmento= documentoIdentificacaoService.criar(new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao));
-            } catch (Exception e) {
-                return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
-            }
-        } else {
-            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, documento ja existe!", null));
-        }
-        Contacto contacto = contactoService.buscarContactoPorMsisdn(dto.getMsisdn());
-        Contacto novoContacto = null;
-        if (contacto == null) {
-
-            try {
-                novoContacto=  contactoService.criar(new Contacto(dto));
-            } catch (Exception e) {
-                return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
-            }
-        } else {
-            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, contacto ja existe!", null));
-
-        }
-        Carga carga = cargaService.buscarCargaPorDesignacao(dto.getDesignacao());
-        Carga novaCarga=null;
-        if (carga == null) {
-            try {
-                novaCarga=  cargaService.criar(new Carga(dto));
-
-            } catch (Exception e) {
-                return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
-            }
-        } else {
-            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Carga ja existe!", null));
-        }
-        try {
-            viajanteService.criar(new Viajante(dto, genero, novaCarga, novoDocmento, provincia, distrito, novoContacto));
-
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
-        }
-        return ResponseEntity.status(201).body(new ResponseAPI(true, "201", "Viajante criado com sucesso!", null));
+    public ResponseEntity<ResponseAPI> criarViajante(@RequestBody ViajanteCriarDTO dto) throws ContentAlreadyExists, ModelNotFound {
+        viajanteService.criarViajante(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Viajante criado com sucesso!", null));
     }
 
+    @GetMapping
+    public ResponseEntity<ResponseAPI> ListarViajantesDoSistema(@RequestBody ViajanteCriarDTO dto) throws ContentAlreadyExists, ModelNotFound {
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Viajantes do sistema", viajanteService.listarViajantes()));
+    }
 
+    @GetMapping("/pag")
+    public ResponseEntity<ResponseAPI> listarViajantesDoSistemaPaginado(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "nome") String filter,
+            @RequestParam(defaultValue = "desc") String order
+    ) {
+        Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, filter);
+
+        Page<Viajante> viajnatesPaginados = viajanteService.listarViajanatesDoSistemaPaginado(page, size, sort);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("paginas", String.valueOf(viajnatesPaginados.getTotalPages()));
+        headers.add("quantidade", String.valueOf(viajnatesPaginados.getTotalElements()));
+
+        ResponseAPI response = new ResponseAPI(true, "200", "Viajantes do sistema", viajnatesPaginados);
+
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
+
+    }
 }
