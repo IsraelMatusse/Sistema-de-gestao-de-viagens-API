@@ -18,7 +18,7 @@ public class ProprietarioController {
 
     private final ProprietarioService proprietarioService;
 
-    @PostMapping("/adicionar")
+    @PostMapping
     public ResponseEntity<ResponseAPI> criarProprietario(@RequestBody ProprietarioCriarDTO proprietarioCriarDTO) throws NoSuchAlgorithmException, NotOwner, ContentAlreadyExists, ModelNotFound, ForbiddenException, UnprocessableEntity {
         proprietarioService.criar(proprietarioCriarDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Proprietario cadastrado com sucesso", null));

@@ -36,7 +36,8 @@ public class Associacao extends AccoesDoSistema {
         this.designacao = dto.getDesignacao();
         this.idContacto = contacto;
         this.idLicenca = licenca;
-        this.emailassociacao = dto.getEmailassociacao();
+        this.emailassociacao = dto.getEmailAssociacao();
+
     }
 
 

@@ -66,18 +66,18 @@ public class ViagemController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Viajante associado com sucesso!", null));
     }
 
-    @GetMapping("/{codigo_viagem}/viajantes")
+    @GetMapping("/{codigo-viagem}/viajantes")
     public ResponseEntity<ResponseAPI> listarViajantesPorCodigoViagem(@PathVariable(value = "codigo_viagem") String codigoViagem) throws ModelNotFound {
         Viagem viagem = viagemService.buscarPorCodigo(codigoViagem);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Lista de viajantes!", viagemViajanteService.listarViajantesDeUmaViagem(viagem)));
     }
 
-    @GetMapping("/numero_viagens")
+    @GetMapping("/numero-viagens")
     public ResponseEntity<ResponseAPI> numeroViagens() {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Numeor de viagens do sistema!", viagemService.numeroViagens()));
     }
 
-    @GetMapping("/{codigo_viagem}/numero-viajantes")
+    @GetMapping("/{codigo-viagem}/numero-viajantes")
     public ResponseEntity<ResponseAPI> numeroDeViajantes(@PathVariable(value = "codigo_viagem") String codigoViagem) throws ModelNotFound {
         Viagem viagem = viagemService.buscarPorCodigo(codigoViagem);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Numero de viajantes de uma viagem!", viagemViajanteService.numeroViagens(viagem)));

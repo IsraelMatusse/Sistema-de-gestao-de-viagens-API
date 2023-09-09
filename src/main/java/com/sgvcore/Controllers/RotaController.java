@@ -1,6 +1,7 @@
 package com.sgvcore.Controllers;
 
 import com.sgvcore.DTOs.rotaDTO.RotaCriarDTO;
+import com.sgvcore.DTOs.rotaDTO.RotaRespostaDTO;
 import com.sgvcore.Model.*;
 import com.sgvcore.enums.FuncoesUsuarios;
 import com.sgvcore.exceptions.ContentAlreadyExists;
@@ -43,13 +44,8 @@ public class RotaController {
         return ResponseEntity.status(201).body(new ResponseAPI(true, "201", "Rota criada com sucesso!", null));
     }
 
-    @GetMapping
-    public ResponseEntity<ResponseAPI> listarRotas() {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Rotas do sistema!", rotaService.listarRotas()));
-    }
-
     //Rotas Paginadas
-    @GetMapping("/pag")
+    @GetMapping
     public ResponseEntity<ResponseAPI> listarRotasPaginadas(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -60,7 +56,7 @@ public class RotaController {
         Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         Sort sort = Sort.by(direction, filter);
         // Realizar a consulta ao serviço para obter a página de rotas
-        Page<Rota> paginaDeRotas = rotaService.listarRotasPaginadas(page, size, sort);
+        Page<RotaRespostaDTO> paginaDeRotas = rotaService.listarRotasPaginadas(page, size, sort);
         // Construir o objeto de resposta com os dados da página de rotas
         ResponseAPI response = new ResponseAPI(true, "200", "Rotas do sistema!", paginaDeRotas.getContent());
 

@@ -44,25 +44,20 @@ public class AssociacaoController {
         Associacao associacao = associacaoService.criarAssociacao(dto);
 
         Usuario usuario = new Usuario();
-        usuario.setUsername(dto.getEmailassociacao());
+        usuario.setUsername(dto.getEmailAssociacao());
         usuario.setPassword(dto.getMsisdn());
         Usuario associacaoAuth = usuarioService.criarUsuario(usuario);
-        // Dar role de docente
-        funcaoUsuarioService.adicionarFuncaoAUsuario(dto.getEmailassociacao(), "ROLE_ASSOCIACAO");
-        // Atualizar docente
+        // Dar role de associacao
+        funcaoUsuarioService.adicionarFuncaoAUsuario(dto.getEmailAssociacao(), "ROLE_ASSOCIACAO");
+        // Atualizar associacao
         associacao.setUsuario(associacaoAuth);
         associacaoService.criar(associacao);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Associacao cadastrada com sucesso", null));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TERMINAL')")
-    @GetMapping
-    public ResponseEntity<ResponseAPI> listarAssociacoes() {
-        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Associacoes do sistema", associacaoService.listarAssociacao()));
-    }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TERMINAL')")
-    @GetMapping("/pag")
+    @GetMapping
     public ResponseEntity<ResponseAPI> listarAssociacoesPorPaginacao(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,

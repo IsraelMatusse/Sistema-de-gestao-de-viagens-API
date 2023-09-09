@@ -50,6 +50,7 @@ public class AssociacaoService {
         Usuario usuario = usuarioService.buscarUsuarioOnline();
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
         if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ADMIN.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name())) {
+            System.out.println( "parei aqui");
             //verificar se contacto ja existe
             Boolean contExiste = contactoService.existePorMsisdn(dto.getMsisdn());
             if (contExiste) {
