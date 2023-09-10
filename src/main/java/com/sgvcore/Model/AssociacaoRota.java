@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Data
 public class AssociacaoRota extends AccoesDoSistema {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

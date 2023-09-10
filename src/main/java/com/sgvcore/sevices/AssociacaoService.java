@@ -9,6 +9,7 @@ import com.sgvcore.exceptions.ContentAlreadyExists;
 import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.exceptions.NotOwner;
 import com.sgvcore.repository.AssociacaoRepo;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,22 +25,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AssociacaoService {
 
-    @Autowired
-    private AssociacaoRepo associacaoRepo;
-    @Autowired
-    private ContactoService contactoService;
-    @Autowired
-    private LicencaService licencaService;
-    @Autowired
-    private RotaService rotaService;
-    @Autowired
-    private AssociacaoRotaService associacaoRotaService;
-    @Autowired
-    private TipoLicencaService tipoLicencaService;
-    @Autowired
-    private UsuarioService usuarioService;
+    private final AssociacaoRepo associacaoRepo;
+
+    private final ContactoService contactoService;
+
+    private final LicencaService licencaService;
+
+    private final RotaService rotaService;
+
+    private final AssociacaoRotaService associacaoRotaService;
+
+    private final  TipoLicencaService tipoLicencaService;
+
+    private final UsuarioService usuarioService;
 
     public Associacao criar(Associacao associacao) {
         return associacaoRepo.save(associacao);
@@ -50,7 +51,6 @@ public class AssociacaoService {
         Usuario usuario = usuarioService.buscarUsuarioOnline();
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
         if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ADMIN.name()) || funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_TERMINAL.name())) {
-            System.out.println( "parei aqui");
             //verificar se contacto ja existe
             Boolean contExiste = contactoService.existePorMsisdn(dto.getMsisdn());
             if (contExiste) {

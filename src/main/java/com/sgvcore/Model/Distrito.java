@@ -18,7 +18,6 @@ public class Distrito extends AccoesDoSistema {
     private Long id;
     @Column(nullable = false, unique = true)
     private String designacao;
-    @Column()
     private String codigo;
     @ManyToOne
     private Provincia idProvincia;

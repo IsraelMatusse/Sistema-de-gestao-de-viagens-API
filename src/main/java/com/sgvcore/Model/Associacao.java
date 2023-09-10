@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 @NoArgsConstructor
 public class Associacao extends AccoesDoSistema {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String designacao;
@@ -37,7 +37,6 @@ public class Associacao extends AccoesDoSistema {
         this.idContacto = contacto;
         this.idLicenca = licenca;
         this.emailassociacao = dto.getEmailAssociacao();
-
     }
 
 
