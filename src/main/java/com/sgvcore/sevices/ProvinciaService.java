@@ -1,5 +1,6 @@
 package com.sgvcore.sevices;
 
+import com.sgvcore.DTOs.provinciaDTOs.ProvinciaRespostaDTO;
 import com.sgvcore.Model.Provincia;
 import com.sgvcore.exceptions.ModelNotFound;
 import com.sgvcore.repository.ProvinciaRepo;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +23,8 @@ private final  ProvinciaRepo provinciaRepo;
     }
 
     @Transactional(readOnly = true)
-    public List<Provincia> listarTodos() {
-        return provinciaRepo.findAll();
+    public List<ProvinciaRespostaDTO> listarTodos() {
+        return provinciaRepo.findAll().stream().map(provincia -> new ProvinciaRespostaDTO(provincia)).collect(Collectors.toList());
     }
 
     public Provincia buscarPorId(Long id) throws ModelNotFound {

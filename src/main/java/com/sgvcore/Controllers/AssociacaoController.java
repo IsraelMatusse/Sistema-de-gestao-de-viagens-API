@@ -56,7 +56,7 @@ public class AssociacaoController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TERMINAL')")
+    /*@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TERMINAL')")
     @GetMapping
     public ResponseEntity<ResponseAPI> listarAssociacoesPorPaginacao(
             @RequestParam(defaultValue = "0") int page,
@@ -67,7 +67,7 @@ public class AssociacaoController {
         Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
         Sort sort = Sort.by(direction, filter);
         Page<Associacao> paginaDeAssociacoes = associacaoService.listarAssociacoesPorPaginacao(page, size, sort);
-        ResponseAPI response = new ResponseAPI(true, "200", "Rotas do sistema", paginaDeAssociacoes);
+        ResponseAPI response = new ResponseAPI(true, "200", "Associações do sistema", paginaDeAssociacoes);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", String.valueOf(paginaDeAssociacoes.getTotalElements()));
@@ -75,6 +75,13 @@ public class AssociacaoController {
         // Retornar o conteúdo da página e os cabeçalhos no ResponseEntity
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
     }
+
+     */
+    @GetMapping
+    public ResponseEntity<ResponseAPI> listarAssociacoes()  {
+        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Associacoes do sistema", associacaoService.listarAssociacao()));
+    }
+
 
     @GetMapping("/viaturas")
     public ResponseEntity<ResponseAPI> listarViaturasAssociacao(@RequestParam("codigoAssociacao") String codigoAssociacao) throws ModelNotFound {
