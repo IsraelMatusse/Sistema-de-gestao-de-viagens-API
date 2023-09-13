@@ -42,6 +42,6 @@ public class DistritoService {
     }
 
     public Distrito buscarDistritoPorCodigoEProvincia(String codigo, Provincia provincia) throws ModelNotFound {
-        return distritoRepo.findByCodigoAndIdProvincia(codigo, provincia).orElseThrow(() -> new ModelNotFound("Distrito nao encontrado"));
+        return distritoRepo.findByCodigoAndIdProvincia(codigo, provincia);
     }
 }

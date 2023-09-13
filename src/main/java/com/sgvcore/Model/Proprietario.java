@@ -16,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
 public class Proprietario extends AccoesDoSistema {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String nome;

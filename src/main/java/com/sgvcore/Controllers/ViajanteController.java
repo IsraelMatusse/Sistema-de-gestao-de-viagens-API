@@ -28,11 +28,6 @@ public class ViajanteController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseAPI> ListarViajantesDoSistema(@RequestBody ViajanteCriarDTO dto) throws ContentAlreadyExists, ModelNotFound {
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Viajantes do sistema", viajanteService.listarViajantes()));
-    }
-
-    @GetMapping("/pag")
     public ResponseEntity<ResponseAPI> listarViajantesDoSistemaPaginado(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,

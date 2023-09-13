@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
 
 @RestController
@@ -18,8 +19,8 @@ public class ProprietarioController {
 
     private final ProprietarioService proprietarioService;
 
-    @PostMapping("/adicionar")
-    public ResponseEntity<ResponseAPI> criarProprietario(@RequestBody ProprietarioCriarDTO proprietarioCriarDTO) throws NoSuchAlgorithmException, NotOwner, ContentAlreadyExists, ModelNotFound, ForbiddenException, UnprocessableEntity {
+    @PostMapping
+    public ResponseEntity<ResponseAPI> criarProprietario( @Valid @RequestBody ProprietarioCriarDTO proprietarioCriarDTO) throws NoSuchAlgorithmException, NotOwner, ContentAlreadyExists, ModelNotFound, ForbiddenException, UnprocessableEntity {
         proprietarioService.criar(proprietarioCriarDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Proprietario cadastrado com sucesso", null));
     }

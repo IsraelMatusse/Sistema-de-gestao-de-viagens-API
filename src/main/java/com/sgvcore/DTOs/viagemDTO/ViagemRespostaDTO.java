@@ -1,5 +1,6 @@
 package com.sgvcore.DTOs.viagemDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sgvcore.Model.Viagem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +15,7 @@ public class ViagemRespostaDTO {
 
     private String destinoViagem;
     private Date saida;
+    @JsonFormat(pattern = "dd-MM-yy H")
     private Date prevChegada;
     private String codigoViagem;
 

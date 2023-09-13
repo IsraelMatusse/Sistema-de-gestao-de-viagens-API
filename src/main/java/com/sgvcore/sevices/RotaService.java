@@ -60,11 +60,12 @@ public class RotaService {
         return rotaRepo.findAll().stream().map(rota -> new RotaRespostaDTO(rota)).collect(Collectors.toList());
     }
 
-    public Page<Rota> listarRotasPaginadas(int page, int size, Sort sort) {
+    public Page<RotaRespostaDTO> listarRotasPaginadas(int page, int size, Sort sort) {
         // Criar o objeto de paginação com base nos parâmetros de paginação e ordenação
         Pageable pageable = PageRequest.of(page, size, sort);
         // Realizar a consulta paginada ao banco de dados usando o RotaRepository
-        return rotaRepo.findAll(pageable);
+        Page<Rota> rotas= rotaRepo.findAll(pageable);
+        return rotas.map(Rota::toDTO);
     }
 
     public Rota buscarRotaPorId(Long id) throws ModelNotFound {

@@ -3,6 +3,7 @@ package com.sgvcore.Model;
 import com.sgvcore.DTOs.associacaoDTOs.AssociacaoCriarDTO;
 import com.sgvcore.DTOs.contactoDTO.ContactoCriarDTO;
 import com.sgvcore.DTOs.proprietarioDTOs.ProprietarioCriarDTO;
+import com.sgvcore.DTOs.terminalDTOs.TerminalCriarDTO;
 import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
 import com.sgvcore.DTOs.viajanteDTO.ViajanteCriarDTO;
 import lombok.AllArgsConstructor;
@@ -42,4 +43,5 @@ public class Contacto extends AccoesDoSistema {
     public Contacto(ViagemAssociarViajanteDTO dto) {
         this.msisdn = dto.getMsisdn();
     }
+    public Contacto(TerminalCriarDTO dto){this.msisdn=dto.getMsisdn();}
 }

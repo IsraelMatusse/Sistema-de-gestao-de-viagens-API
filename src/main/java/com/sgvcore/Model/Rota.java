@@ -1,6 +1,7 @@
 package com.sgvcore.Model;
 
 import com.sgvcore.DTOs.rotaDTO.RotaCriarDTO;
+import com.sgvcore.DTOs.rotaDTO.RotaRespostaDTO;
 import com.sgvcore.utils.GeneratePin;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,5 +33,9 @@ public class Rota extends AccoesDoSistema {
         this.nomeRota = rotaCriarDTO.getNomeRota();
         this.preco = rotaCriarDTO.getPreco();
         this.codigo = GeneratePin.generateStringPin();
+    }
+
+    public RotaRespostaDTO toDTO(){
+        return new RotaRespostaDTO(id, distancia, nomeRota, preco, codigo);
     }
 }
