@@ -78,7 +78,7 @@ public class ViagemController {
     }
 
     @GetMapping("/{codigo-viagem}/viajantes")
-    public ResponseEntity<ResponseAPI> listarViajantesPorCodigoViagem(@PathVariable(value = "codigo_viagem") String codigoViagem) throws ModelNotFound {
+    public ResponseEntity<ResponseAPI> listarViajantesPorCodigoViagem(@PathVariable(value = "codigo-viagem") String codigoViagem) throws ModelNotFound {
         Viagem viagem = viagemService.buscarPorCodigo(codigoViagem);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Lista de viajantes!", viagemViajanteService.listarViajantesDeUmaViagem(viagem)));
     }
