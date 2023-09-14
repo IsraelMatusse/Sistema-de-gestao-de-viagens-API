@@ -2,6 +2,7 @@ package com.sgvcore.Controllers;
 
 import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
 import com.sgvcore.DTOs.viagemDTO.ViagemCriarDTO;
+import com.sgvcore.DTOs.viagemDTO.ViagemRespostaDTO;
 import com.sgvcore.Model.ResponseAPI;
 import com.sgvcore.Model.Viagem;
 import com.sgvcore.exceptions.*;
@@ -31,6 +32,8 @@ public class ViagemController {
     private ViagemViajanteService viagemViajanteService;
 
     //lISTAR TODAS VIAGENS DO SISTEMA PAGINADAS
+
+    /*
     @GetMapping
     public ResponseEntity<ResponseAPI> listarTodasViagensDoSistema(
             @RequestParam(defaultValue = "0") int page,
@@ -52,6 +55,14 @@ public class ViagemController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
     }
 
+    *
+     */
+
+    @GetMapping
+    public ResponseEntity<ResponseAPI> listarViagens()  {
+        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Associacoes do sistema", viagemService.listar()));
+    }
+
     @PreAuthorize("hasRole('ROLE_ASSOCIACAO')")
     @PostMapping("/adicionar")
     public ResponseEntity<ResponseAPI> criarViagem(@RequestBody @Valid ViagemCriarDTO dto) throws NoSuchAlgorithmException, ModelNotFound, BadRequest, ContentAlreadyExists, UnprocessableEntity, ForbiddenException {
@@ -67,7 +78,7 @@ public class ViagemController {
     }
 
     @GetMapping("/{codigo-viagem}/viajantes")
-    public ResponseEntity<ResponseAPI> listarViajantesPorCodigoViagem(@PathVariable(value = "codigo_viagem") String codigoViagem) throws ModelNotFound {
+    public ResponseEntity<ResponseAPI> listarViajantesPorCodigoViagem(@PathVariable(value = "codigo-viagem") String codigoViagem) throws ModelNotFound {
         Viagem viagem = viagemService.buscarPorCodigo(codigoViagem);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Lista de viajantes!", viagemViajanteService.listarViajantesDeUmaViagem(viagem)));
     }

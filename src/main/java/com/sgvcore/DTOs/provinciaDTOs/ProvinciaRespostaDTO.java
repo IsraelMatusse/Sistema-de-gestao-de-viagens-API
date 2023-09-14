@@ -1,7 +1,13 @@
 package com.sgvcore.DTOs.provinciaDTOs;
 
 import com.sgvcore.Model.Provincia;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProvinciaRespostaDTO {
 
     private String designacao;

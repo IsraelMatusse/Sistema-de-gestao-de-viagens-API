@@ -25,8 +25,8 @@ public class DistritoService {
         return distritoRepo.findAll().stream().map(distrito -> new DistritoRespostaDTO(distrito)).collect(Collectors.toList());
     }
 
-    public List<Distrito> listarTodosPorProvincia(Provincia idProvincia) {
-        return distritoRepo.findByIdProvincia(idProvincia);
+    public List<DistritoRespostaDTO> listarTodosPorProvincia(Provincia idProvincia) {
+        return distritoRepo.findByIdProvincia(idProvincia).stream().map(distrito -> new DistritoRespostaDTO(distrito)).collect(Collectors.toList());
     }
 
     public Distrito buscarPorId(Long id) {

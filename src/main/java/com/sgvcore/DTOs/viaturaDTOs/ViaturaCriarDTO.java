@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ViaturaCriarDTO {
     @NotBlank(message = "Matricula nao pode ser nula")
-    @Matricula(message = "Matricula invalida")
     private String matricula;
     @NotBlank
     private String cor;

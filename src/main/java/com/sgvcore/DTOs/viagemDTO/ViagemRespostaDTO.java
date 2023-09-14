@@ -14,8 +14,9 @@ import java.util.Date;
 public class ViagemRespostaDTO {
 
     private String destinoViagem;
+    @JsonFormat(pattern = "dd-MM-yy HH:mm")
     private Date saida;
-    @JsonFormat(pattern = "dd-MM-yy H")
+    @JsonFormat(pattern = "dd-MM-yy HH:mm")
     private Date prevChegada;
     private String codigoViagem;
 

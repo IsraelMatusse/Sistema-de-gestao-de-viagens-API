@@ -43,9 +43,9 @@ public class ViagemService {
     public Viagem criar(ViagemCriarDTO dto) throws BadRequest, ModelNotFound, UnprocessableEntity, ContentAlreadyExists, ForbiddenException {
         //verificar permissoes do usuario para aceder a  funcionalidade
         Usuario usuario = usuarioService.buscarUsuarioOnline();
-        System.out.println(usuario);
+
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
-        System.out.println(funcaoDoUsuario);
+
         if (funcaoDoUsuario.get(0).getName().equalsIgnoreCase(FuncoesUsuarios.ROLE_ASSOCIACAO.name())) {
             // verificar data de partida e chegada
             if (dto.getSaida().after(dto.getPrevChegada()) || dto.getSaida().equals(dto.getPrevChegada())) {
@@ -53,14 +53,14 @@ public class ViagemService {
             }
             //verificar a existencia da rota e da viatura
             Rota rota = rotaService.buscarRotaPorId(dto.getIdRota());
-            System.out.println(rota);
+
             Associacao associacao = associacaoService.buscarAssociacaoPorUsuarioOnline(usuario);
-            System.out.println(associacao);
+
             //buscar viatura da associacao pelo codigo da viatura a a associacao
             Viatura viatura = viaturaService.buscarViaturaPelaAssociacaoECodigoViatura(associacao, dto.getCodigoViatura());
-            System.out.println(viatura);
+
             Motorista motorista = motoristaViacturaService.buscarMotoristaPeloCodigoMotoristaEViatura(viatura, dto.getCodigoMotorista());
-            System.out.println(motorista);
+
             try {
                 Viagem novaViagem = new Viagem(dto, rota, associacao, viatura, motorista);
                 return viagemRepo.save(novaViagem);

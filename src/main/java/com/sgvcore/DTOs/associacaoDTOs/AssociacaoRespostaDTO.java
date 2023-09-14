@@ -13,7 +13,7 @@ public class AssociacaoRespostaDTO {
 
     private Long id;
     private String designacao;
-    private String msidsn;
+    private String msisdn;
     private String designacaoLicenca;
     private String codigo;
     private String email;
@@ -22,7 +22,7 @@ public class AssociacaoRespostaDTO {
         this.codigo = associacao.getCodigo();
         this.designacaoLicenca = associacao.getIdLicenca().getIdLicenca().getDesignacao();
         this.id = associacao.getId();
-        this.msidsn = associacao.getIdContacto().getMsisdn();
+        this.msisdn = associacao.getIdContacto().getMsisdn();
         this.designacao = associacao.getDesignacao();
         this.email = associacao.getEmailassociacao();
     }

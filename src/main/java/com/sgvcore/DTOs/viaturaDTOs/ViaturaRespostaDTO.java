@@ -25,6 +25,7 @@ public class ViaturaRespostaDTO {
     private String designacaoRota;
     private String designacaoAssociacao;
     private String nomeProprietario;
+    private String codigo;
 
     public ViaturaRespostaDTO(Viatura viactura) {
         this.anofabrico = viactura.getAnofabrico();
@@ -42,6 +43,7 @@ public class ViaturaRespostaDTO {
         this.combustivel = viactura.getCombustivel();
         this.matricula = viactura.getMatricula();
         this.nomeProprietario = viactura.getIdProprietario().getNome();
+        this.codigo=viactura.getCodigo();
     }
 
 

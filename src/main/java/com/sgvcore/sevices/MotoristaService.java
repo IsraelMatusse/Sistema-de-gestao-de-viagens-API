@@ -20,8 +20,9 @@ public class MotoristaService {
        return motoristaRepo.save(motorista);
     }
     public List<MotoristaRespostaDTO>listar(){
-        return motoristaRepo.findAll().stream().map(motorista -> new MotoristaRespostaDTO(motorista)).collect(Collectors.toList());
+        return motoristaRepo.findAll().stream().map(motorista -> new MotoristaRespostaDTO(motorista) ).collect(Collectors.toList());
     }
+
     public MotoristaRespostaDTO buscarPorCodigoRes(String codigo){
         Motorista motorista=motoristaRepo.findByCodigo(codigo);
         if(motorista !=null){
