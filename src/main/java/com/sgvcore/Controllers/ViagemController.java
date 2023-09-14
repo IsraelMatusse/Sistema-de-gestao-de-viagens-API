@@ -2,6 +2,7 @@ package com.sgvcore.Controllers;
 
 import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
 import com.sgvcore.DTOs.viagemDTO.ViagemCriarDTO;
+import com.sgvcore.DTOs.viagemDTO.ViagemRespostaDTO;
 import com.sgvcore.Model.ResponseAPI;
 import com.sgvcore.Model.Viagem;
 import com.sgvcore.exceptions.*;
@@ -31,6 +32,8 @@ public class ViagemController {
     private ViagemViajanteService viagemViajanteService;
 
     //lISTAR TODAS VIAGENS DO SISTEMA PAGINADAS
+
+    /*
     @GetMapping
     public ResponseEntity<ResponseAPI> listarTodasViagensDoSistema(
             @RequestParam(defaultValue = "0") int page,
@@ -50,6 +53,14 @@ public class ViagemController {
         headers.add("quantidade", String.valueOf(viagensDoSistemaPaginadas.getTotalElements()));
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
+    }
+
+    *
+     */
+
+    @GetMapping
+    public ResponseEntity<ResponseAPI> listarViagens()  {
+        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Associacoes do sistema", viagemService.listar()));
     }
 
     @PreAuthorize("hasRole('ROLE_ASSOCIACAO')")
