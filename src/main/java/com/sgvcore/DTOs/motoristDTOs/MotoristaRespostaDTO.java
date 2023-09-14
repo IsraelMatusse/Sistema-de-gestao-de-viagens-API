@@ -15,11 +15,13 @@ public class MotoristaRespostaDTO {
     private String apelido;
     private Long anonascimento;
     private String email;
+    private String codigo;
 
     public MotoristaRespostaDTO(Motorista motorista){
         this.anonascimento=motorista.getAnonascimento();
         this.apelido=motorista.getApelido();
         this.email=motorista.getEmail();
         this.nome=motorista.getNome();
+        this.codigo= motorista.getCodigo();
     }
 }

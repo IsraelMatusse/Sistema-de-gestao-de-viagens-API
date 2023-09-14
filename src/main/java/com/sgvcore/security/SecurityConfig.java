@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/cores",
                 "/api/rotas"
 
+
         ).permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
