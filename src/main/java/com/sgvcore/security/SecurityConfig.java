@@ -44,8 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // FREE POST ENDPOINTS
         http.authorizeRequests().antMatchers(HttpMethod.POST,
                 "/api/auth/login",
-                "/api/auth/registrar",
-                "/swagger-ui.html"
+                "/api/auth/registrar"
         ).permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET,
                 "/api/generos",
@@ -56,12 +55,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/distritos/p/{id}",
                 "/api/tipo-documento",
                 "/api/cores",
-
                 "/api/rotas",
+<<<<<<< HEAD
                 "/swagger-ui.html"
 
 
 
+=======
+                 "/swagger-ui/**",
+                "/swagger-resources/**",
+                "/v2/api-docs/**",
+                "/v3/api-docs/**",
+                "/webjars/**"
+>>>>>>> 2923d46085045f70ef59b2857b4b52be705be584
         ).permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

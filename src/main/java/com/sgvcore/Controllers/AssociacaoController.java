@@ -14,12 +14,10 @@ import com.sgvcore.sevices.AssociacaoService;
 import com.sgvcore.sevices.FuncaoUsuarioService;
 import com.sgvcore.sevices.UsuarioService;
 import com.sgvcore.sevices.ViaturaService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
+
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,7 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/associacoes")
 @RequiredArgsConstructor
-@Api(value = "API Rest de gestao de associacoes")
+
 public class AssociacaoController {
 
     private final AssociacaoService associacaoService;
@@ -43,7 +41,7 @@ public class AssociacaoController {
 
     //cadastrar uma associacoa e as suas rotas
     @PostMapping("/adicionar")
-    @ApiOperation(value = "Cadastra uma associacao")
+
     public ResponseEntity<ResponseAPI> crarAssociacoes(@Valid @RequestBody AssociacaoCriarDTO dto) throws ContentAlreadyExists, ModelNotFound, NotOwner, NoSuchAlgorithmException {
         Associacao associacao = associacaoService.criarAssociacao(dto);
 
@@ -89,7 +87,7 @@ public class AssociacaoController {
 
 
     @GetMapping("/viaturas")
-    @ApiOperation(value = "Lista viaturas de associacao")
+
     public ResponseEntity<ResponseAPI> listarViaturasAssociacao(@RequestParam("codigoAssociacao") String codigoAssociacao) throws ModelNotFound {
         Usuario usuario = usuarioService.buscarUsuarioOnline();
         List<FuncaoDoUsuario> funcaoDoUsuario = new ArrayList<>(usuario.getFuncoes());
@@ -107,7 +105,7 @@ public class AssociacaoController {
     }
 
     @GetMapping("/perfil")
-    @ApiOperation(value = "Retorna o Perfil da associacao")
+
     public ResponseEntity<ResponseAPI> buscarPorCodigo(@RequestParam(value = "codigoAssociacao", required = false) String codigoAssociacao) throws ModelNotFound, NotOwner, BadRequest {
         Usuario usuario = usuarioService.buscarUsuarioOnline();
         return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Associacoes do sistema", associacaoService.buscarAssociacaoPorUsuarioOnlineRes(usuario, codigoAssociacao)));
@@ -115,7 +113,7 @@ public class AssociacaoController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TERMINAL')")
     @GetMapping("numero_associacoes")
-    @ApiOperation(value = "Retorna o numero de associacoes")
+
     public ResponseEntity<ResponseAPI> nuneroDeAssociacoes() {
         return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Numero de Associacoes do sistema", associacaoService.numeroDeAssociacoes()));
     }
