@@ -38,6 +38,8 @@ public class Viajante extends AccoesDoSistema {
     @ManyToOne
     private Contacto idContacto;
 
+    private String contactoEmergencia;
+
     public Viajante(ViajanteCriarDTO dto, Genero genero, Carga carga, DocumentoIdentifiacacao documentoIdentifiacacao, Provincia provincia, Distrito distrito, Contacto contacto) {
         this.apelido = dto.getApelido();
         this.dataNascimento = dto.getDataNascimento();
@@ -62,5 +64,6 @@ public class Viajante extends AccoesDoSistema {
         this.idIdentificacao = documentoIdentifiacacao;
         this.idDistrito = distrito;
         this.idContacto = contacto;
+        this.contactoEmergencia=dto.getContactoEmergencia();
     }
 }

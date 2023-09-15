@@ -51,4 +51,6 @@ public class ViagemAssociarViajanteDTO {
     private String designacao;
     @NotNull(message = "O peso da craga nao pode ser nula")
     private Long peso;
+    @NotNull
+    private String contactoEmergencia;
 }
