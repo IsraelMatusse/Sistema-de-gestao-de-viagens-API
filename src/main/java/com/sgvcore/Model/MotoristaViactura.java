@@ -18,15 +18,16 @@ public class MotoristaViactura extends AccoesDoSistema {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private  Motorista idMotorista;
+    private Motorista idMotorista;
     @ManyToOne
-    private Viactura idViactura;
+    private Viatura idViactura;
     @Column
     private String codigo;
-    public MotoristaViactura(Motorista motorista, Viactura viactura) throws NoSuchAlgorithmException {
-        this.idMotorista=motorista;
-        this.idViactura=viactura;
-        this.codigo= GeneratePin.generateStringPin();
+
+    public MotoristaViactura(Motorista motorista, Viatura viactura) throws NoSuchAlgorithmException {
+        this.idMotorista = motorista;
+        this.idViactura = viactura;
+        this.codigo = GeneratePin.generateStringPin();
     }
 
 }

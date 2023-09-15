@@ -4,10 +4,13 @@ import com.sgvcore.Model.TipoProprietario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface TipoProprietariRepo extends JpaRepository<TipoProprietario, Long> {
 
-    TipoProprietario findByDesignacao(String designacao);
-    TipoProprietario findByCodigo(String codigoTipoProprietario);
+    Optional<TipoProprietario> findByDesignacao(String designacao);
+
+    Optional<TipoProprietario> findByCodigo(String codigoTipoProprietario);
 
 }

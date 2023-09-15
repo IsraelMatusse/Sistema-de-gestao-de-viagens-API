@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Modelo {
+public class Modelo extends AccoesDoSistema {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

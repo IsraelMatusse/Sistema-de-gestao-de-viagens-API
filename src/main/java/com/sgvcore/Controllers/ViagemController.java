@@ -1,13 +1,20 @@
 package com.sgvcore.Controllers;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
 import com.sgvcore.DTOs.viagemDTO.ViagemCriarDTO;
-import com.sgvcore.Model.*;
-import com.sgvcore.exceptions.ModelNotFound;
-import com.sgvcore.sevices.*;
+import com.sgvcore.DTOs.viagemDTO.ViagemRespostaDTO;
+import com.sgvcore.Model.ResponseAPI;
+import com.sgvcore.Model.Viagem;
+import com.sgvcore.exceptions.*;
+import com.sgvcore.sevices.ViagemService;
+import com.sgvcore.sevices.ViagemViajanteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,148 +25,99 @@ import java.util.Date;
 @RequestMapping("/api/viagens")
 public class ViagemController {
 
+
     @Autowired
     private ViagemService viagemService;
     @Autowired
-    private ViajanteService viajanteService;
-    @Autowired
-    private RotaService rotaService;
-    @Autowired
     private ViagemViajanteService viagemViajanteService;
-    @Autowired
-    private AssociacaoService associacaoService;
-    @Autowired
-    private GeneroService generoService;
-    @Autowired
-    private ProvinciaService provinciaService;
-    @Autowired
-    TipoDocumentoService tipoDocumentoService;
-    @Autowired
-    DocumentoIdentificacaoService documentoIdentificacaoService;
-    @Autowired
-    private DistritoService distritoService;
-    @Autowired
-    private ContactoService contactoService;
-    @Autowired
-    private CargaService cargaService;
-    @Autowired
-    private MotoristaService motoristaService;
-    @Autowired
-    private ViaturaService viaturaService;
-    @Autowired
-    private MotoristaViacturaService motoristaViacturaService;
 
+    //lISTAR TODAS VIAGENS DO SISTEMA PAGINADAS
+
+    /*
+    @GetMapping
+    public ResponseEntity<ResponseAPI> listarTodasViagensDoSistema(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "destinoViagem") String filter,
+            @RequestParam(defaultValue = "desc") String order
+    ) {
+        //definir a ordem
+        Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, filter);
+
+        Page<Viagem> viagensDoSistemaPaginadas = viagemService.listarTodasViagensPaginadas(page, size, sort);
+        ResponseAPI response = new ResponseAPI(true, "200", "Lista de todas viagens do sistema", viagensDoSistemaPaginadas);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("paginas", String.valueOf(viagensDoSistemaPaginadas.getTotalPages()));
+        headers.add("quantidade", String.valueOf(viagensDoSistemaPaginadas.getTotalElements()));
+
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
+    }
+
+    *
+     */
+
+    @GetMapping
+    public ResponseEntity<ResponseAPI> listarViagens()  {
+        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Associacoes do sistema", viagemService.listar()));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ASSOCIACAO')")
     @PostMapping("/adicionar")
-    public ResponseEntity<ResponseAPI> criarViagem(@RequestBody @Valid ViagemCriarDTO dto) throws NoSuchAlgorithmException, ModelNotFound {
-      // verificar data de partida e chegada
-        if(dto.getSaida().before(dto.getPrevChegada()) || dto.getSaida().equals(dto.getPrevChegada())){
-            return ResponseEntity.status(422).body(new ResponseAPI(false, "422", "Verifiue as datas da viagem!", null));
-        }
-        Rota rota = rotaService.buscarRotaPorId(dto.getIdRota()).orElse(null);
-        if (rota == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Rota nao encontrada!", null));
-        }
-        Associacao associacao = associacaoService.buscarPorCodigo(dto.getCodigoAssociacao());
-        if (associacao == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Associacao nao enocntrada!", null));
-        }
-        //buscar viatura da associacao pelo codigo da viatura a a associacao
-        Viactura viactura= viaturaService.buscarViaturaPelaAssociacaoECodigoViatura(associacao, dto.getCodigoViatura());
-        Motorista motorista=motoristaViacturaService.buscarMotoristaPeloCodigoMotoristaEViatura(viactura, dto.getCodigoMotorista());
-        try {
-            Viagem novaViagem= new Viagem(dto, rota, associacao, viactura, motorista);
-            viagemService.criar(novaViagem);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno de servidor!", null));
-        }
-        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Viagem criada com sucesso!", null));
+    public ResponseEntity<ResponseAPI> criarViagem(@RequestBody @Valid ViagemCriarDTO dto) throws NoSuchAlgorithmException, ModelNotFound, BadRequest, ContentAlreadyExists, UnprocessableEntity, ForbiddenException {
+        viagemService.criar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Viagem criada com sucesso!", null));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ASSOCIACAO')")
     @PostMapping("/associar-viajante")
-    public ResponseEntity<ResponseAPI> associarViajante(@RequestBody ViagemAssociarViajanteDTO dto) {
-        // Realize as validações de existência
-        Viagem viagem = viagemService.buscarPorCodigo(dto.getCodigoViagem());
-        if (viagem == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Viagem não encontrada!", null));
-        }
-        Genero genero = generoService.buscarPorId(dto.getIdGenero());
-        if (genero == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Gênero não encontrado!", null));
-        }
-        Provincia provincia = provinciaService.buscarProvinciaporCodigo(dto.getCodigoProvincia());
-        if (provincia == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Província não encontrada!", null));
-        }
-        Distrito distrito = distritoService.buscarDistritoPorCodigoEProvincia(dto.getCodigoDistrito(), provincia);
-        if (distrito == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Distrito não encontrado!", null));
-        }
-        TipoDocumentoIdentificacao tipoDocumentoIdentificacao = tipoDocumentoService.buscarTipoDocumentoporId(dto.getIdTipoDocumento());
-        if (tipoDocumentoIdentificacao == null) {
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Tipo de documento não encontrado!", null));
-        }
-
-        // Verifique a não existência dos objetos antes de criá-los
-        DocumentoIdentifiacacao documentoIdentifiacacao = documentoIdentificacaoService.buscarPorNumeroDocumento(dto.getNumeroDocumento());
-        if (documentoIdentifiacacao != null) {
-            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Documento já existe!", null));
-        }
-        Contacto contacto = contactoService.buscarContactoPorMsisdn(dto.getMsisdn());
-        if (contacto != null) {
-            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Contato já existe!", null));
-        }
-        Carga carga = cargaService.buscarCargaPorDesignacao(dto.getDesignacao());
-        if (carga != null) {
-            return ResponseEntity.status(409).body(new ResponseAPI(false, "409", "Erro, Carga já existe!", null));
-        }
-
-        // Crie e salve os objetos
-        try {
-            DocumentoIdentifiacacao novoDocumento = new DocumentoIdentifiacacao(dto, tipoDocumentoIdentificacao);
-            documentoIdentificacaoService.criar(novoDocumento);
-
-            Contacto novoContacto = new Contacto(dto);
-            contactoService.criar(novoContacto);
-
-            Carga novaCarga = new Carga(dto);
-            cargaService.criar(novaCarga);
-
-            Viajante viajante = new Viajante(dto, genero, novaCarga, novoDocumento, provincia, distrito, novoContacto);
-            viajanteService.criar(viajante);
-
-            ViagemViajante viagemViajante = new ViagemViajante(viagem, viajante);
-            viagemViajanteService.crir(viagemViajante);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ResponseAPI(false, "500", "Erro interno do servidor", null));
-        }
-        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Viajante associado com sucesso!", null));
+    public ResponseEntity<ResponseAPI> associarViajante(@RequestBody ViagemAssociarViajanteDTO dto) throws ModelNotFound, ContentAlreadyExists, ForbiddenException {
+        viagemViajanteService.criar(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseAPI(true, "201", "Viajante associado com sucesso!", null));
     }
 
-    @GetMapping("/{codigo_viagem}/viajantes")
-    public ResponseEntity<ResponseAPI> listarViajantesPorCodigoViagem(@PathVariable(value = "codigo_viagem") String codigoViagem){
-        Viagem viagem=viagemService.buscarPorCodigo(codigoViagem);
-        if(viagem==null){
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Viagem não encontrada!", null));
-        }
-        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Lista de viajantes!", viagemViajanteService.listarViajantesDeUmaViagem(viagem)));
+    @GetMapping("/{codigo-viagem}/viajantes")
+    public ResponseEntity<ResponseAPI> listarViajantesPorCodigoViagem(@PathVariable(value = "codigo-viagem") String codigoViagem) throws ModelNotFound {
+        Viagem viagem = viagemService.buscarPorCodigo(codigoViagem);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Lista de viajantes!", viagemViajanteService.listarViajantesDeUmaViagem(viagem)));
     }
-    @GetMapping("/numero_viagens")
-    public ResponseEntity<ResponseAPI> numeroViagens(){
-        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Numeor de viagens do sistema!", viagemService.numeroViagens()));
+
+    @GetMapping("/numero-viagens")
+    public ResponseEntity<ResponseAPI> numeroViagens() {
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Numeor de viagens do sistema!", viagemService.numeroViagens()));
     }
-    @GetMapping("/{codigo_viagem}/numero_viajantes")
-    public ResponseEntity<ResponseAPI> numeroDeViajantes(@PathVariable(value = "codigo_viagem") String codigoViagem){
-        Viagem viagem=viagemService.buscarPorCodigo(codigoViagem);
-        if(viagem==null){
-            return ResponseEntity.status(404).body(new ResponseAPI(false, "404", "Viagem não encontrada!", null));
-        }
-        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Numero de viajantes de uma viagem!", viagemViajanteService.numeroViagens(viagem)));
+
+    @GetMapping("/{codigo-viagem}/numero-viajantes")
+    public ResponseEntity<ResponseAPI> numeroDeViajantes(@PathVariable(value = "codigo_viagem") String codigoViagem) throws ModelNotFound {
+        Viagem viagem = viagemService.buscarPorCodigo(codigoViagem);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Numero de viajantes de uma viagem!", viagemViajanteService.numeroViagens(viagem)));
     }
-    @GetMapping("/viagem_dia")
-    public ResponseEntity<ResponseAPI> viagensDoDia(){
-        Date saida= new Date();
-        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Viagens dos dia!", viagemService.buscarViagensPelaDataDeHoje(saida)));
+
+    @GetMapping("/viagens-dia")
+    public ResponseEntity<ResponseAPI> viagensDoDia() {
+        Date saida = new Date();
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Viagens dos dia!", viagemService.listarViagensPelaDataDeHoje(saida)));
+    }
+
+    @GetMapping("/hoje")
+    public ResponseEntity<ResponseAPI> listarViagensDoDiaPaginada(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "destinoViagem") String filter,
+            @RequestParam(defaultValue = "desc") String order
+    ) {
+        // Definir o objeto de ordenação com base nos parâmetros de filtro
+        Sort.Direction direction = order.equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, filter);
+        Date saida = new Date();
+        Page<Viagem> viagensDoDiaPaginadas = viagemService.listarViagnsDoDiaPaginado(page, size, sort, saida);
+        ResponseAPI response = new ResponseAPI(true, "200", "Viagens dos dia", viagensDoDiaPaginadas);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Paginas", String.valueOf(viagensDoDiaPaginadas.getTotalPages()));
+        headers.add("quantidade", String.valueOf(viagensDoDiaPaginadas.getTotalElements()));
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
     }
 }
 

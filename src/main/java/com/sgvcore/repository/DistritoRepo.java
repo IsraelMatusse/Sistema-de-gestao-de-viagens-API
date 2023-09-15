@@ -3,7 +3,6 @@ package com.sgvcore.repository;
 import com.sgvcore.Model.Distrito;
 import com.sgvcore.Model.Provincia;
 import com.sgvcore.projections.distritoProjections.DistritoProvinciaProjection;
-import lombok.Data;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,6 +15,7 @@ public interface DistritoRepo extends JpaRepository<Distrito, Long> {
     boolean existsByDesignacao(String value);
 
     Distrito findByCodigoAndIdProvincia(String codigo, Provincia idProvincia);
+
     List<Distrito> findByIdProvincia(Provincia id);
 
     Optional<Distrito> findByIdAndIdProvincia(Long id, Provincia idProvincia);

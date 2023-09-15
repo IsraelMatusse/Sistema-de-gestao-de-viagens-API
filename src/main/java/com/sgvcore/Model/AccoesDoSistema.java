@@ -16,22 +16,20 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer","handler"})
 public abstract class AccoesDoSistema {
-    private Boolean activo = true;
     @CreatedBy
-    @ManyToOne
-    private Usuario criadoPor;
+    @Column(updatable = false)
+    private String criadoPor;
     @LastModifiedBy
-    @ManyToOne
-    private Usuario actualizadoPor;
+    private String actualizadoPor;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToOne
-    private Usuario apagadoPor;
+    private String apagadoPor;
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dataCriacao= new Date();
+    private Date dataCriacao = new Date();
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataActualizacao;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataApagado;
+    private Boolean activo = true;
 }

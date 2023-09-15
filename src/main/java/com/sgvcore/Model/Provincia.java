@@ -16,7 +16,6 @@ public class Provincia extends AccoesDoSistema {
     private Long id;
     @Column(nullable = false, unique = true)
     private String designacao;
-    @Column()
     private String codigo;
     @Column(nullable = false, unique = true)
     private String sigla;

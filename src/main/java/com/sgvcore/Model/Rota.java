@@ -1,6 +1,7 @@
 package com.sgvcore.Model;
 
 import com.sgvcore.DTOs.rotaDTO.RotaCriarDTO;
+import com.sgvcore.DTOs.rotaDTO.RotaRespostaDTO;
 import com.sgvcore.utils.GeneratePin;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,23 +14,28 @@ import java.security.NoSuchAlgorithmException;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Rota extends  AccoesDoSistema{
+public class Rota extends AccoesDoSistema {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable=false)
-    private String nomerota;
-    @Column(nullable=false)
+    @Column(nullable = false)
+    private String nomeRota;
+    @Column(nullable = false)
     private Long distancia;
-    @Column(nullable=false)
+    @Column(nullable = false)
     private Long preco;
     @Column
     private String codigo;
+
     public Rota(RotaCriarDTO rotaCriarDTO) throws NoSuchAlgorithmException {
-        this.distancia=rotaCriarDTO.getDistancia();
-        this.nomerota=rotaCriarDTO.getNomeRota();
-        this.preco=rotaCriarDTO.getPreco();
-        this.codigo= GeneratePin.generateStringPin();
+        this.distancia = rotaCriarDTO.getDistancia();
+        this.nomeRota = rotaCriarDTO.getNomeRota();
+        this.preco = rotaCriarDTO.getPreco();
+        this.codigo = GeneratePin.generateStringPin();
+    }
+
+    public RotaRespostaDTO toDTO(){
+        return new RotaRespostaDTO(id, distancia, nomeRota, preco, codigo);
     }
 }

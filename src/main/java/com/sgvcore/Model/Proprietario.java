@@ -13,14 +13,14 @@ import java.security.NoSuchAlgorithmException;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Proprietario {
+public class Proprietario extends AccoesDoSistema {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable=false)
+    @Column(nullable = false)
     private String nome;
-    @Column(nullable=false)
+    @Column(nullable = false)
     private Long anocriacao;
     @Column
     private String nuit;
@@ -40,15 +40,15 @@ public class Proprietario {
     private Genero idGenero;
 
     public Proprietario(ProprietarioCriarDTO dto, Genero genero, Contacto contacto, Provincia provincia, TipoProprietario tipoProprietario, DocumentoIdentifiacacao documentoIdentifiacacao, Distrito distrito) throws NoSuchAlgorithmException {
-        this.anocriacao=dto.getAnocriacao();
-        this.codigo= GeneratePin.generateStringPin();
-        this.idIdentificacao=documentoIdentifiacacao;
-        this.nome=dto.getNome();
-        this.idContacto=contacto;
-        this.idGenero=genero;
-        this.idProvincia=provincia;
-        this.idTipoProprietario=tipoProprietario;
-        this.nuit=dto.getNuit();
-        this.idDistrito=distrito;
+        this.anocriacao = dto.getAnocriacao();
+        this.codigo = GeneratePin.generateStringPin();
+        this.idIdentificacao = documentoIdentifiacacao;
+        this.nome = dto.getNome();
+        this.idContacto = contacto;
+        this.idGenero = genero;
+        this.idProvincia = provincia;
+        this.idTipoProprietario = tipoProprietario;
+        this.nuit = dto.getNuit();
+        this.idDistrito = distrito;
     }
 }

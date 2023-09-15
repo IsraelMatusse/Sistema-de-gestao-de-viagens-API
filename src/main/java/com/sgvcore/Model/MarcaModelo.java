@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class MarcaModelo {
+public class MarcaModelo extends AccoesDoSistema {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class MarcaModelo {
     private String codigo;
 
     public MarcaModelo(Marca marca, Modelo modelo) {
-        this.modelo=modelo;
-        this.marca= marca;
+        this.modelo = modelo;
+        this.marca = marca;
     }
 }

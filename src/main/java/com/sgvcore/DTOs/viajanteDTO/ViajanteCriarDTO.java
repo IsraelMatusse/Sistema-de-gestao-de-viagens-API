@@ -1,11 +1,11 @@
 package com.sgvcore.DTOs.viajanteDTO;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.sgvcore.DTOs.viagemDTO.ViagemAssociarViajanteDTO;
+import com.sgvcore.Model.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -43,4 +43,6 @@ public class ViajanteCriarDTO {
     @NotNull
     private Long peso;
 
+    public ViajanteCriarDTO(ViagemAssociarViajanteDTO dto, Genero genero, Carga novaCarga, DocumentoIdentifiacacao novoDocumento, Provincia provincia, Distrito distrito, Contacto novoContacto) {
+    }
 }

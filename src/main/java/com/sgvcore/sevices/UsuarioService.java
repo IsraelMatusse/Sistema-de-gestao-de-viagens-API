@@ -58,10 +58,6 @@ public class UsuarioService {
         return usuarioRepo.findByUsername(buscarUsuarioOnlinePorUsername()).orElse(null);
     }
 
-    public Optional<Usuario> buscarUsuarioPorEmail(String email) {
-        return usuarioRepo.findByEmail(email);
-    }
-
     public boolean apagarUsuarioPorId(Long id){
         usuarioRepo.deleteById(id);
         return true;
@@ -71,9 +67,6 @@ public class UsuarioService {
         return usuarioRepo.existsByUsername(username);
     }
 
-    public Boolean usuarioExistePorEmail(String email){
-        return usuarioRepo.existsByEmail(email);
-    }
 
     public Usuario buscarMeuUsuarioOnlinePorId(Long id) throws ModelNotFound {
         Usuario usuario = usuarioRepo.findById(id).orElseThrow(()->new ModelNotFound("User com id "+id+" não foi encontrado!"));
