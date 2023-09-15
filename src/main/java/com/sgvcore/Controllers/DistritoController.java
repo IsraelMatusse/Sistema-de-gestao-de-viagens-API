@@ -33,6 +33,14 @@ public class DistritoController {
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Todas os distritos da provincia de!" + provincia.getDesignacao() + " ", distritoService.listarTodosPorProvincia(provincia)));
     }
 
+    /*@GetMapping("/p/{codigo-provincia}")
+    public ResponseEntity<ResponseAPI> distritosPorcodigoProvincia(@PathVariable("codigo-provincia") String codigoProvincia) throws ModelNotFound {
+        Provincia provincia = provinciaService.buscarProvinciaporCodigo(codigoProvincia);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Todas os distritos da provincia de!" + provincia.getDesignacao() + " ", distritoService.listarTodosPorProvincia(provincia)));
+    }
+
+
+     */
     @GetMapping("/provincia")
     public ResponseEntity<ResponseAPI> distritosPorIdDeProvincia(@RequestParam("codigo") Optional<String> codigo) throws ModelNotFound {
         if (codigo.isPresent()) {
@@ -43,5 +51,12 @@ public class DistritoController {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Todas os distritos da provincia com o codigo: " + codigo.isPresent() + "!", distritoService.listarTodosPorProvincia(provincia)));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseAPI(true, "404", "Insira os parametros", null));
+    }
+
+    @GetMapping("/{codigo-provincia}")
+    public ResponseEntity<ResponseAPI> listarDistritosPorCodigoProvincia(@PathVariable(value = "codigo-provincia")  String codigo) throws ModelNotFound {
+        Provincia provincia = provinciaService.buscarProvinciaporCodigo(codigo);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseAPI(true, "200", "Todas os distritos da provincia de!" + provincia.getDesignacao() + " ", distritoService.listarTodosPorProvincia(provincia)));
+
     }
 }

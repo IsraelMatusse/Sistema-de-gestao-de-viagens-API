@@ -41,6 +41,8 @@ public class DistritoService {
         return new DistritoProvinciaDTO(distritoRepo.findByDistritoId(id));
     }
 
+
+
     public Distrito buscarDistritoPorCodigoEProvincia(String codigo, Provincia provincia) throws ModelNotFound {
         return distritoRepo.findByCodigoAndIdProvincia(codigo, provincia);
     }
