@@ -34,4 +34,8 @@ private final  ProvinciaRepo provinciaRepo;
     public Provincia buscarProvinciaporCodigo(String codigo) throws ModelNotFound {
         return provinciaRepo.findByCodigo(codigo).orElseThrow(() -> new ModelNotFound("Provincia nao encontrada"));
     }
+    public ProvinciaRespostaDTO buscarProvinciaporRes(String codigo) throws ModelNotFound {
+        Provincia provincia= provinciaRepo.findByCodigo(codigo).orElseThrow(() -> new ModelNotFound("Provincia nao encontrada"));
+        return new ProvinciaRespostaDTO(provincia);
+    }
 }

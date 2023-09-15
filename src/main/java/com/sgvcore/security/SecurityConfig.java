@@ -60,8 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/rotas",
                 "/swagger-ui.html"
 
-                "/api/rotas"
-
 
 
         ).permitAll();
