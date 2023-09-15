@@ -56,18 +56,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/tipo-documento",
                 "/api/cores",
                 "/api/rotas",
-<<<<<<< HEAD
-                "/swagger-ui.html"
-
-
-
-=======
+                "/swagger-ui.html",
                  "/swagger-ui/**",
                 "/swagger-resources/**",
                 "/v2/api-docs/**",
                 "/v3/api-docs/**",
                 "/webjars/**"
->>>>>>> 2923d46085045f70ef59b2857b4b52be705be584
+
         ).permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
