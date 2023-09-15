@@ -55,13 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/api/distritos/p/{id}",
                 "/api/tipo-documento",
                 "/api/cores",
-                "/api/rotas",
-                "/swagger-ui.html",
-                 "/swagger-ui/**",
-                "/swagger-resources/**",
-                "/v2/api-docs/**",
-                "/v3/api-docs/**",
-                "/webjars/**"
+                "/api/rotas"
 
         ).permitAll();
         http.authorizeRequests().anyRequest().authenticated();
