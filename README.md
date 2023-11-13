@@ -8,7 +8,7 @@ Para iniciar o projecto localmente é necessario ter o java instalado, JDK 8 no 
 
 O gestor de dependências do projecto é o Maven
 As bibliotecas mais usadas no projecto são:
-- JPA, LOMBOK, DEV TOOLS, SWAGGER-UI, MYSQL CONNECTOR, SPRING SECURITY, spring-boot-starter-web, spring-boot-starter-validation
+- spring-boot-starter-jpa, LOMBOK, DEV TOOLS, spring-boot-starter-test, MYSQL CONNECTOR, SPRING SECURITY, spring-boot-starter-web, spring-boot-starter-validation
 
 Todas dependências são carregadas na inicialização do projecto
 
