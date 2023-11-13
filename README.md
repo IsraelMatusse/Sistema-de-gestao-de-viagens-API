@@ -1,7 +1,7 @@
-# Sistema-de-gestao-de-viagens-API
-API construida com spring boot com intuito de fazer a gestao de dados de viajantes em transportes interprovinciais 
--Gestao de terminais
--Gestao de associacoes de trasnportadores
+# Sistema-de-gestão-de-viagens-API
+API construida usando spring boot com intuito de permitir a gestão de dados de viajantes em transportes interprovinciais 
+-Gestão de terminais
+-Gestão de associações de transporte
 -Motoristas
 -Passageiros
 -Viaturas e seus proprietarios
