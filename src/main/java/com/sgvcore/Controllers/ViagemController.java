@@ -63,6 +63,11 @@ public class ViagemController {
         return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Associacoes do sistema", viagemService.listar()));
     }
 
+    @GetMapping("/{codigo-viagem}")
+    public ResponseEntity<ResponseAPI> viagemPeloCodigo(@PathVariable(value = "codigo-viagem") String codigoViagem) throws ModelNotFound {
+        return ResponseEntity.status(200).body(new ResponseAPI(false, "200", "Associacoes do sistema", viagemService.buscarPorCodigoRes(codigoViagem)));
+    }
+
     @PreAuthorize("hasRole('ROLE_ASSOCIACAO')")
     @PostMapping("/adicionar")
     public ResponseEntity<ResponseAPI> criarViagem(@RequestBody @Valid ViagemCriarDTO dto) throws NoSuchAlgorithmException, ModelNotFound, BadRequest, ContentAlreadyExists, UnprocessableEntity, ForbiddenException {

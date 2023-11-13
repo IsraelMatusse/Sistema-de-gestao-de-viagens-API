@@ -27,8 +27,8 @@ public class ProvinciaController {
         return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Provincia com id" + id, provinciaService.buscarPorId(id)));
     }
 
-    @GetMapping("/{codigo-provincia}")
+    @GetMapping("/provincia/{codigo-provincia}")
     public ResponseEntity<ResponseAPI> buscarProvinciaPorCodigo(@PathVariable(value = "codigo-provincia") String codigoProvincia) throws ModelNotFound {
-        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Provincia com o codigo" + codigoProvincia, provinciaService.buscarProvinciaporCodigo(codigoProvincia)));
+        return ResponseEntity.status(200).body(new ResponseAPI(true, "200", "Provincia com o codigo" + codigoProvincia, provinciaService.buscarProvinciaporRes(codigoProvincia)));
     }
 }

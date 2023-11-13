@@ -13,8 +13,6 @@ import com.sgvcore.sevices.FuncaoUsuarioService;
 import com.sgvcore.sevices.RecuperacaoTokenService;
 import com.sgvcore.sevices.UsuarioService;
 import com.sgvcore.utils.GeneratePin;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -37,7 +35,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/auth")
-@Api(value = "Api para login")
+
 public class AuthController {
     private final UsuarioService usuarioService;
     private final UserServiceIMPL userDetailsService;
@@ -48,7 +46,7 @@ public class AuthController {
     private final EmailService emailService;
 
     @PostMapping("/login")
-    @ApiOperation(value = "Realiza login")
+
     public ResponseEntity<ResponseAPI> authenticate(@RequestBody @Valid UsuarioLoginDTO request){
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
@@ -63,7 +61,7 @@ public class AuthController {
     }
 
     @PostMapping("/registrar")
-    @ApiOperation(value = "Cdastrar novo usuario ao sistema")
+
     public ResponseEntity<ResponseAPI> createUser(@RequestBody @Valid UsuarioCriarDTO userDTO) throws IOException {
         if (usuarioService.usuarioExistePorUsername(userDTO.getUsername())) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ResponseAPI(false, "422", "Já existe um usuário com esse username!", null));
@@ -80,14 +78,13 @@ public class AuthController {
     }
 
     @PostMapping("/esqueci-senha")
-    @ApiOperation(value = "Recuperacao de senha")
     public ResponseEntity<ResponseAPI> sendEmail(@RequestParam("email") String email) throws NoSuchAlgorithmException {
         emailService.sendSimpleMessage(email,"Recuperacao da Senha - Netline", "O seu codigo de recuperacao de senha e: " + GeneratePin.generatePin());
         return ResponseEntity.status(201).body(new ResponseAPI(true, "201", "Email de recuperação enviado com sucesso!", null));
     }
 
     @GetMapping("/check-token")
-    @ApiOperation(value = "Verifica o token de acesso")
+
     public ResponseEntity<ResponseAPI> checkToken(@RequestParam("token") String token){
         Map<String, Boolean> message = new HashMap<>();
         if (!jwtUtils.isTokenExpiredOffline(token)){
@@ -99,7 +96,7 @@ public class AuthController {
     }
 
     @GetMapping("/refresh-token")
-    @ApiOperation(value = "Faz o refresh do token")
+
     public ResponseEntity<ResponseAPI> refreshToken(HttpServletRequest request, Principal principal){
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){

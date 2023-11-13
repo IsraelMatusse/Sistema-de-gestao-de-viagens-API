@@ -14,6 +14,8 @@ import java.util.Optional;
 public interface DistritoRepo extends JpaRepository<Distrito, Long> {
     boolean existsByDesignacao(String value);
 
+
+
     Distrito findByCodigoAndIdProvincia(String codigo, Provincia idProvincia);
 
     List<Distrito> findByIdProvincia(Provincia id);

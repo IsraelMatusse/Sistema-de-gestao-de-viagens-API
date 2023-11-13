@@ -1,5 +1,6 @@
 package com.sgvcore.DTOs.viajanteDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sgvcore.Model.Viajante;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class ViajanteRespostaDTO {
     private Long id;
     private String nome;
     private String apelido;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date dataNasicmento;
     private String email;
 
